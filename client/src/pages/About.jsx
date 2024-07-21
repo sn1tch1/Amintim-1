@@ -1,5 +1,4 @@
 import React from "react";
-import Tests from "../components/text";
 
 const About = () => {
   return (
