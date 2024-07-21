@@ -98,7 +98,7 @@ const Navbar = () => {
             />
           </svg>
         </div>
-        <div className="w-[22px] h-[22px]">
+        <Link to={"/cart"} className="w-[22px] h-[22px]">
           <svg
             role="presentation"
             stroke-width="1.5"
@@ -116,7 +116,7 @@ const Navbar = () => {
               stroke-linejoin="round"
             ></path>
           </svg>
-        </div>
+        </Link>
       </div>
     </div>
   );
