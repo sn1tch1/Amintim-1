@@ -1,11 +1,11 @@
 import React from "react";
-
+import Logo from "../assets/logo-white.png";
 const Footer = () => {
   return (
     <div className="bg-[#1D1D1D] p-14 text-white space-y-8">
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 justify-between">
         <div className="w-full lg:w-[40%] space-y-4">
-          <img src="/src/assets/logo-white.png" />
+          <img src={Logo} />
           <p className="text-lg">
             It's better to put a tagline here. If we remove this section footer
             will look wierd

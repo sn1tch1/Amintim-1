@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
+import Logo from "../assets/logo.png";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -17,7 +18,7 @@ const Navbar = () => {
     <>
       <header className="bg-[#F7F7F7] z-[100] px-[20px] py-[10px] hidden  lg:flex fixed top-0 w-full items-center justify-between">
         <div className="h-[50px] w-auto">
-          <img src="/src/assets/logo.png" alt="" className="w-full h-full" />
+          <img src={Logo} alt="" className="w-full h-full" />
         </div>
         <ul className="flex gap-10 font-[700] text-[16px]">
           <Link to="/" className="hover:text-black/70">

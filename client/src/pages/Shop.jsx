@@ -7,24 +7,23 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
+import Image1 from "../assets/shop/img-1.webp";
+import Image2 from "../assets/shop/img-2.webp";
+import Image3 from "../assets/shop/img-3.webp";
+import Image4 from "../assets/shop/img-4.webp";
+import Image5 from "../assets/shop/img-5.webp";
 import GridFAQs from "../components/GridFAQs";
 
 const Shop = () => {
   // Array of images
-  const images = [
-    "/src/assets/shop/img-1.webp",
-    "/src/assets/shop/img-2.webp",
-    "/src/assets/shop/img-3.webp",
-    "/src/assets/shop/img-4.webp",
-    "/src/assets/shop/img-5.webp",
-  ];
+  const images = [Image1, Image2, Image3, Image4, Image5];
 
   // State to keep track of the currently selected image
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedOption, setSelectedOption] = useState("buy1");
 
   return (
-    <div className="bg-white mt-[50px] py-[4%] px-[20px] lg:px-[60px]">
+    <div className="bg-white mt-[50px] py-[50px] px-[20px] lg:px-[60px]">
       <section className="grid lg:grid-cols-2 gap-8">
         <div className="flex flex-col lg:flex-row gap-5 w-full h-[500px]">
           <div className=" flex lg:flex-col flex-row justify-between">

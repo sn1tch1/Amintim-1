@@ -1,13 +1,14 @@
 import React from "react";
 import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
+import BG from "../assets/home/img-1.webp";
 
 const Home = () => {
   return (
     <div className="bg-[#f7f7f7]">
       <section
         className="h-[600px] relative text-center max-h-[800px] text-white w-full font-[500] flex flex-col items-center justify-center gap-7 bg-cover bg-center"
-        style={{ backgroundImage: "url('/src/assets/home/img-1.webp')" }}
+        style={{ backgroundImage: `url(${BG})` }}
       >
         <span className="absolute top-0 z-10 w-full h-full bg-black/20"></span>
 
