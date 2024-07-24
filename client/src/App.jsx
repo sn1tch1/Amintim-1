@@ -13,11 +13,14 @@ import Header from "./components/Header";
 import Cart from "./pages/Cart";
 import Footer from "./components/Footer";
 import Shop from "./pages/Shop";
+import Captcha from "./pages/Captcha";
+import Settings from "./pages/Settings";
+import QRLink from "./pages/QRLink";
 
 const AppContent = () => {
   const location = useLocation();
-
-  const isLoginPage = location.pathname === "/login";
+  const isLoginPage =
+    location.pathname === "/login" || location.pathname === "/verify";
 
   return (
     <>
@@ -30,6 +33,9 @@ const AppContent = () => {
         <Route path="/aboutus" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/verify" element={<Captcha />} />
+        <Route path="/manage-account/settings" element={<Settings />} />
+        <Route path="/qr/link" element={<QRLink />} />
       </Routes>
       {!isLoginPage && <Footer />}
     </>
