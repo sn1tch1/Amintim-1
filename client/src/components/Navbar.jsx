@@ -4,30 +4,30 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="bg-[#F7F7F7] px-[20px] py-[10px] flex fixed top-0 w-full items-center justify-between">
+    <div className="bg-[#F7F7F7] z-[100] px-[20px] py-[10px] flex fixed top-0 w-full items-center justify-between">
       <div className="h-[50px] w-auto">
         <img src="/src/assets/logo.png" alt="" className="w-full h-full" />
       </div>
-      <ul className="flex gap-10 font-[500] text-[16px]">
-        <Link to="/">
+      <ul className="flex gap-10 font-[700] text-[16px]">
+        <Link to="/" className="hover:text-black/70">
           <li>Home</li>
         </Link>
-        <Link to="/shop">
+        <Link to="/shop" className="hover:text-black/70">
           <li>Shop</li>
         </Link>
-        <Link to="/aboutus">
+        <Link to="/aboutus" className="hover:text-black/70">
           <li>About Us</li>
         </Link>
-        <Link to="/contact">
+        <Link to="/contact" className="hover:text-black/70">
           <li>Contact</li>
         </Link>
-        <Link to="/login">
+        <Link to="/login" className="hover:text-black/70">
           <li>Log In</li>
         </Link>
       </ul>
 
-      <div className="flex items-center gap-3">
-        <Select
+      <div className="flex items-center gap-5">
+        {/* <Select
           border="none"
           outline="none"
           size="sm"
@@ -81,7 +81,7 @@ const Navbar = () => {
           <option value="Polish">Polish</option>
           <option value="Ukranian">Ukranian</option>
           <option value="Arabic">Arabic</option>
-        </Select>
+        </Select> */}
         <div className="w-[22px] h-[22px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
