@@ -10,7 +10,7 @@ import {
 
 const FAQs = () => {
   return (
-    <section className="w-[60%] mx-auto text-center py-[8%] space-y-12">
+    <section className="w-[90%] lg:w-[60%] mx-auto text-center py-[8%] space-y-12">
       <h3 className="text-3xl font-berkshire">
         Frequently asked questions and answers
       </h3>

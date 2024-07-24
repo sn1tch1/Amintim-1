@@ -25,16 +25,16 @@ const Shop = () => {
   const [selectedOption, setSelectedOption] = useState("buy1");
 
   return (
-    <div className="bg-white mt-[50px] py-[4%] px-[60px]">
-      <section className="grid grid-cols-2 gap-4">
-        <div className="flex gap-5 w-[500px] h-[500px]">
-          <div className=" flex flex-col justify-between">
+    <div className="bg-white mt-[50px] py-[4%] px-[20px] lg:px-[60px]">
+      <section className="grid lg:grid-cols-2 gap-8">
+        <div className="flex flex-col lg:flex-row gap-5 w-full h-[500px]">
+          <div className=" flex lg:flex-col flex-row justify-between">
             {images.map((image, index) => (
               <img
                 key={index}
                 src={image}
                 alt={`Thumbnail ${index + 1}`}
-                className={`cursor-pointer w-[100px] h-auto object-cover ${
+                className={`cursor-pointer h-[50px] w-auto md:w-[100px] md:h-auto object-cover ${
                   selectedImage === image ? "border-2 border-black" : ""
                 }`}
                 onClick={() => setSelectedImage(image)}
@@ -45,7 +45,7 @@ const Shop = () => {
             <img
               src={selectedImage}
               alt="Selected"
-              className="h-[500px] w-full object-cover"
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
@@ -63,7 +63,9 @@ const Shop = () => {
               </div>
               <div className="ml-auto flex items-center">
                 <span className=" text-xl">8.100 kr</span>
-                <span className="line-through text-gray-500">DKK 13,500</span>
+                <span className="ml-3 lg:ml-0 line-through text-gray-500">
+                  DKK 13,500
+                </span>
               </div>
             </div>
 

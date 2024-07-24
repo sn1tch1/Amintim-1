@@ -3,9 +3,9 @@ import Header from "../components/Header";
 
 const Login = () => {
   return (
-    <div className="flex  flex-col items-center pt-[100px] min-h-screen bg-white">
+    <div className="flex px-[20px] flex-col items-center pt-[100px] min-h-screen bg-white">
       <div className=" w-full max-w-lg">
-        <h2 className="text-2xl font-[700] mb-2 text-center">Login</h2>
+        <h2 className="text-3xl font-[700] mb-2 text-center">Login</h2>
         <p className="text-gray-600 mb-4 text-center">
           For login, no registration is necessary.
         </p>

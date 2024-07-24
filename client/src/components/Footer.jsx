@@ -3,8 +3,8 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="bg-[#1D1D1D] p-14 text-white space-y-8">
-      <div className="flex justify-between">
-        <div className="w-[40%] space-y-4">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 justify-between">
+        <div className="w-full lg:w-[40%] space-y-4">
           <img src="/src/assets/logo-white.png" />
           <p className="text-lg">
             It's better to put a tagline here. If we remove this section footer
@@ -12,7 +12,7 @@ const Footer = () => {
           </p>
         </div>
 
-        <ul className="space-y-4 ">
+        <ul className="space-y-4 text-center lg:text-start">
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
             Despre Noi
           </li>
@@ -34,7 +34,7 @@ const Footer = () => {
         </ul>
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-col lg:flex-row gap-4 pt-12">
         <p className="text-sm text-white/70">
           © 2024, Amintim. All rights reserved.
         </p>

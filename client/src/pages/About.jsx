@@ -3,7 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <div>
-      <section className="py-[8%] px-[10%] font-[700]">
+      <section className="py-[8%] px-[20px] lg:px-[10%] font-[700]">
         <div className="text-center">
           <h1 className="text-5xl  font-berkshire">
             Pastram Amintirile vii cu Ajutorul Tehnologiei
@@ -29,7 +29,7 @@ const About = () => {
         </div>
 
         <div className="space-y-16 py-12">
-          <div className="grid grid-cols-2 gap-12 h-[500px] items-center">
+          <div className="grid lg:grid-cols-2 gap-12 h-[500px] items-center">
             <div className="space-y-8 text-center">
               <h3 className="text-3xl font-berkshire">
                 Here we have to put something
@@ -45,19 +45,19 @@ const About = () => {
               <img
                 src="/src/assets/about/img-1.webp"
                 alt=""
-                className="h-full w-auto object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-12 h-[500px] items-center">
-            <div className="h-full w-full overflow-hidden">
+          <div className="grid lg:grid-cols-2 gap-12 h-[500px] items-center">
+            <div className="order-2 lg:order-1 h-full w-full overflow-hidden">
               <img
                 src="/src/assets/about/img-2.webp"
                 alt=""
                 className="h-full w-full object-cover"
               />
             </div>
-            <div className="space-y-8 text-center">
+            <div className="order-1 lg:order-2 space-y-8 text-center">
               <h3 className="text-3xl font-berkshire">De ce facem asta</h3>
               <p>
                 Credem cu tarie ca tehnologia ne poate conecta chiar si in
@@ -66,7 +66,7 @@ const About = () => {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-12 h-[500px] items-center">
+          <div className="grid lg:grid-cols-2 gap-12 h-[500px] items-center">
             <div className="space-y-8 text-center">
               <h3 className="text-3xl font-berkshire">Sa Amintim…</h3>
               <p>

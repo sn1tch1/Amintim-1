@@ -3,7 +3,7 @@ import React from "react";
 const Contact = () => {
   return (
     <div>
-      <section className="py-[5%] min-h-screen px-[4%] font-[700] grid grid-cols-2 items-center gap-12">
+      <section className="md:py-[5%] md:min-h-screen px-[4%] font-[700] grid md:grid-cols-2 items-center gap-12 py-16">
         <div>
           <h3 className="text-3xl pb-8 font-berkshire">Aveti o intrebare?</h3>
           <p>

@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="bg-[#f7f7f7]">
       <section
-        className="h-[400px] text-center max-h-[800px] text-white w-full font-[500] flex flex-col items-center justify-center gap-7 bg-cover bg-center"
+        className="h-[600px] text-center max-h-[800px] text-white w-full font-[500] flex flex-col items-center justify-center gap-7 bg-cover bg-center"
         style={{ backgroundImage: "url('/src/assets/home/img-1.webp')" }}
       >
         <p>Memories that last forever</p>
@@ -15,9 +15,9 @@ const Home = () => {
         </button>
       </section>
 
-      <section className="py-[6%] mx-auto w-[60%]  flex flex-col items-center gap-12">
+      <section className="py-[6%] mx-auto w-[90%] lg:w-[60%]  flex flex-col items-center gap-12">
         {/* <p>So that your loved ones will always be remembered:</p> */}
-        <h1 className="text-5xl font-berkshire ">
+        <h1 className="text-3xl lg:text-5xl text-center lg:text-start font-berkshire ">
           O pagina memoriala, personalizata
         </h1>
         <div className="font-[300] text-center">
