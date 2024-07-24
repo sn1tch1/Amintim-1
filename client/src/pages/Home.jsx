@@ -1,6 +1,6 @@
 import React from "react";
 import FAQs from "../components/FAQs";
-import SideBar from "../components/Drawer";
+import SideBar from "../components/SideDrawer";
 
 const Home = () => {
   return (
