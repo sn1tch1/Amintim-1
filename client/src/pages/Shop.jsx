@@ -7,7 +7,6 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import FAQs from "../components/FAQs";
 import GridFAQs from "../components/GridFAQs";
 
 const Shop = () => {
