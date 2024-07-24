@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   return (
@@ -31,9 +32,11 @@ const Cart = () => {
         <h4 className="text-2xl font-berkshire font-extralight">
           Your shopping basket is empty
         </h4>
-        <button className="py-4 px-8 font-[700] bg-black text-white hover:text-black hover:bg-transparent border-black border-2 ">
-          Continue Shopping
-        </button>
+        <Link to="/shop">
+          <button className="py-4 px-8 font-[700] bg-black text-white hover:text-black hover:bg-transparent border-black border-2 ">
+            Continue Shopping
+          </button>
+        </Link>
       </section>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 
 const CaptchaInput = () => {
   const inputsRef = useRef([]);
@@ -30,9 +31,11 @@ const CaptchaInput = () => {
             />
           ))}
         </div>
-        <button className="w-full font-[700] rounded-full bg-black/90 duration-200 hover:bg-black text-white p-3  mb-4">
-          Confirm with captcha
-        </button>
+        <Link to="/manage-account/settings">
+          <button className="w-full font-[700] rounded-full bg-black/90 duration-200 hover:bg-black text-white p-3  mb-4">
+            Confirm with captcha
+          </button>
+        </Link>
         <div className="flex items-center justify-center my-4">
           <hr className="flex-grow border-gray-300" />
           <span className="px-4 text-gray-600">or</span>

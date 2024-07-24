@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCamera } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const QRLink = () => {
   const handleConnectNowClick = async () => {
@@ -41,9 +42,11 @@ const QRLink = () => {
       <p className="text-center mb-6">
         Order now and link it to your account to create a memorial page.
       </p>
-      <button className="bg-black/90 hover:bg-black text-white py-4 px-12 rounded-md">
-        Buy Now
-      </button>
+      <Link to="/shop">
+        <button className="bg-black/90 hover:bg-black text-white py-4 px-12 rounded-md">
+          Buy Now
+        </button>
+      </Link>
     </div>
   );
 };

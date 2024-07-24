@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignIn = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailPattern.test(email)) {
+      navigate("/verify");
+    } else {
+      alert("Please enter a valid email address");
+    }
+  };
+
   return (
     <div className="flex px-[20px] flex-col items-center pt-[100px] min-h-screen bg-white">
-      <div className=" w-full max-w-lg">
+      <div className="w-full max-w-lg">
         <h2 className="text-3xl font-[700] mb-2 text-center">Login</h2>
         <p className="text-gray-600 mb-4 text-center">
           For login, no registration is necessary.
@@ -12,9 +25,14 @@ const Login = () => {
         <input
           type="email"
           placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-3 border bg-gray-100 border-gray-300 rounded mb-4"
         />
-        <button className="w-full font-[700] rounded-full bg-black/90 duration-200 hover:bg-black text-white p-3  mb-4">
+        <button
+          onClick={handleSignIn}
+          className="w-full font-[700] rounded-full bg-black/90 duration-200 hover:bg-black text-white p-3 mb-4"
+        >
           Sign in
         </button>
         <button className="w-full font-[700] bg-white border border-gray-300 hover:border-gray-600 duration-200 text-gray-700 p-3 rounded-full flex items-center justify-center">
