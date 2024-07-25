@@ -10,11 +10,12 @@ const Proceed = () => {
 
   const handleContinue = () => {
     // Logic to handle the continue action based on the selected option
-    navigate("/memorial/profile");
     if (selectedOption === "new") {
       console.log("Creating a new tribute page");
+      navigate("/tribute");
     } else {
       console.log("Linking to an existing tribute page");
+      navigate("/memorial/profile");
     }
   };
 

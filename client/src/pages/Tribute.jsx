@@ -4,7 +4,7 @@ const TributePageSetup = () => {
   const [selectedTab, setSelectedTab] = useState("Human");
 
   return (
-    <div className="p-4  mx-auto bg-white rounded-lg shadow-md">
+    <div className="p-4  mx-auto bg-white rounded-lg shadow-md py-[80px]">
       <h2 className="text-2xl font-bold text-center mb-4">
         Tribute Page Setup
       </h2>

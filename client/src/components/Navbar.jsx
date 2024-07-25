@@ -157,25 +157,43 @@ const Navbar = () => {
             finalFocusRef={btnRef}
           />
           <h1 className="text-xl mx-auto font-bold">Amintim✨</h1>
-          <Link to={"/cart"} className="w-[22px] h-[22px]">
-            <svg
-              role="presentation"
-              stroke-width="1.5"
-              focusable="false"
-              width="22"
-              height="22"
-              className="icon icon-cart"
-              viewBox="0 0 22 22"
-            >
-              <path
-                d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"
+          <div className="flex items-center gap-3">
+            <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-            </svg>
-          </Link>
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                />
+              </svg>
+            </Link>
+            <Link to={"/cart"} className="w-[22px] h-[22px]">
+              <svg
+                role="presentation"
+                stroke-width="1.5"
+                focusable="false"
+                width="22"
+                height="22"
+                className="icon icon-cart"
+                viewBox="0 0 22 22"
+              >
+                <path
+                  d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </Link>
+          </div>
         </div>
       </header>
     </>
