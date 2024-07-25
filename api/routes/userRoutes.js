@@ -1,10 +1,12 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
+const {
+  registerUser,
+  verifyUser,
+} = require("../controllers/userController.js");
+
 const router = express.Router();
 
-router.get("/profile", authMiddleware, (req, res) => {
-  // Fetch user profile
-  res.send(`Profile of user with ID ${req.userId}`);
-});
+router.post("/register", registerUser);
+router.post("/verify", verifyUser);
 
 module.exports = router;

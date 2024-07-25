@@ -31,7 +31,7 @@ const CaptchaInput = () => {
             />
           ))}
         </div>
-        <Link to="/manage-account/settings">
+        <Link to="/proceed">
           <button className="w-full font-[700] rounded-full bg-black/90 duration-200 hover:bg-black text-white p-3  mb-4">
             Confirm with captcha
           </button>

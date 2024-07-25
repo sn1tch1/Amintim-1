@@ -2,6 +2,7 @@ import React from "react";
 import Image1 from "../assets/about/img-1.webp";
 import Image2 from "../assets/about/img-2.webp";
 import Image3 from "../assets/about/img-3.webp";
+import HappyCustomersCarousel from "../components/Testimonials";
 
 const About = () => {
   return (
@@ -78,6 +79,8 @@ const About = () => {
             </div>
           </div>
         </div>
+
+        <HappyCustomersCarousel />
       </section>
     </div>
   );
