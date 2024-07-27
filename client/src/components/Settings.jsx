@@ -1,6 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+axios.defaults.withCredentials = true;
 
 const SettingsTab = ({ avatar, handleAvatarChange }) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    city: "",
+    country: "",
+    zipcode: "",
+  });
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/users/me`, {
+          withCredentials: true,
+        });
+        console.log(response.data);
+        const { firstName, lastName, city, country, zipcode, avatar } =
+          response.data;
+        setFormData({ firstName, lastName, city, country, zipcode });
+        if (avatar) {
+          setAvatar(avatar);
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/users/update",
+        {
+          ...formData,
+          avatar,
+        },
+        {
+          withCredentials: true, // Ensure cookies are sent with the request
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("User details updated successfully");
+      } else {
+        toast.error("Error updating user details. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error updating user details. Please try again.");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-center mb-8">
@@ -43,11 +107,14 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
           </button>
         </div>
       </div>
-      <form className="space-y-4 w-full py-4">
+      <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-gray-700">First Name</label>
           <input
             type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="First Name"
           />
@@ -56,6 +123,9 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
           <label className="block text-gray-700">Last Name</label>
           <input
             type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Last Name"
           />
@@ -64,6 +134,9 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
           <label className="block text-gray-700">City</label>
           <input
             type="text"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="City"
           />
@@ -72,6 +145,9 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
           <label className="block text-gray-700">Country</label>
           <input
             type="text"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Country"
           />
@@ -80,17 +156,14 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
           <label className="block text-gray-700">Zip/Postal Code</label>
           <input
             type="text"
+            name="zipcode"
+            value={formData.zipcode}
+            onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Zip/Postal Code"
           />
         </div>
-        <div>
-          <label className="block text-gray-700">Language</label>
-          <select className="w-full p-3 border bg-gray-100 border-gray-300 rounded">
-            <option>Select</option>
-            {/* Add more options here */}
-          </select>
-        </div>
+
         <button className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200">
           Save
         </button>

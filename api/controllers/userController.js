@@ -4,10 +4,59 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 exports.registerUser = async (req, res) => {
-  const { email, password } = req.body;
-  console.log(email);
+  const { email } = req.body;
   try {
-    const user = await User.create({ email, password });
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // If user already exists, log them in by generating a token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
+
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+        })
+        .status(200)
+        .json({ message: "Logged in successfully" });
+    } else {
+      const verificationCode = Math.floor(
+        10000 + Math.random() * 90000
+      ).toString();
+
+      user = new User({
+        email,
+        verificationCode,
+        isVerified: false,
+      });
+
+      await user.save();
+
+      await sendEmail(
+        user.email,
+        "Verify your email",
+        `Your verification code is ${verificationCode}`
+      );
+
+      res.status(201).json({ message: "Verification email sent" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({ email });
+    }
 
     const verificationCode = Math.floor(
       10000 + Math.random() * 90000
@@ -21,12 +70,11 @@ exports.registerUser = async (req, res) => {
       `Your verification code is ${verificationCode}`
     );
 
-    res.status(201).json({
-      message:
-        "User registered. Please check your email to verify your account.",
+    res.status(200).json({
+      message: "Verification code sent to your email",
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Internal server" });
   }
 };
 
@@ -48,7 +96,99 @@ exports.verifyUser = async (req, res) => {
       expiresIn: "30d",
     });
 
-    res.status(200).json({ message: "Email verified", token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({ message: "Email verified" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.resendVerificationCode = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const verificationCode = Math.floor(
+      10000 + Math.random() * 90000
+    ).toString();
+    user.verificationCode = verificationCode;
+    await user.save();
+
+    await sendEmail(
+      user.email,
+      "Resend Verification Code",
+      `Your new verification code is ${verificationCode}`
+    );
+
+    res.status(200).json({ message: "Verification code resent" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  const { firstName, lastName, city, country, zipcode } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // Find the user by email
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user fields
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (city) user.city = city;
+    if (country) user.country = country;
+    if (zipcode) user.zipcode = zipcode;
+
+    // Save the updated user
+    await user.save();
+
+    res.status(200).json({
+      message: "User profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    // Get userID from the request object (attached by protect middleware)
+    const userId = req.user.id;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send user details
+    res.status(200).json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      city: user.city,
+      country: user.country,
+      zipcode: user.zipcode,
+      avatar: user.avatar,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
