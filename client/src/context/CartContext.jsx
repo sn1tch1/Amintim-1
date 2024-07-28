@@ -5,11 +5,20 @@ const CartContext = createContext();
 
 // Provider component
 export const CartProvider = ({ children }) => {
+  // const [cartItems, setCartItems] = useState(() => {
+  //   // Initialize state from local storage
+  //   const savedCartItems = localStorage.getItem("cartItems");
+  //   return savedCartItems ? JSON.parse(savedCartItems) : [];
+  // });
+
   const [cartItems, setCartItems] = useState(() => {
-    // Initialize state from local storage
-    const savedCartItems = localStorage.getItem("cartItems");
-    return savedCartItems ? JSON.parse(savedCartItems) : [];
+    const savedCart = localStorage.getItem("cartItems");
+    return savedCart ? JSON.parse(savedCart) : [];
   });
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (item) => {
     setCartItems((prevItems) => {
@@ -32,12 +41,12 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-   const calculateSubtotal = () => {
-     return cartItems.reduce(
-       (total, item) => total + item.price * (item.quantity || 1),
-       0
-     );
-   };
+  const calculateSubtotal = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * (item.quantity || 1),
+      0
+    );
+  };
 
   return (
     <CartContext.Provider
