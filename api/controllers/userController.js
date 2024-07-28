@@ -9,7 +9,6 @@ exports.registerUser = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      // If user already exists, log them in by generating a token
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
       });
@@ -77,6 +76,23 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: "Internal server" });
   }
 };
+
+exports.logout = (req, res) => {
+  try {
+    res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/", // Ensure the path matches the one used when setting the cookie
+      })
+      .status(200)
+      .json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 exports.verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;

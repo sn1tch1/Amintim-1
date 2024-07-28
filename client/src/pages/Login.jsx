@@ -4,10 +4,12 @@ import Header from "../components/Header";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
@@ -26,6 +28,7 @@ const Login = () => {
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
           navigate("/manage-account/settings");
+          login();
         } else {
           console.log("responseeee", response);
           toast.error("Error logging in. Please try again.");

@@ -1,12 +1,17 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
 import Logo from "../assets/logo.png";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { cartItems } = useCart();
+  const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
 
   const btnRef = useRef();
 
@@ -17,6 +22,24 @@ const Navbar = () => {
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/logout"
+      );
+      if (response.status === 201 || 200) {
+        toast.success("Logged Out");
+        navigate("/");
+        logout();
+      } else {
+        console.log("responseeee", response);
+      }
+    } catch (error) {
+      toast.error("Error logging in. Please try again catch.");
+    }
+  };
+
   return (
     <>
       <header className="bg-[#F7F7F7] z-[100] px-[20px] py-[10px] hidden  lg:flex fixed top-0 w-full items-center justify-between">
@@ -36,9 +59,15 @@ const Navbar = () => {
           <Link to="/contact" className="hover:text-black/70">
             <li>Contact</li>
           </Link>
-          <Link to="/login" className="hover:text-black/70">
-            <li>Log In</li>
-          </Link>
+          {isLoggedIn !== true ? (
+            <Link to="/login" className="hover:text-black/70">
+              <li>Log In</li>
+            </Link>
+          ) : (
+            <button onClick={handleLogout} className="hover:text-black/70">
+              <li>Log out</li>
+            </button>
+          )}
         </ul>
 
         <div className="flex items-center gap-5">
