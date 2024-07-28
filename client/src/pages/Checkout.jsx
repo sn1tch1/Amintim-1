@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Image from "../assets/shop/img-1.webp";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const Checkout = () => {
   const { calculateSubtotal } = useCart();
+  const { isLoggedIn } = useAuth(); // Get login status from context
   const [cart, setCart] = useState(() => {
     // Initialize state from local storage
     const savedCart = localStorage.getItem("cartItems");
@@ -61,7 +63,6 @@ const Checkout = () => {
       paymentInfo;
     return (
       email &&
-      lastName &&
       address &&
       postalCode &&
       city &&
@@ -76,6 +77,11 @@ const Checkout = () => {
 
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex">
+      {!isLoggedIn && (
+        <div className="fixed top-16 left-0 w-full bg-red-800 text-[12px] text-white text-center py-1 z-50">
+          <p>You must be logged in to complete your purchase.</p>
+        </div>
+      )}
       <div className="w-3/5 px-12 py-[100px] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Contact</h2>
         <div className="mb-6">

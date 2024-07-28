@@ -20,6 +20,7 @@ import Proceed from "./pages/Proceed";
 import Memorial from "./pages/Memorial";
 import TributePageSetup from "./pages/Tribute";
 import Checkout from "./pages/Checkout";
+import PrivateRoute from "./components/privateRoutes";
 
 const AppContent = () => {
   const location = useLocation();
@@ -40,10 +41,23 @@ const AppContent = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
         <Route path="/proceed" element={<Proceed />} />
-        <Route path="/manage-account/settings" element={<Settings />} />
-        <Route path="/memorial/profile" element={<Memorial />} />
-        <Route path="/qr/link" element={<QRLink />} />
-        <Route path="/tribute" element={<TributePageSetup />} />
+
+        <Route
+          path="/manage-account/settings"
+          element={<PrivateRoute element={<Settings />} />}
+        />
+        <Route
+          path="/memorial/profile"
+          element={<PrivateRoute element={<Memorial />} />}
+        />
+        <Route
+          path="/qr/link"
+          element={<PrivateRoute element={<QRLink />} />}
+        />
+        <Route
+          path="/tribute"
+          element={<PrivateRoute element={<TributePageSetup />} />}
+        />
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
       {!isProfilePage && !isLoginPage && <Footer />}
