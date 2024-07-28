@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   isVerified: { type: Boolean, default: false },
   verificationCode: { type: String },
+  hasPurchased: { type: Boolean, default: false }, // Add this field
   createdAt: { type: Date, default: Date.now },
 });
 

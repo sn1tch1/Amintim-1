@@ -13,14 +13,26 @@ import Image3 from "../assets/shop/img-3.webp";
 import Image4 from "../assets/shop/img-4.webp";
 import Image5 from "../assets/shop/img-5.webp";
 import GridFAQs from "../components/GridFAQs";
+import { useCart } from "../context/CartContext";
+import toast from "react-hot-toast";
 
 const Shop = () => {
+  const { addToCart } = useCart();
   // Array of images
   const images = [Image1, Image2, Image3, Image4, Image5];
-
-  // State to keep track of the currently selected image
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedOption, setSelectedOption] = useState("buy1");
+
+  const handleAddToCart = () => {
+    const item = {
+      id: selectedOption,
+      image: selectedImage,
+      title: "Pachet Pagina Memoriala",
+      price: selectedOption === "buy1" ? 8100 : 12960,
+    };
+    addToCart(item);
+    toast.success("Added to Cart");
+  };
 
   return (
     <div className="bg-white mt-[50px] py-[50px] px-[20px] lg:px-[60px]">
@@ -146,7 +158,10 @@ const Shop = () => {
             </button>
           </div>
 
-          <button className="bg-[#F9CA4F] my-6 font-[700] py-5 w-full">
+          <button
+            onClick={handleAddToCart}
+            className="bg-[#F9CA4F] my-6 font-[700] py-5 w-full"
+          >
             Add to Cart
           </button>
 

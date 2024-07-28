@@ -18,7 +18,6 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
         const response = await axios.get(`http://localhost:5000/api/users/me`, {
           withCredentials: true,
         });
-        console.log(response.data);
         const { firstName, lastName, city, country, zipcode, avatar } =
           response.data;
         setFormData({ firstName, lastName, city, country, zipcode });

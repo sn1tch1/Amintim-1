@@ -2,7 +2,7 @@ const User = require("../models/User");
 const QRCode = require("qrcode");
 
 exports.purchaseSoulStar = async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId);
@@ -11,12 +11,18 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const qrCodeData = `https://yourwebsite.com/memorial/${userId}`;
-    const qrCode = await QRCode.toDataURL(qrCodeData);
+    const qrCodeData = `https://Amintim.com/memorial/${userId}`;
+    const qrCodePath = path.join("uploads", `${userId}.png`);
 
-    // Here you should save the QR code to the database or send it to the user via email
-    // For simplicity, we are returning it in the response
-    res.status(200).json({ qrCode });
+    // Generate QR code and save it to disk
+    await QRCode.toFile(qrCodePath, qrCodeData);
+
+    // Save purchase information and QR code path in the database
+    user.hasPurchasedSoulStar = true;
+    user.qrCodePath = qrCodePath;
+    await user.save();
+
+    res.status(200).json({ qrCodePath });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

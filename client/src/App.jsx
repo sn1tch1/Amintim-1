@@ -19,6 +19,7 @@ import QRLink from "./pages/QRLink";
 import Proceed from "./pages/Proceed";
 import Memorial from "./pages/Memorial";
 import TributePageSetup from "./pages/Tribute";
+import Checkout from "./pages/Checkout";
 
 const AppContent = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const AppContent = () => {
         <Route path="/memorial/profile" element={<Memorial />} />
         <Route path="/qr/link" element={<QRLink />} />
         <Route path="/tribute" element={<TributePageSetup />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
       {!isProfilePage && !isLoginPage && <Footer />}
     </>
