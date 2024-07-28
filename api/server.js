@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const purchaseRoutes = require("./routes/purchaseRoutes");
+const { uploadProfileImage } = require("./controllers/userController.js");
+const { protect } = require("./middleware/authMiddleware.js");
 const memorialRoutes = require("./routes/memorialRoutes");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -24,8 +26,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Ensure the directory exists or create it
-const uploadDir = path.join(__dirname, "../client/public");
+const uploadDir = path.join(__dirname, "../client/public/users");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -35,7 +36,13 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    // Use user information to name the file
+    const user = req.user; // Example, adjust based on your auth implementation
+    console.log(user);
+    const userId = user ? user.id : "default";
+    const ext = file.originalname.split(".").pop();
+    const filename = `${userId}_${Date.now()}.${ext}`;
+    cb(null, filename);
   },
 });
 
@@ -46,13 +53,24 @@ const upload = multer({
   },
 });
 
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("No file uploaded.");
+app.post(
+  "/api/users/upload",
+  protect,
+  upload.single("file"),
+  async (req, res) => {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    try {
+      console.log("Uploading file:", req.file.filename);
+      await uploadProfileImage(req.user.id, req.file.filename);
+      res.status(200).json({ filename: req.file.filename });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      res.status(500).send("Error uploading file.");
+    }
   }
-  console.log("Uploading file:", req.file.filename);
-  res.status(200).json({ filename: req.file.filename });
-});
+);
 
 app.use("/api/users", userRoutes);
 app.use("/api/purchase", purchaseRoutes);

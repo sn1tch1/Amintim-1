@@ -47,6 +47,23 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+exports.uploadProfileImage = async (userId, filename) => {
+  try {
+    console.log(userId);
+    const user = await User.findById(userId);
+    console.log(user);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    user.profileImage = filename; // Set the filename for the profile image
+    console.log(user);
+    await user.save();
+  } catch (error) {
+    throw new Error("Error updating profile image");
+  }
+};
+
 exports.loginUser = async (req, res) => {
   const { email } = req.body;
 
@@ -92,7 +109,6 @@ exports.logout = (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 exports.verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;
