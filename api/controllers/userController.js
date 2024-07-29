@@ -219,7 +219,7 @@ exports.getUserDetails = async (req, res) => {
       city: user.city,
       country: user.country,
       zipcode: user.zipcode,
-      avatar: user.avatar,
+      profileImage: user.profileImage,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });

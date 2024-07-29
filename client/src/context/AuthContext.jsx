@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     fetchUserData();
   }, []);
 
+
   const fetchUserData = async () => {
     try {
       const response = await fetch("/api/user", {

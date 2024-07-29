@@ -3,7 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 axios.defaults.withCredentials = true;
 
-const SettingsTab = ({ avatar, handleAvatarChange }) => {
+const SettingsTab = () => {
+  const [avatar, setAvatar] = useState();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,11 +19,12 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
         const response = await axios.get(`http://localhost:5000/api/users/me`, {
           withCredentials: true,
         });
-        const { firstName, lastName, city, country, zipcode, avatar } =
+        const { firstName, lastName, city, country, zipcode, profileImage } =
           response.data;
         setFormData({ firstName, lastName, city, country, zipcode });
-        if (avatar) {
-          setAvatar(avatar);
+        console.log(profileImage);
+        if (profileImage) {
+          setAvatar(profileImage);
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
@@ -30,7 +32,7 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, [avatar]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +40,38 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // This header is crucial
+          },
+          withCredentials: true, // Ensure cookies are sent with the request
+        }
+      );
+
+      if (response.status === 200) {
+        const { filename } = response.data;
+        const imageUrl = `http://localhost:5000/uploads/users/${filename}`;
+        setAvatar(imageUrl);
+        toast.success("Avatar updated successfully");
+      } else {
+        toast.error("Error updating avatar. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error updating avatar. Please try again.");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -64,6 +98,8 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
     }
   };
 
+  console.log("aaa", avatar);
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-center mb-8">
@@ -79,7 +115,7 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
               {avatar ? (
                 <img
-                  src={avatar}
+                  src={`/public/users/${avatar}`}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full"
                 />
@@ -88,7 +124,7 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
               )}
             </div>
           </label>
-          <button className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
+          {/* <button className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 text-gray-600"
@@ -103,7 +139,7 @@ const SettingsTab = ({ avatar, handleAvatarChange }) => {
                 d="M15.232 5.232l3.536 3.536M14.828 8.828l3.536-3.536m-5.364 9.9a9 9 0 11-12.728-12.728l2.586 2.586a1 1 0 001.414 0l2.828-2.828a1 1 0 010 1.414L2.828 6.343a9 9 0 0112.728 12.728z"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
       </div>
       <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>
