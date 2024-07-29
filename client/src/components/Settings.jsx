@@ -98,8 +98,6 @@ const SettingsTab = () => {
     }
   };
 
-  console.log("aaa", avatar);
-
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-center mb-8">
@@ -124,22 +122,6 @@ const SettingsTab = () => {
               )}
             </div>
           </label>
-          {/* <button className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-gray-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15.232 5.232l3.536 3.536M14.828 8.828l3.536-3.536m-5.364 9.9a9 9 0 11-12.728-12.728l2.586 2.586a1 1 0 001.414 0l2.828-2.828a1 1 0 010 1.414L2.828 6.343a9 9 0 0112.728 12.728z"
-              />
-            </svg>
-          </button> */}
         </div>
       </div>
       <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>

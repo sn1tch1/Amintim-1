@@ -54,10 +54,7 @@ const AppContent = () => {
           path="/qr/link"
           element={<PrivateRoute element={<QRLink />} />}
         />
-        <Route
-          path="/tribute"
-          element={<PrivateRoute element={<TributePageSetup />} />}
-        />
+        <Route path="/tribute" element={<TributePageSetup />} />
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
       {!isProfilePage && !isLoginPage && <Footer />}

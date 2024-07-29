@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   country: { type: String },
   zipcode: { type: String },
   password: { type: String },
+  qrCodePath: {type : String},
   isVerified: { type: Boolean, default: false },
   verificationCode: { type: String },
   hasPurchased: { type: Boolean, default: false }, // Add this field
