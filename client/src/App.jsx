@@ -40,7 +40,10 @@ const AppContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
-        <Route path="/proceed" element={<Proceed />} />
+        <Route
+          path="/proceed"
+          element={<PrivateRoute element={<Proceed />} />}
+        />
 
         <Route
           path="/manage-account/settings"
@@ -54,7 +57,11 @@ const AppContent = () => {
           path="/qr/link"
           element={<PrivateRoute element={<QRLink />} />}
         />
-        <Route path="/tribute" element={<TributePageSetup />} />
+        <Route
+          path="/tribute"
+          element={<PrivateRoute element={<TributePageSetup />} />}
+        />
+
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
       {!isProfilePage && !isLoginPage && <Footer />}

@@ -4,17 +4,31 @@ const User = require("../models/User");
 const QRCode = require("qrcode");
 const express = require("express");
 const multer = require("multer");
+const sendEmail = require("../utils/sendEmail"); // Make sure you have this function
 const app = express();
+
+app.use(express.json());
 
 exports.purchaseSoulStar = async (req, res) => {
   const userId = req.user.id;
+  console.log(userId);
 
   console.log("purchaseSoulStar called");
   console.log(`userId: ${userId}`);
+
   app.use(
     "/uploads",
     express.static(path.join(__dirname, "../client/public/QRs"))
   );
+
+  // Extract delivery information from the request body
+  const { deliveryInfo } = req.body;
+
+  if (!deliveryInfo) {
+    return res
+      .status(400)
+      .json({ message: "Delivery information is required" });
+  }
 
   try {
     const user = await User.findById(userId);
@@ -46,7 +60,6 @@ exports.purchaseSoulStar = async (req, res) => {
       },
       filename: function (req, file, cb) {
         const user = req.user;
-        console.log(user);
         const userId = user ? user.id : "default";
         const ext = file.originalname.split(".").pop();
         const filename = `${userId}_${Date.now()}.${ext}`;
@@ -84,7 +97,28 @@ exports.purchaseSoulStar = async (req, res) => {
     // Save purchase information and QR code path in the database
     user.hasPurchasedSoulStar = true;
     user.qrCodePath = `/uploads/QRs/${qrCodeFilename}`;
+
+    // Save delivery information
+    user.deliveryInfo = deliveryInfo;
+
     await user.save();
+
+    // Log email sending attempt
+    console.log("Attempting to send email with QR code...");
+
+    try {
+      await sendEmail(
+        user.email,
+        "Your QR Code for Soul Star Purchase",
+        "Please find attached your QR code for the Soul Star purchase.",
+        [{ filename: qrCodeFilename, path: qrCodePath }]
+      );
+
+      console.log("Email successfully sent to:", user.email);
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      return res.status(500).json({ message: "Error sending email" });
+    }
 
     res.status(200).json({ qrCodePath: user.qrCodePath });
   } catch (error) {

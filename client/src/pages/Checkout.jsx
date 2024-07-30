@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Image from "../assets/shop/img-1.webp";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const Checkout = () => {
   const { calculateSubtotal } = useCart();
+  const navigate = useNavigate(); // Initialize the navigate function
   const { isLoggedIn } = useAuth(); // Get login status from context
   const [cart, setCart] = useState(() => {
     // Initialize state from local storage
@@ -74,6 +77,39 @@ const Checkout = () => {
   };
 
   const SubTotal = calculateSubtotal().toFixed(2);
+
+  const handlePurchase = async () => {
+    if (!isFormValid()) return; // Prevent submission if form is invalid
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/purchase/purchase",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Include credentials with the request
+          body: JSON.stringify({
+            deliveryInfo, // Send only delivery details
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        toast.error("Error Occured");
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      toast.success("Soulstar Purchased");
+      localStorage.removeItem("cartItems");
+      navigate("/tribute");
+      console.log("Purchase successful:", data);
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex">
@@ -333,6 +369,7 @@ const Checkout = () => {
                 : " cursor-not-allowed bg-[#fadc8d] "
             }`}
             disabled={!isFormValid()}
+            onClick={handlePurchase}
           >
             Complete Purchase
           </button>
