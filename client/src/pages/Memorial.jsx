@@ -25,11 +25,16 @@ const Memorial = () => {
   const formattedBirthDate = memorialData
     ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
     : "";
-  const [isEditingAbout, setIsEditingAbout] = useState(false);
-  const [newAbout, setNewAbout] = useState(memorialData?.about || "");
+const [newAbout, setNewAbout] = useState("");
+const [isEditingAbout, setIsEditingAbout] = useState(false);
 
   const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newMiddleName, setNewMiddleName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+
   const [newBirthDate, setNewBirthDate] = useState(
     memorialData?.birthDate || ""
   );
@@ -39,6 +44,13 @@ const Memorial = () => {
 
   const handleAboutChange = (e) => {
     setNewAbout(e.target.value);
+  };
+
+  const handleFirstNameChange = (e) => setNewFirstName(e.target.value);
+  const handleMiddleNameChange = (e) => setNewMiddleName(e.target.value);
+  const handleLastNameChange = (e) => setNewLastName(e.target.value);
+  const toggleEditName = () => {
+    setIsEditingName(!isEditingName);
   };
 
   const toggleEditAbout = () => {
@@ -60,6 +72,16 @@ const Memorial = () => {
   const toggleEditBirthDate = () => {
     setIsEditingBirthDate(!isEditingBirthDate);
   };
+
+  useEffect(() => {
+    if (memorialData) {
+      setNewFirstName(memorialData.firstName || "");
+      setNewMiddleName(memorialData.middleName || "");
+      setNewLastName(memorialData.lastName || "");
+          setNewAbout(memorialData.about || "");
+
+    }
+  }, [memorialData]);
 
   useEffect(() => {
     const fetchMemorialData = async () => {
@@ -190,6 +212,9 @@ const Memorial = () => {
           birthDate: newBirthDate,
           deathDate: newDeathDate,
           about: newAbout,
+          firstName: newFirstName,
+          middleName: newMiddleName,
+          lastName: newLastName,
         },
         {
           withCredentials: true,
@@ -254,10 +279,39 @@ const Memorial = () => {
         </div>
         <div className="text-center mt-2 space-y-2">
           <h2 className="text-xl">In memory of</h2>
-          <p className="text-gray-600 text-lg font-bold font-berkshire">
-            {memorialData?.firstName} {memorialData?.middleName}{" "}
-            {memorialData?.lastName}
-          </p>
+          {isEditingName ? (
+            <div>
+              <input
+                type="text"
+                value={newFirstName}
+                onChange={handleFirstNameChange}
+                className="border rounded px-2 py-1"
+              />
+              <input
+                type="text"
+                value={newMiddleName}
+                onChange={handleMiddleNameChange}
+                className="border rounded px-2 py-1"
+              />
+              <input
+                type="text"
+                value={newLastName}
+                onChange={handleLastNameChange}
+                className="border rounded px-2 py-1"
+              />
+              <button onClick={toggleEditName} className="ml-2">
+                <CiEdit size={22} />
+              </button>
+            </div>
+          ) : (
+            <p className="text-gray-600 text-lg font-bold font-berkshire">
+              {newFirstName} {newMiddleName} {newLastName}
+              <button onClick={toggleEditName} className="ml-2">
+                <CiEdit size={22} />
+              </button>
+            </p>
+          )}
+
           <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
             <FaBirthdayCake size={20} />
             {isEditingBirthDate ? (
@@ -339,19 +393,24 @@ const Memorial = () => {
             {activeTab === "about" && (
               <div>
                 {isEditingAbout ? (
-                  <textarea
-                    value={newAbout}
-                    onChange={handleAboutChange}
-                    className="w-full border rounded px-2 py-1"
-                  />
+                  <div>
+                    <textarea
+                      value={newAbout}
+                      onChange={(e) => setNewAbout(e.target.value)}
+                      className="w-full border rounded px-2 py-1"
+                    />
+                    <button onClick={toggleEditAbout} className="ml-2">
+                      <CiEdit size={22} />
+                    </button>
+                  </div>
                 ) : (
                   <div>
-                    {memorialData?.about || "No about information available."}
+                    {newAbout || "No about information available."}
+                    <button onClick={toggleEditAbout} className="ml-2">
+                      <CiEdit size={22} />
+                    </button>
                   </div>
                 )}
-                <button onClick={toggleEditAbout} className="ml-2">
-                  <CiEdit size={22} />
-                </button>
               </div>
             )}
           </div>
