@@ -25,6 +25,41 @@ const Memorial = () => {
   const formattedBirthDate = memorialData
     ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
     : "";
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [newAbout, setNewAbout] = useState(memorialData?.about || "");
+
+  const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
+  const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
+  const [newBirthDate, setNewBirthDate] = useState(
+    memorialData?.birthDate || ""
+  );
+  const [newDeathDate, setNewDeathDate] = useState(
+    memorialData?.deathDate || ""
+  );
+
+  const handleAboutChange = (e) => {
+    setNewAbout(e.target.value);
+  };
+
+  const toggleEditAbout = () => {
+    setIsEditingAbout(!isEditingAbout);
+  };
+
+  const handleDeathDateChange = (e) => {
+    setNewDeathDate(e.target.value);
+  };
+
+  const toggleEditDeathDate = () => {
+    setIsEditingDeathDate(!isEditingDeathDate);
+  };
+
+  const handleBirthDateChange = (e) => {
+    setNewBirthDate(e.target.value);
+  };
+
+  const toggleEditBirthDate = () => {
+    setIsEditingBirthDate(!isEditingBirthDate);
+  };
 
   useEffect(() => {
     const fetchMemorialData = async () => {
@@ -145,15 +180,16 @@ const Memorial = () => {
   };
 
   const handleUpdate = async () => {
-    const gallery = mediaImages;
     try {
       const response = await axios.put(
         `http://localhost:5000/api/memorial/${id}`,
         {
           profileImage,
           coverImage,
-          gallery,
-          // Add any other fields you want to update here
+          gallery: mediaImages,
+          birthDate: newBirthDate,
+          deathDate: newDeathDate,
+          about: newAbout,
         },
         {
           withCredentials: true,
@@ -223,10 +259,37 @@ const Memorial = () => {
             {memorialData?.lastName}
           </p>
           <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
-            <FaBirthdayCake size={20} /> {formattedBirthDate}
+            <FaBirthdayCake size={20} />
+            {isEditingBirthDate ? (
+              <input
+                type="date"
+                value={newBirthDate}
+                onChange={handleBirthDateChange}
+                className="border rounded px-2 py-1"
+              />
+            ) : (
+              formattedBirthDate
+            )}
+            <button onClick={toggleEditBirthDate} className="ml-2">
+              <CiEdit size={22} />
+            </button>
           </p>
+
           <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
-            <GiGraveFlowers size={20} /> {formattedDeathDate}
+            <GiGraveFlowers size={20} />
+            {isEditingDeathDate ? (
+              <input
+                type="date"
+                value={newDeathDate}
+                onChange={handleDeathDateChange}
+                className="border rounded px-2 py-1"
+              />
+            ) : (
+              formattedDeathDate
+            )}
+            <button onClick={toggleEditDeathDate} className="ml-2">
+              <CiEdit size={22} />
+            </button>
           </p>
         </div>
         <div className="flex justify-center mt-4 space-x-2">
@@ -272,7 +335,27 @@ const Memorial = () => {
           </button>
         </div>
         <div className="p-4">
-          {activeTab === "about" && <div>About me content...</div>}
+          <div className="p-4">
+            {activeTab === "about" && (
+              <div>
+                {isEditingAbout ? (
+                  <textarea
+                    value={newAbout}
+                    onChange={handleAboutChange}
+                    className="w-full border rounded px-2 py-1"
+                  />
+                ) : (
+                  <div>
+                    {memorialData?.about || "No about information available."}
+                  </div>
+                )}
+                <button onClick={toggleEditAbout} className="ml-2">
+                  <CiEdit size={22} />
+                </button>
+              </div>
+            )}
+          </div>
+
           {activeTab === "media" && (
             <div>
               <div className="grid grid-cols-3 gap-2">
