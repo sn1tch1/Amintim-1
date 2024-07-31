@@ -3,7 +3,7 @@ import axios from "axios";
 import avatar from "../assets/avatar.png";
 import { format } from "date-fns";
 import coverAvatar from "../assets/cover.png";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
@@ -25,8 +25,8 @@ const Memorial = () => {
   const formattedBirthDate = memorialData
     ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
     : "";
-const [newAbout, setNewAbout] = useState("");
-const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [newAbout, setNewAbout] = useState("");
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
 
   const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
@@ -78,8 +78,7 @@ const [isEditingAbout, setIsEditingAbout] = useState(false);
       setNewFirstName(memorialData.firstName || "");
       setNewMiddleName(memorialData.middleName || "");
       setNewLastName(memorialData.lastName || "");
-          setNewAbout(memorialData.about || "");
-
+      setNewAbout(memorialData.about || "");
     }
   }, [memorialData]);
 
@@ -311,45 +310,49 @@ const [isEditingAbout, setIsEditingAbout] = useState(false);
               </button>
             </p>
           )}
+          <div className="flex gap-6 items-center justify-center">
+            <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
+              <FaBirthdayCake size={20} />
+              {isEditingBirthDate ? (
+                <input
+                  type="date"
+                  value={newBirthDate}
+                  onChange={handleBirthDateChange}
+                  className="border rounded px-2 py-1"
+                />
+              ) : (
+                formattedBirthDate
+              )}
+              <button onClick={toggleEditBirthDate} className="ml-2">
+                <CiEdit size={22} />
+              </button>
+            </p>
 
-          <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
-            <FaBirthdayCake size={20} />
-            {isEditingBirthDate ? (
-              <input
-                type="date"
-                value={newBirthDate}
-                onChange={handleBirthDateChange}
-                className="border rounded px-2 py-1"
-              />
-            ) : (
-              formattedBirthDate
-            )}
-            <button onClick={toggleEditBirthDate} className="ml-2">
-              <CiEdit size={22} />
-            </button>
-          </p>
-
-          <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
-            <GiGraveFlowers size={20} />
-            {isEditingDeathDate ? (
-              <input
-                type="date"
-                value={newDeathDate}
-                onChange={handleDeathDateChange}
-                className="border rounded px-2 py-1"
-              />
-            ) : (
-              formattedDeathDate
-            )}
-            <button onClick={toggleEditDeathDate} className="ml-2">
-              <CiEdit size={22} />
-            </button>
-          </p>
+            <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
+              <GiGraveFlowers size={20} />
+              {isEditingDeathDate ? (
+                <input
+                  type="date"
+                  value={newDeathDate}
+                  onChange={handleDeathDateChange}
+                  className="border rounded px-2 py-1"
+                />
+              ) : (
+                formattedDeathDate
+              )}
+              <button onClick={toggleEditDeathDate} className="ml-2">
+                <CiEdit size={22} />
+              </button>
+            </p>
+          </div>
         </div>
         <div className="flex justify-center mt-4 space-x-2">
-          <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded">
+          <Link
+            to="/manage-account/settings"
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+          >
             Page Settings
-          </button>
+          </Link>
           <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded">
             Preview Profile
           </button>
