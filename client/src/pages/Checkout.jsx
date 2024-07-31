@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
+import { Spinner } from "@chakra-ui/react";
 
 const Checkout = () => {
   const { calculateSubtotal } = useCart();
@@ -14,6 +15,7 @@ const Checkout = () => {
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [loading, setLoading] = useState(false);
 
   const [contactInfo, setContactInfo] = useState({
     email: "",
@@ -80,6 +82,7 @@ const Checkout = () => {
 
   const handlePurchase = async () => {
     if (!isFormValid()) return; // Prevent submission if form is invalid
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -108,6 +111,8 @@ const Checkout = () => {
       console.log("Purchase successful:", data);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -368,10 +373,10 @@ const Checkout = () => {
                 ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
                 : " cursor-not-allowed bg-[#fadc8d] "
             }`}
-            disabled={!isFormValid()}
+            disabled={!isFormValid() || loading}
             onClick={handlePurchase}
           >
-            Complete Purchase
+            {loading ? <Spinner /> : "Complete Purchase"}
           </button>
         </div>
       </div>

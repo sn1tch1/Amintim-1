@@ -1,21 +1,201 @@
-const User = require("../models/User");
-const MemorialPage = require("../models/MemorialPage");
+const { MemorialPage, Tribute } = require("../models/MemorialPage");
 
+// Create a new memorial page
 exports.createMemorialPage = async (req, res) => {
-  const { userId, qrCode, details } = req.body;
+  const user = req.user.id;
+  const {
+    title,
+    firstName,
+    middleName,
+    profileImage,
+    coverImage,
+    lastName,
+    note,
+    about,
+    gallery,
+    birthDate,
+    deathDate,
+    isHuman,
+  } = req.body;
 
   try {
-    const user = await User.findById(userId);
+    const newMemorialPage = new MemorialPage({
+      user,
+      title,
+      firstName,
+      middleName,
+      profileImage,
+      coverImage,
+      lastName,
+      note,
+      about,
+      gallery,
+      birthDate,
+      deathDate,
+      isHuman,
+    });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    await newMemorialPage.save();
 
-    // Here you should verify the QR code, for simplicity, we assume it's valid if user exists
-    const memorialPage = await MemorialPage.create({ user: userId, details });
-
-    res.status(201).json({ memorialPage });
+    res.status(201).json({
+      message: "Memorial Page created successfully",
+      memorialPage: newMemorialPage,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// Get all memorial pages
+exports.getAllMemorialPages = async (req, res) => {
+  try {
+    const memorialPages = await MemorialPage.find().populate("user");
+    res.status(200).json(memorialPages);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get all memorial pages by user
+exports.getMemorialPagesByUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const memorialPages = await MemorialPage.find({ user: userId }).populate(
+      "user"
+    );
+    if (memorialPages.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No memorial pages found for this user" });
+    }
+    res.status(200).json(memorialPages);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get a memorial page by ID
+exports.getMemorialPageById = async (req, res) => {
+  try {
+    const memorialPage  = await MemorialPage.findById(
+      req.params.id
+    ).populate("user");
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+    res.status(200).json(memorialPage);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Update a memorial page
+exports.updateMemorialPage = async (req, res) => {
+  try {
+    const memorialPage = await MemorialPage.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    console.log(memorialPage);
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+    res.status(200).json(memorialPage);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Delete a memorial page
+exports.deleteMemorialPage = async (req, res) => {
+  try {
+    const memorialPage = await MemorialPage.findByIdAndDelete(req.params.id);
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+    res.status(200).json({ message: "Memorial page deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Create a new tribute
+exports.createTribute = async (req, res) => {
+  try {
+    const tribute = new Tribute(req.body);
+    await tribute.save();
+    const memorialPage = await MemorialPage.findById(req.body.memorialPageId);
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+    memorialPage.tributes.push(tribute);
+    await memorialPage.save();
+    res.status(201).json(tribute);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Get all tributes for a memorial page
+exports.getAllTributes = async (req, res) => {
+  try {
+    const memorialPage = await MemorialPage.findById(
+      req.params.memorialPageId
+    ).populate("tributes");
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+    res.status(200).json(memorialPage.tributes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get a tribute by ID
+exports.getTributeById = async (req, res) => {
+  try {
+    const tribute = await Tribute.findById(req.params.id);
+    if (!tribute) {
+      return res.status(404).json({ message: "Tribute not found" });
+    }
+    res.status(200).json(tribute);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Update a tribute
+exports.updateTribute = async (req, res) => {
+  try {
+    const tribute = await Tribute.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!tribute) {
+      return res.status(404).json({ message: "Tribute not found" });
+    }
+    res.status(200).json(tribute);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Delete a tribute
+exports.deleteTribute = async (req, res) => {
+  try {
+    const tribute = await Tribute.findByIdAndDelete(req.params.id);
+    if (!tribute) {
+      return res.status(404).json({ message: "Tribute not found" });
+    }
+    const memorialPage = await MemorialPage.findOne({
+      "tributes._id": tribute._id,
+    });
+    if (memorialPage) {
+      memorialPage.tributes.pull(tribute._id);
+      await memorialPage.save();
+    }
+    res.status(200).json({ message: "Tribute deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

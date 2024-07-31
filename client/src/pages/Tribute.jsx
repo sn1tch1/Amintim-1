@@ -1,10 +1,55 @@
 import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Spinner } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const TributePageSetup = () => {
   const [selectedTab, setSelectedTab] = useState("Human");
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    note: "",
+    birthDate: "",
+    deathDate: "",
+    profileImage: "",
+    coverImage: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/memorial", {
+        ...formData,
+        isHuman: selectedTab === "Human",
+      });
+      if (response.status === 201 || 200) {
+        toast.success("Tribute Page Created Successfully");
+        console.log("iiiii", response);
+        navigate(`/memorial/profile/${response.data.memorialPage._id}`);
+      } else {
+        toast.error("Error Creating Tribute Page. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="p-4  mx-auto bg-white rounded-lg shadow-md py-[80px]">
+    <div className="p-4 mx-auto bg-white rounded-lg shadow-md py-[80px]">
       <h2 className="text-2xl font-bold text-center mb-4">
         Tribute Page Setup
       </h2>
@@ -34,7 +79,7 @@ const TributePageSetup = () => {
           Animal
         </button>
       </div>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label className="block font-medium mb-2" htmlFor="title">
             Title
@@ -44,6 +89,8 @@ const TributePageSetup = () => {
             id="title"
             type="text"
             placeholder="Title"
+            value={formData.title}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -55,6 +102,8 @@ const TributePageSetup = () => {
             id="firstName"
             type="text"
             placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -66,6 +115,8 @@ const TributePageSetup = () => {
             id="middleName"
             type="text"
             placeholder="Middle Name"
+            value={formData.middleName}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -77,10 +128,12 @@ const TributePageSetup = () => {
             id="lastName"
             type="text"
             placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block font-medium mb-2" htmlFor="lastName">
+          <label className="block font-medium mb-2" htmlFor="note">
             Introductory Note
           </label>
           <input
@@ -88,32 +141,40 @@ const TributePageSetup = () => {
             id="note"
             type="text"
             placeholder="Introductory Note"
+            value={formData.note}
+            onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block font-medium mb-2" htmlFor="lastName">
+          <label className="block font-medium mb-2" htmlFor="birthDate">
             Date of Birth
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
-            id="dob"
+            id="birthDate"
             type="date"
-            // placeholder="Last Name"
+            value={formData.birthDate}
+            onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block font-medium mb-2" htmlFor="lastName">
+          <label className="block font-medium mb-2" htmlFor="deathDate">
             Date of Passing
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
-            id="dop"
+            id="deathDate"
             type="date"
-            // placeholder="Last Name"
+            value={formData.deathDate}
+            onChange={handleChange}
           />
         </div>
-        <button className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200">
-          Save
+        <button
+          disabled={loading}
+          className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200"
+          type="submit"
+        >
+          {loading ? <Spinner /> : "Save"}
         </button>
       </form>
     </div>

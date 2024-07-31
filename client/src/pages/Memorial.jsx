@@ -1,36 +1,128 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import avatar from "../assets/avatar.png";
+import { format } from "date-fns";
 import coverAvatar from "../assets/cover.png";
+import { useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
+import { toast } from "react-hot-toast";
+import { FaBirthdayCake } from "react-icons/fa";
+import { GiGraveFlowers } from "react-icons/gi";
 
 const Memorial = () => {
-  const [profileImage, setProfileImage] = useState(null);
-  const [coverImage, setCoverImage] = useState(null);
+  const { id } = useParams();
+  const [profileImage, setProfileImage] = useState("");
+  const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
   const [mediaImages, setMediaImages] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [memorialData, setMemorialData] = useState(null);
+  const formattedDeathDate = memorialData
+    ? format(new Date(memorialData?.deathDate), "dd MMMM yyyy")
+    : "";
+  const formattedBirthDate = memorialData
+    ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
+    : "";
 
-  const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setProfileImage(URL.createObjectURL(e.target.files[0]));
-    }
-  };
+  useEffect(() => {
+    const fetchMemorialData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/memorial/${id}`
+        );
+        console.log("obbbbbbject", response);
+        setMemorialData(response.data);
+        setProfileImage(response.data.profileImage);
+        setCoverImage(response.data.coverImage);
+        setMediaImages(response.data.gallery);
+      } catch (error) {
+        console.error("Error fetching memorial data:", error);
+      }
+    };
 
-  const handleCoverImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setCoverImage(URL.createObjectURL(e.target.files[0]));
-    }
-  };
+    fetchMemorialData();
+  }, [id]);
 
-  const handleMediaImageChange = (e) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
+  const handleImageChange = async (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/users/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
-      setMediaImages((prevImages) => prevImages.concat(filesArray));
-      Array.from(e.target.files).forEach((file) => URL.revokeObjectURL(file));
+
+      if (response.status === 200) {
+        const { filename } = response.data;
+        console.log("nameeeeee", response);
+        const imageUrl = `http://localhost:5000/uploads/users/${filename}`;
+        if (type === "profileImage") {
+          setProfileImage(filename);
+          console.log("profileeee", profileImage);
+        } else if (type === "coverImage") {
+          setCoverImage(filename);
+          console.log("coverrrr", coverImage);
+        } else if (type === "mediaImages") {
+          setMediaImages((prevImages) => [...prevImages, ...filenames]);
+        }
+        toast.success(
+          `${type.replace(/([A-Z])/g, " $1")} updated successfully`
+        );
+      } else {
+        toast.error(`Error updating ${type}. Please try again.`);
+      }
+    } catch (error) {
+      toast.error(`Error updating ${type}. Please try again.`);
+    }
+  };
+
+  const handleProfileImageChange = (e) => handleImageChange(e, "profileImage");
+
+  const handleCoverImageChange = (e) => handleImageChange(e, "coverImage");
+
+  const handleMediaImageChange = async (e) => {
+    const files = e.target.files;
+    if (!files.length) return;
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/users/upload/mediaImages`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        const filenames = response.data.filenames;
+        console.log("namesss", filenames);
+        setMediaImages((prevImages) => [...prevImages, ...filenames]);
+        toast.success("Media images updated successfully");
+      } else {
+        toast.error("Error updating media images. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error updating media images. Please try again.");
     }
   };
 
@@ -52,13 +144,38 @@ const Memorial = () => {
     );
   };
 
+  const handleUpdate = async () => {
+    const gallery = mediaImages;
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/memorial/${id}`,
+        {
+          profileImage,
+          coverImage,
+          gallery,
+          // Add any other fields you want to update here
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        toast.success("Memorial page updated successfully");
+      } else {
+        toast.error("Error updating memorial page. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error updating memorial page. Please try again.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <div className="relative bg-white">
         {/* Cover Image */}
         <div className="relative">
           <img
-            src={coverImage || coverAvatar}
+            src={`/public/users/${coverImage}`}
             alt="Cover"
             className="w-full h-[150px] object-cover"
           />
@@ -81,7 +198,7 @@ const Memorial = () => {
         <div className="relative flex justify-center -mt-16">
           <div className="relative">
             <img
-              src={profileImage || avatar}
+              src={`/public/users/${profileImage}`}
               alt="Profile"
               className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
             />
@@ -99,12 +216,18 @@ const Memorial = () => {
             />
           </div>
         </div>
-        <div className="text-center mt-2">
+        <div className="text-center mt-2 space-y-2">
           <h2 className="text-xl">In memory of</h2>
           <p className="text-gray-600 text-lg font-bold font-berkshire">
-            John Yeaaah
+            {memorialData?.firstName} {memorialData?.middleName}{" "}
+            {memorialData?.lastName}
           </p>
-          <p className="text-gray-600 font-bold">* 27.02.2002</p>
+          <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
+            <FaBirthdayCake size={20} /> {formattedBirthDate}
+          </p>
+          <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
+            <GiGraveFlowers size={20} /> {formattedDeathDate}
+          </p>
         </div>
         <div className="flex justify-center mt-4 space-x-2">
           <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded">
@@ -115,7 +238,7 @@ const Memorial = () => {
           </button>
         </div>
       </div>
-      <div className="bg-white mt-4">
+      <div className="bg-white mt-4 mb-10">
         <div className="flex justify-around border-b">
           <button
             className={`py-2 px-4 ${
@@ -153,11 +276,11 @@ const Memorial = () => {
           {activeTab === "media" && (
             <div>
               <div className="grid grid-cols-3 gap-2">
-                {mediaImages.length > 0 ? (
-                  mediaImages.map((image, index) => (
+                {mediaImages?.length > 0 ? (
+                  mediaImages?.map((image, index) => (
                     <img
                       key={index}
-                      src={image}
+                      src={`/public/users/mediaImages/${image}`}
                       alt={`Media ${index}`}
                       className="w-full h-[100px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
                       onClick={() => handleImageClick(index)}
@@ -188,6 +311,13 @@ const Memorial = () => {
           )}
           {activeTab === "tributes" && <div>Tributes content...</div>}
         </div>
+
+        <button
+          onClick={handleUpdate}
+          className="fixed bottom-0 w-1/2 left-1/2 rounded-t-lg -translate-x-1/2 py-2 px-9 bg-black/90 hover:bg-black duration-200 cursor-pointer text-white"
+        >
+          Update
+        </button>
       </div>
 
       {/* Modal for full-size image view */}
@@ -201,7 +331,7 @@ const Memorial = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={mediaImages[selectedImageIndex]}
+              src={`/public/users/mediaImages/${mediaImages[selectedImageIndex]}`}
               alt="Full size"
               className="h-[400px] object-contain"
             />

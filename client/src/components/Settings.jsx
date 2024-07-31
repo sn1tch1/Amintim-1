@@ -84,7 +84,7 @@ const SettingsTab = () => {
           avatar,
         },
         {
-          withCredentials: true, // Ensure cookies are sent with the request
+          withCredentials: true,
         }
       );
 

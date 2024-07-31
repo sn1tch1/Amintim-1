@@ -26,12 +26,12 @@ const AppContent = () => {
   const location = useLocation();
   const isLoginPage =
     location.pathname === "/login" || location.pathname === "/verify";
-  const isProfilePage = location.pathname === "/memorial/profile";
+  const isProfilePage = location.pathname === "/memorial/profile/:id";
 
   return (
     <>
-      {!isProfilePage && !isLoginPage && <Navbar />}
-      {!isProfilePage && isLoginPage && <Header />}
+      {/* {!isProfilePage && !isLoginPage && <Navbar />}
+      {!isProfilePage && isLoginPage && <Header />} */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -50,7 +50,7 @@ const AppContent = () => {
           element={<PrivateRoute element={<Settings />} />}
         />
         <Route
-          path="/memorial/profile"
+          path="/memorial/profile/:id"
           element={<PrivateRoute element={<Memorial />} />}
         />
         <Route
@@ -64,7 +64,7 @@ const AppContent = () => {
 
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
-      {!isProfilePage && !isLoginPage && <Footer />}
+      {/* {!isProfilePage && !isLoginPage && <Footer />} */}
     </>
   );
 };

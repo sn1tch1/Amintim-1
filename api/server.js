@@ -7,6 +7,7 @@ const purchaseRoutes = require("./routes/purchaseRoutes");
 const { uploadProfileImage } = require("./controllers/userController.js");
 const { protect } = require("./middleware/authMiddleware.js");
 const memorialRoutes = require("./routes/memorialRoutes");
+const tributeRoutes = require("./routes/tributeRoutes.js");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const multer = require("multer");
@@ -72,9 +73,60 @@ app.post(
   }
 );
 
+const mediaImagesDir = path.join(
+  __dirname,
+  "../client/public/users/mediaImages"
+);
+if (!fs.existsSync(mediaImagesDir)) {
+  fs.mkdirSync(mediaImagesDir, { recursive: true });
+}
+
+const mediaImagesStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, mediaImagesDir);
+  },
+  filename: function (req, file, cb) {
+    const user = req.user;
+    const userId = user ? user.id : "default";
+    const ext = file.originalname.split(".").pop();
+    const filename = `${userId}_${Date.now()}.${ext}`;
+    cb(null, filename);
+  },
+});
+
+const uploadMediaImages = multer({
+  storage: mediaImagesStorage,
+  limits: {
+    fileSize: 510 * 1024 * 1024, // 510 MB
+  },
+});
+
+app.post(
+  "/api/users/upload/mediaImages",
+  protect,
+  uploadMediaImages.array("files", 10), // Adjust the second parameter to limit the number of files
+  async (req, res) => {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).send("No files uploaded.");
+    }
+    try {
+      const filenames = req.files.map((file) => file.filename);
+      console.log("Uploading files:", filenames);
+      await Promise.all(
+        filenames.map((filename) => uploadProfileImage(req.user.id, filename))
+      );
+      res.status(200).json({ filenames });
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      res.status(500).send("Error uploading files.");
+    }
+  }
+);
+
 app.use("/api/users", userRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/memorial", memorialRoutes);
+app.use("/api/tributes", tributeRoutes);
 
 const PORT = process.env.PORT || 5000;
 
