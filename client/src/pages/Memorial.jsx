@@ -19,6 +19,7 @@ const Memorial = () => {
   const [mediaImages, setMediaImages] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memorialData, setMemorialData] = useState(null);
+  const [newTribute, setNewTribute] = useState("");
   const formattedDeathDate = memorialData
     ? format(new Date(memorialData?.deathDate), "dd MMMM yyyy")
     : "";
@@ -33,6 +34,7 @@ const Memorial = () => {
   const [isEditingName, setIsEditingName] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
   const [newMiddleName, setNewMiddleName] = useState("");
+  const [tributes, setTributes] = useState([]);
   const [newLastName, setNewLastName] = useState("");
 
   const [newBirthDate, setNewBirthDate] = useState(
@@ -42,15 +44,15 @@ const Memorial = () => {
     memorialData?.deathDate || ""
   );
 
-  const handleAboutChange = (e) => {
-    setNewAbout(e.target.value);
-  };
-
   const handleFirstNameChange = (e) => setNewFirstName(e.target.value);
   const handleMiddleNameChange = (e) => setNewMiddleName(e.target.value);
   const handleLastNameChange = (e) => setNewLastName(e.target.value);
   const toggleEditName = () => {
     setIsEditingName(!isEditingName);
+  };
+
+  const handleTributeChange = (event) => {
+    setNewTribute(event.target.value);
   };
 
   const toggleEditAbout = () => {
@@ -74,6 +76,22 @@ const Memorial = () => {
   };
 
   useEffect(() => {
+    const fetchTributes = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/tributes/memorialPage/${id}`
+        ); // Replace with your actual API endpoint
+        setTributes(response.data);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching tributes:", error);
+      }
+    };
+
+    fetchTributes();
+  }, [tributes]);
+
+  useEffect(() => {
     if (memorialData) {
       setNewFirstName(memorialData.firstName || "");
       setNewMiddleName(memorialData.middleName || "");
@@ -88,7 +106,6 @@ const Memorial = () => {
         const response = await axios.get(
           `http://localhost:5000/api/memorial/${id}`
         );
-        console.log("obbbbbbject", response);
         setMemorialData(response.data);
         setProfileImage(response.data.profileImage);
         setCoverImage(response.data.coverImage);
@@ -122,14 +139,11 @@ const Memorial = () => {
 
       if (response.status === 200) {
         const { filename } = response.data;
-        console.log("nameeeeee", response);
         const imageUrl = `http://localhost:5000/uploads/users/${filename}`;
         if (type === "profileImage") {
           setProfileImage(filename);
-          console.log("profileeee", profileImage);
         } else if (type === "coverImage") {
           setCoverImage(filename);
-          console.log("coverrrr", coverImage);
         } else if (type === "mediaImages") {
           setMediaImages((prevImages) => [...prevImages, ...filenames]);
         }
@@ -171,7 +185,7 @@ const Memorial = () => {
 
       if (response.status === 200) {
         const filenames = response.data.filenames;
-        console.log("namesss", filenames);
+
         setMediaImages((prevImages) => [...prevImages, ...filenames]);
         toast.success("Media images updated successfully");
       } else {
@@ -226,6 +240,19 @@ const Memorial = () => {
       }
     } catch (error) {
       toast.error("Error updating memorial page. Please try again.");
+    }
+  };
+
+  const handleTributeSubmit = async () => {
+    try {
+      await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
+        message: newTribute,
+      });
+      setNewTribute("");
+      // Optionally refetch tributes or update state
+      toast.success("Tribute added successfully!");
+    } catch (error) {
+      toast.error("Failed to add tribute.");
     }
   };
 
@@ -454,7 +481,63 @@ const Memorial = () => {
               </div>
             </div>
           )}
-          {activeTab === "tributes" && <div>Tributes content...</div>}
+          {activeTab === "tributes" && (
+            <div className="px-[3%] md:px-[7%] mb-[50px] lg:px-[10%] py-[12px]">
+              {tributes.length === 0 ? (
+                <p>No tributes available.</p>
+              ) : (
+                <>
+                  <h1 className="text-2xl font-bold text-center p-6">
+                    Tributes
+                  </h1>
+
+                  <div className="space-y-5">
+                    {tributes.map((tribute) => (
+                      <div
+                        key={tribute._id}
+                        className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
+                      >
+                        <div className="flex-shrink-0 mr-4">
+                          {tribute.user.profileImage && (
+                            <img
+                              src={`/public/users/${tribute.user.profileImage}`}
+                              alt={`${tribute.user.name}'s profile`}
+                              className="h-16 w-16 object-cover rounded-full"
+                            />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="font-semibold">
+                              {tribute.user.firstName}
+                            </div>
+                            <div className="text-sm text-gray-700">
+                              {new Date(tribute.createdAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <p>{tribute.message}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-full border h-[100px] border-black rounded-lg my-6">
+                    <textarea
+                      value={newTribute}
+                      onChange={handleTributeChange}
+                      placeholder="Add a tribute..."
+                      className="h-full w-full p-3"
+                    />
+                    <button
+                      className="bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer py-3 w-full my-3"
+                      onClick={handleTributeSubmit}
+                    >
+                      Submit Tribute
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         <button

@@ -170,7 +170,8 @@ exports.resendVerificationCode = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  const { firstName, lastName, city, country, zipcode } = req.body;
+  const { firstName, lastName, city, country, zipcode, deathDate, birthDate } =
+    req.body;
   const userId = req.user.id;
 
   try {
@@ -187,6 +188,8 @@ exports.updateUser = async (req, res) => {
     if (city) user.city = city;
     if (country) user.country = country;
     if (zipcode) user.zipcode = zipcode;
+    if (birthDate) user.birthDate = birthDate;
+    if (deathDate) user.deathDate = deathDate;
 
     // Save the updated user
     await user.save();

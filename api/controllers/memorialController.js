@@ -60,9 +60,9 @@ exports.getAllMemorialPages = async (req, res) => {
 exports.getMemorialPagesByUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const memorialPages = await MemorialPage.find({ user: userId }).populate(
-      "user"
-    );
+    console.log(userId)
+    const memorialPages = await MemorialPage.find({ user: userId });
+    console.log(memorialPages);
     if (memorialPages.length === 0) {
       return res
         .status(404)
@@ -73,13 +73,12 @@ exports.getMemorialPagesByUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 // Get a memorial page by ID
 exports.getMemorialPageById = async (req, res) => {
   try {
-    const memorialPage  = await MemorialPage.findById(
-      req.params.id
-    ).populate("user");
+    const memorialPage = await MemorialPage.findById(req.params.id).populate(
+      "user"
+    );
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });
     }
@@ -122,16 +121,35 @@ exports.deleteMemorialPage = async (req, res) => {
 
 // Create a new tribute
 exports.createTribute = async (req, res) => {
+  const user = req.user.id;
   try {
-    const tribute = new Tribute(req.body);
-    await tribute.save();
-    const memorialPage = await MemorialPage.findById(req.body.memorialPageId);
+    // Find the memorial page by ID
+    const memorialPage = await MemorialPage.findById(req.params.id);
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });
     }
-    memorialPage.tributes.push(tribute);
+
+    // Create a new tribute
+    const tribute = new Tribute({
+      user,
+      message: req.body.message,
+      memorialPage: req.params.id, // Set the memorial page reference
+    });
+
+    // Save the tribute
+    await tribute.save();
+
+    // Add the tribute ID to the tributes array of the memorial page
+    memorialPage.tributes.push(tribute._id);
+
+    // Save the updated memorial page
     await memorialPage.save();
-    res.status(201).json(tribute);
+
+    // Populate the tributes field after saving the tribute
+    await memorialPage.populate("tributes");
+
+    // Return the updated memorial page with populated tributes
+    res.status(201).json(memorialPage);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -140,9 +158,13 @@ exports.createTribute = async (req, res) => {
 // Get all tributes for a memorial page
 exports.getAllTributes = async (req, res) => {
   try {
-    const memorialPage = await MemorialPage.findById(
-      req.params.memorialPageId
-    ).populate("tributes");
+    const memorialPage = await MemorialPage.findById(req.params.id).populate({
+      path: "tributes",
+      populate: {
+        path: "user", // Populate user information within tributes
+        select: "firstName profileImage", // Select only the fields you need
+      },
+    });
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });
     }

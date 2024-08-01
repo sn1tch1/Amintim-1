@@ -7,12 +7,13 @@ const {
   updateTribute,
   deleteTribute,
 } = require("../controllers/memorialController");
+const { protect } = require("../middleware/authMiddleware.js");
 
 // Create a new tribute
-router.post("/", createTribute);
+router.post("/create/:id", protect, createTribute);
 
 // Get all tributes for a memorial page
-router.get("/memorialPage/:memorialPageId", getAllTributes);
+router.get("/memorialPage/:id", getAllTributes);
 
 // Get a tribute by ID
 router.get("/:id", getTributeById);

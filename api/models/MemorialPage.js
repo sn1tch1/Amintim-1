@@ -3,13 +3,18 @@ const mongoose = require("mongoose");
 const tributeSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   message: { type: String, required: true },
+  memorialPage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "MemorialPage",
+    required: true,
+  }, // Reference to MemorialPage
   createdAt: { type: Date, default: Date.now },
 });
 
 const memorialPageSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String },
-  firstName: { type: String, required: true },
+  firstName: { type: String },
   middleName: { type: String },
   lastName: { type: String },
   profileImage: { type: String },
@@ -17,12 +22,9 @@ const memorialPageSchema = new mongoose.Schema({
   about: { type: String },
   note: { type: String },
   birthDate: { type: Date },
-  deathDate: { type: Date, required: true },
-  gallery: {
-    photos: [{ type: String }],
-    videos: [{ type: String }],
-  },
-  tributes: [tributeSchema],
+  deathDate: { type: Date },
+  gallery: [{ type: String }],
+  tributes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tribute" }],
   createdAt: { type: Date, default: Date.now },
   isHuman: { type: Boolean, required: true }, // New boolean field to distinguish between human and pet
 });
