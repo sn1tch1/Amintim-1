@@ -21,6 +21,7 @@ import Memorial from "./pages/Memorial";
 import TributePageSetup from "./pages/Tribute";
 import Checkout from "./pages/Checkout";
 import PrivateRoute from "./components/privateRoutes";
+import View from "./pages/View";
 
 const AppContent = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const AppContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
+        <Route path="/profile/view/:id" element={<View />} />
         <Route
           path="/proceed"
           element={<PrivateRoute element={<Proceed />} />}

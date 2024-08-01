@@ -73,13 +73,20 @@ const SoulStarsTab = () => {
                       </h2>
                     </div>
                   </div>
-
-                  <Link
-                    to={`/memorial/profile/${page._id}`}
-                    className="text-lg font-bold underline text-blue-800 underline-offset-2"
-                  >
-                    View
-                  </Link>
+                  <div className="space-x-5">
+                    <Link
+                      to={`/profile/view/${page._id}`}
+                      className="text-lg font-bold underline text-green-800 underline-offset-2"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      to={`/memorial/profile/${page._id}`}
+                      className="text-lg font-bold underline text-blue-800 underline-offset-2"
+                    >
+                      Edit
+                    </Link>
+                  </div>
                 </div>
               );
             })}
