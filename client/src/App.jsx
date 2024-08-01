@@ -24,14 +24,25 @@ import PrivateRoute from "./components/privateRoutes";
 
 const AppContent = () => {
   const location = useLocation();
-  const isLoginPage =
-    location.pathname === "/login" || location.pathname === "/verify";
-  const isProfilePage = location.pathname === "/memorial/profile/:id";
+
+  const navbarPaths = [
+    "/",
+    "/shop",
+    "/aboutus",
+    "/contact",
+    "/cart",
+    "/checkout",
+    "/manage-account/settings",
+  ];
+  const headerPaths = ["/login", "/verify"];
+
+  const showNavbar = navbarPaths.includes(location.pathname);
+  const showHeader = headerPaths.includes(location.pathname);
 
   return (
     <>
-      {/* {!isProfilePage && !isLoginPage && <Navbar />}
-      {!isProfilePage && isLoginPage && <Header />} */}
+      {showNavbar && <Navbar />}
+      {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -44,7 +55,6 @@ const AppContent = () => {
           path="/proceed"
           element={<PrivateRoute element={<Proceed />} />}
         />
-
         <Route
           path="/manage-account/settings"
           element={<PrivateRoute element={<Settings />} />}
@@ -61,10 +71,9 @@ const AppContent = () => {
           path="/tribute"
           element={<PrivateRoute element={<TributePageSetup />} />}
         />
-
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
-      {/* {!isProfilePage && !isLoginPage && <Footer />} */}
+      {showNavbar && <Footer />}
     </>
   );
 };

@@ -7,11 +7,10 @@ import { toast } from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
 
 const Checkout = () => {
-  const { calculateSubtotal } = useCart();
+  const { calculateSubtotal, clearCart } = useCart();
   const navigate = useNavigate(); // Initialize the navigate function
   const { isLoggedIn } = useAuth(); // Get login status from context
   const [cart, setCart] = useState(() => {
-    // Initialize state from local storage
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
   });
@@ -107,6 +106,7 @@ const Checkout = () => {
       const data = await response.json();
       toast.success("Soulstar Purchased");
       localStorage.removeItem("cartItems");
+      clearCart();
       navigate("/tribute");
       console.log("Purchase successful:", data);
     } catch (error) {

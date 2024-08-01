@@ -5,12 +5,6 @@ const CartContext = createContext();
 
 // Provider component
 export const CartProvider = ({ children }) => {
-  // const [cartItems, setCartItems] = useState(() => {
-  //   // Initialize state from local storage
-  //   const savedCartItems = localStorage.getItem("cartItems");
-  //   return savedCartItems ? JSON.parse(savedCartItems) : [];
-  // });
-
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
@@ -36,6 +30,11 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
+  };
+
   useEffect(() => {
     // Update local storage whenever cartItems changes
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -50,7 +49,13 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, calculateSubtotal }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        calculateSubtotal,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         });
         if (response.status === 200) {
-          console.log(response);
           // const userData = await response.json();
           setUser(response.data);
           setIsLoggedIn(true);

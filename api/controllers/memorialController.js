@@ -59,9 +59,10 @@ exports.getAllMemorialPages = async (req, res) => {
 // Get all memorial pages by user
 exports.getMemorialPagesByUser = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    console.log(userId)
-    const memorialPages = await MemorialPage.find({ user: userId });
+    const user = req.user.id;
+    // const user = req.params.userId;
+    console.log(user);
+    const memorialPages = await MemorialPage.find({ user });
     console.log(memorialPages);
     if (memorialPages.length === 0) {
       return res

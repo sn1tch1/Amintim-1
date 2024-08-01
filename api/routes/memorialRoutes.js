@@ -20,7 +20,7 @@ router.get("/", getAllMemorialPages);
 router.get("/:id", getMemorialPageById);
 
 // Get all memorial pages by user
-router.get("/user/:user", protect, getMemorialPagesByUser);
+router.get("/user/:userId", protect, getMemorialPagesByUser);
 
 // Update a memorial page
 router.put("/:id", updateMemorialPage);

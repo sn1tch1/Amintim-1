@@ -2,6 +2,7 @@ import React from "react";
 import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
 import BG from "../assets/home/img-1.webp";
+import Carousel from "../components/Carousel";
 
 const Home = () => {
   return (
@@ -38,6 +39,8 @@ const Home = () => {
           To your soul star
         </button>
       </section>
+
+      {/* <Carousel /> */}
 
       <SideBar />
 
