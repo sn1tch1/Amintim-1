@@ -37,12 +37,8 @@ const Memorial = () => {
   const [tributes, setTributes] = useState([]);
   const [newLastName, setNewLastName] = useState("");
 
-  const [newBirthDate, setNewBirthDate] = useState(
-    memorialData?.birthDate || ""
-  );
-  const [newDeathDate, setNewDeathDate] = useState(
-    memorialData?.deathDate || ""
-  );
+  const [newBirthDate, setNewBirthDate] = useState("");
+  const [newDeathDate, setNewDeathDate] = useState("");
 
   const handleFirstNameChange = (e) => setNewFirstName(e.target.value);
   const handleMiddleNameChange = (e) => setNewMiddleName(e.target.value);
@@ -97,6 +93,8 @@ const Memorial = () => {
       setNewMiddleName(memorialData.middleName || "");
       setNewLastName(memorialData.lastName || "");
       setNewAbout(memorialData.about || "");
+      setNewBirthDate(memorialData.birthDate || "");
+      setNewDeathDate(memorialData.deathDate || "");
     }
   }, [memorialData]);
 
