@@ -17,7 +17,7 @@ exports.registerUser = async (req, res) => {
         .cookie("token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
+          sameSite: "none",
           domain: process.env.DOMAIN, // Use leading dot for subdomains if needed
           path: "/", // Ensure the path is correct
         })
