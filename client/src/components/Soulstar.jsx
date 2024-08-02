@@ -52,7 +52,7 @@ const SoulStarsTab = () => {
                 ? format(new Date(page.deathDate), "dd MMMM yyyy")
                 : "";
               const profileImageSrc = page.profileImage
-                ? `/public/users/${page.profileImage}`
+                ? `/users/${page.profileImage}`
                 : avatar;
               return (
                 <div
