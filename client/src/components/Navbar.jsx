@@ -193,6 +193,8 @@ const Navbar = () => {
             isOpen={isDrawerOpen}
             onClose={closeDrawer}
             finalFocusRef={btnRef}
+            handleLogout={handleLogout}
+            isLoggedIn={isLoggedIn}
           />
           <h1 className="text-xl mx-auto font-bold">Amintim✨</h1>
           <div className="flex items-center gap-3">

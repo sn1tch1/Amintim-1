@@ -12,7 +12,13 @@ import {
 import { Link } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 
-function BottomDrawer({ isOpen, onClose, finalFocusRef, isSignedIn }) {
+function BottomDrawer({
+  isOpen,
+  onClose,
+  finalFocusRef,
+  isLoggedIn,
+  handleLogout,
+}) {
   return (
     <Drawer
       isOpen={isOpen}
@@ -48,9 +54,19 @@ function BottomDrawer({ isOpen, onClose, finalFocusRef, isSignedIn }) {
             >
               <li>Contact</li>
             </Link>
-            <Link onClick={onClose} to="/login" className="hover:text-black/70">
-              <li>Log In</li>
-            </Link>
+            {isLoggedIn !== true ? (
+              <Link
+                onClick={onClose}
+                to="/login"
+                className="hover:text-black/70"
+              >
+                <li>Log In</li>
+              </Link>
+            ) : (
+              <button onClick={handleLogout} className="hover:text-black/70">
+                <li>Log out</li>
+              </button>
+            )}
           </ul>
         </DrawerBody>
       </DrawerContent>
