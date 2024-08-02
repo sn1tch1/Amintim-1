@@ -12,7 +12,7 @@ import { FaBirthdayCake } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { useAuth } from "../context/AuthContext";
 import { Spinner } from "@chakra-ui/react";
-import BaseURL from "../utils/BaseURL";
+import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
 
 const View = () => {
   const { id } = useParams();
@@ -140,7 +140,7 @@ const View = () => {
             />
           ) : (
             <img
-              src={`/users/${coverImage}`}
+              src={`${IMAGES_BASE_URL}/uploads/users/${coverImage}`}
               alt="Cover"
               className="w-full h-[150px] object-cover"
             />
@@ -158,7 +158,7 @@ const View = () => {
               />
             ) : (
               <img
-                src={`/users/${profileImage}`}
+                src={`${IMAGES_BASE_URL}/uploads/users/${profileImage}`}
                 alt="Profile"
                 className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
               />
@@ -234,7 +234,7 @@ const View = () => {
                   mediaImages?.map((image, index) => (
                     <img
                       key={index}
-                      src={`/users/mediaImages/${image}`}
+                      src={`${IMAGES_BASE_URL}/uploads/users/mediaImages/${image}`}
                       alt={`Media ${index}`}
                       className="w-full h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
                       onClick={() => handleImageClick(index)}
@@ -286,7 +286,7 @@ const View = () => {
                         <div className="flex-shrink-0 mr-4">
                           {tribute.user.profileImage && (
                             <img
-                              src={`/users/${tribute.user.profileImage}`}
+                              src={`${IMAGES_BASE_URL}/uploads/users/${tribute.user.profileImage}`}
                               alt={`${tribute.user.name}'s profile`}
                               className="h-16 w-16 object-cover rounded-full"
                             />
@@ -341,7 +341,7 @@ const View = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={`/users/mediaImages/${mediaImages[selectedImageIndex]}`}
+              src={`${IMAGES_BASE_URL}/uploads/users/mediaImages/${mediaImages[selectedImageIndex]}`}
               alt="Full size"
               className="h-[400px] object-contain"
             />

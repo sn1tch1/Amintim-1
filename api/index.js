@@ -35,11 +35,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const uploadDir = path.join(__dirname, "../client/public/users");
+const uploadDir = path.join(__dirname, "/uploads/users");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);
@@ -81,10 +80,7 @@ app.post(
   }
 );
 
-const mediaImagesDir = path.join(
-  __dirname,
-  "../client/public/users/mediaImages"
-);
+const mediaImagesDir = path.join(__dirname, "/uploads/users/mediaImages");
 if (!fs.existsSync(mediaImagesDir)) {
   fs.mkdirSync(mediaImagesDir, { recursive: true });
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import BaseURL from "../utils/BaseURL";
+import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
 axios.defaults.withCredentials = true;
 
 const SettingsTab = () => {
   const [avatar, setAvatar] = useState();
+  const [updatedProfileImage, setUpdatedProfileImage] = useState(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -13,6 +14,7 @@ const SettingsTab = () => {
     country: "",
     zipcode: "",
   });
+  const Image = `${IMAGES_BASE_URL}/uploads/users/${avatar}`;
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -23,7 +25,6 @@ const SettingsTab = () => {
         const { firstName, lastName, city, country, zipcode, profileImage } =
           response.data;
         setFormData({ firstName, lastName, city, country, zipcode });
-        console.log(profileImage);
         if (profileImage) {
           setAvatar(profileImage);
         }
@@ -33,7 +34,7 @@ const SettingsTab = () => {
     };
 
     fetchUserDetails();
-  }, [avatar]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,15 +54,14 @@ const SettingsTab = () => {
     try {
       const response = await axios.post(`${BaseURL}/users/upload`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // This header is crucial
+          "Content-Type": "multipart/form-data",
         },
-        withCredentials: true, // Ensure cookies are sent with the request
+        withCredentials: true,
       });
 
       if (response.status === 200) {
         const { filename } = response.data;
-        const imageUrl = `${BaseURL}/uploads/users/${filename}`;
-        setAvatar(imageUrl);
+        setAvatar(filename);
         toast.success("Avatar updated successfully");
       } else {
         toast.error("Error updating avatar. Please try again.");
@@ -108,9 +108,9 @@ const SettingsTab = () => {
           />
           <label htmlFor="avatar-upload">
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
-              {avatar ? (
+              {Image ? (
                 <img
-                  src={`/users/${avatar}`}
+                  src={Image}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full"
                 />

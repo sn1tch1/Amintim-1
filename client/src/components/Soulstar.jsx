@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import avatar from "../assets/avatar.png";
-import BaseURL from "../utils/BaseURL";
+import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
 
 const SoulStarsTab = () => {
   const [memorialPages, setMemorialPages] = useState([]);
@@ -52,7 +52,7 @@ const SoulStarsTab = () => {
                 ? format(new Date(page.deathDate), "dd MMMM yyyy")
                 : "";
               const profileImageSrc = page.profileImage
-                ? `/users/${page.profileImage}`
+                ? `${IMAGES_BASE_URL}/uploads/users/${page.profileImage}`
                 : avatar;
               return (
                 <div

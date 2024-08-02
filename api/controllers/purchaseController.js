@@ -16,10 +16,7 @@ exports.purchaseSoulStar = async (req, res) => {
   console.log("purchaseSoulStar called");
   console.log(`userId: ${userId}`);
 
-  app.use(
-    "/uploads",
-    express.static(path.join(__dirname, "../client/public/QRs"))
-  );
+  app.use("/uploads", express.static(path.join(__dirname, "/uploads/QRs")));
 
   // Extract delivery information from the request body
   const { deliveryInfo } = req.body;
@@ -40,16 +37,12 @@ exports.purchaseSoulStar = async (req, res) => {
 
     const qrCodeData = `https://Amintim.com/memorial/${userId}`;
     const qrCodeFilename = `${userId}_${Date.now()}.png`;
-    const qrCodePath = path.join(
-      __dirname,
-      "../../client/public/QRs",
-      qrCodeFilename
-    );
+    const qrCodePath = path.join(__dirname, "/assets/QRs", qrCodeFilename);
 
     // Generate QR code and save it to disk
     await QRCode.toFile(qrCodePath, qrCodeData);
 
-    const uploadDir = path.join(__dirname, "../../client/public/QRs");
+    const uploadDir = path.join(__dirname, "/uploads/QRs");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
