@@ -18,6 +18,8 @@ exports.registerUser = async (req, res) => {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
+          domain: process.env.DOMAIN, // Use leading dot for subdomains if needed
+          path: "/", // Ensure the path is correct
         })
         .status(200)
         .json({ message: "Logged in successfully" });

@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { FaBirthdayCake } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { Spinner } from "@chakra-ui/react";
+import BaseURL from "../utils/BaseURL";
 
 const Memorial = () => {
   const { id } = useParams();
@@ -77,7 +78,7 @@ const Memorial = () => {
     const fetchTributes = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/tributes/memorialPage/${id}`
+          `${BaseURL}/tributes/memorialPage/${id}`
         ); // Replace with your actual API endpoint
         setTributes(response.data);
       } catch (error) {
@@ -102,9 +103,7 @@ const Memorial = () => {
   useEffect(() => {
     const fetchMemorialData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/memorial/${id}`
-        );
+        const response = await axios.get(`${BaseURL}/memorial/${id}`);
         setMemorialData(response.data);
         setProfileImage(response.data.profileImage);
         setCoverImage(response.data.coverImage);
@@ -125,16 +124,12 @@ const Memorial = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/users/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${BaseURL}/users/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
         const { filename } = response.data;
@@ -172,7 +167,7 @@ const Memorial = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/upload/mediaImages`,
+        `${BaseURL}/users/upload/mediaImages`,
         formData,
         {
           headers: {
@@ -216,7 +211,7 @@ const Memorial = () => {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/memorial/${id}`,
+        `${BaseURL}/memorial/${id}`,
         {
           profileImage,
           coverImage,
@@ -245,7 +240,7 @@ const Memorial = () => {
   const handleTributeSubmit = async () => {
     setLoading(true);
     try {
-      await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
+      await axios.post(`${BaseURL}/tributes/create/${id}`, {
         message: newTribute,
       });
       setNewTribute("");

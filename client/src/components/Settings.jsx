@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BaseURL from "../utils/BaseURL";
 axios.defaults.withCredentials = true;
 
 const SettingsTab = () => {
@@ -16,7 +17,7 @@ const SettingsTab = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/me`, {
+        const response = await axios.get(`${BaseURL}/users/me`, {
           withCredentials: true,
         });
         const { firstName, lastName, city, country, zipcode, profileImage } =
@@ -50,20 +51,16 @@ const SettingsTab = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // This header is crucial
-          },
-          withCredentials: true, // Ensure cookies are sent with the request
-        }
-      );
+      const response = await axios.post(`${BaseURL}/users/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // This header is crucial
+        },
+        withCredentials: true, // Ensure cookies are sent with the request
+      });
 
       if (response.status === 200) {
         const { filename } = response.data;
-        const imageUrl = `http://localhost:5000/uploads/users/${filename}`;
+        const imageUrl = `${BaseURL}/uploads/users/${filename}`;
         setAvatar(imageUrl);
         toast.success("Avatar updated successfully");
       } else {
@@ -78,7 +75,7 @@ const SettingsTab = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/users/update",
+        `${BaseURL}/users/update`,
         {
           ...formData,
           avatar,

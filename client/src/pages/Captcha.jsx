@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BaseURL from "../utils/BaseURL";
 
 const CaptchaInput = () => {
   const [code, setCode] = useState(Array(5).fill(""));
@@ -27,13 +28,10 @@ const CaptchaInput = () => {
   const handleVerification = async () => {
     try {
       const verificationCode = code.join("");
-      const response = await axios.post(
-        "http://localhost:5000/api/users/verify",
-        {
-          email,
-          verificationCode,
-        }
-      );
+      const response = await axios.post(`${BaseURL}/users/verify`, {
+        email,
+        verificationCode,
+      });
 
       if (response.status === 200) {
         toast.success(`Welcome ${email}`);
@@ -50,10 +48,7 @@ const CaptchaInput = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/resend",
-        { email }
-      );
+      const response = await axios.post(`${BaseURL}/users/resend`, { email });
 
       if (response.status === 200) {
         toast.success("Verification email resent successfully");

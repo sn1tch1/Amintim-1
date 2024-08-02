@@ -5,6 +5,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import BaseURL from "../utils/BaseURL";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,10 +19,9 @@ const Login = () => {
       setLoading(true);
 
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/users/register",
-          { email }
-        );
+        const response = await axios.post(`${BaseURL}/users/register`, {
+          email,
+        });
         if (response.status === 201) {
           toast.success("Registered Successfully");
           navigate("/verify", { state: { email } });

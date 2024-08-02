@@ -6,6 +6,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import axios from "axios";
+import BaseURL from "../utils/BaseURL";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -25,9 +26,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/logout"
-      );
+      const response = await axios.post(`${BaseURL}/users/logout`);
       if (response.status === 201 || 200) {
         toast.success("Logged Out");
         navigate("/");

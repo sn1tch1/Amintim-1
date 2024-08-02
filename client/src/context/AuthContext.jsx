@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import BaseURL from "../utils/BaseURL";
 
 const AuthContext = createContext();
 
@@ -9,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users/me", {
+        const response = await axios.get(`${BaseURL}/users/me`, {
           withCredentials: true,
         });
         if (response.status === 200) {

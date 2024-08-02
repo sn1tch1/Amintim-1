@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import BaseURL from "../utils/BaseURL";
 
 const TributePageSetup = () => {
   const [selectedTab, setSelectedTab] = useState("Human");
@@ -30,7 +31,7 @@ const TributePageSetup = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/memorial", {
+      const response = await axios.post(`${BaseURL}/memorial`, {
         ...formData,
         isHuman: selectedTab === "Human",
       });

@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const calculateSubtotal = () => {
-    return cartItems.reduce(
+    return cartItems?.reduce(
       (total, item) => total + item.price * (item.quantity || 1),
       0
     );

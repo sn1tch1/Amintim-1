@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-hot-toast";
+import BaseURL from "../utils/BaseURL";
+
 const Cart = () => {
   const [cart, setCart] = useState(() => {
     // Initialize state from local storage
@@ -17,7 +19,7 @@ const Cart = () => {
     // Simulate fetching cart from an API
     const fetchCart = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/cart", {
+        const response = await axios.get(`${BaseURL}/cart`, {
           withCredentials: true,
         });
         setCart(response.data);

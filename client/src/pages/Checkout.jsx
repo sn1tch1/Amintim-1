@@ -5,6 +5,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
+import BaseURL from "../utils/BaseURL";
 
 const Checkout = () => {
   const { calculateSubtotal, clearCart } = useCart();
@@ -37,7 +38,7 @@ const Checkout = () => {
   });
 
   const groupCartItems = (cartItems) => {
-    const groupedItems = cartItems.reduce((acc, item) => {
+    const groupedItems = cartItems?.reduce((acc, item) => {
       const existingItem = acc.find((i) => i.id === item.id);
       const quantity = item.quantity || (item.type === "buy2" ? 2 : 1);
       if (existingItem) {
@@ -84,19 +85,16 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/purchase/purchase",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // Include credentials with the request
-          body: JSON.stringify({
-            deliveryInfo, // Send only delivery details
-          }),
-        }
-      );
+      const response = await fetch(`${BaseURL}/purchase/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include credentials with the request
+        body: JSON.stringify({
+          deliveryInfo, // Send only delivery details
+        }),
+      });
 
       if (!response.ok) {
         toast.error("Error Occured");

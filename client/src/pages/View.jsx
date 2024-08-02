@@ -12,6 +12,7 @@ import { FaBirthdayCake } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { useAuth } from "../context/AuthContext";
 import { Spinner } from "@chakra-ui/react";
+import BaseURL from "../utils/BaseURL";
 
 const View = () => {
   const { id } = useParams();
@@ -48,7 +49,7 @@ const View = () => {
     const fetchTributes = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/tributes/memorialPage/${id}`
+          `${BaseURL}/tributes/memorialPage/${id}`
         ); // Replace with your actual API endpoint
         setTributes(response.data);
       } catch (error) {
@@ -73,9 +74,7 @@ const View = () => {
   useEffect(() => {
     const fetchMemorialData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/memorial/${id}`
-        );
+        const response = await axios.get(`${BaseURL}/memorial/${id}`);
         setMemorialData(response.data);
         setProfileImage(response.data.profileImage);
         setCoverImage(response.data.coverImage);
@@ -114,7 +113,7 @@ const View = () => {
     } else {
       setLoading(true);
       try {
-        await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
+        await axios.post(`${BaseURL}/tributes/create/${id}`, {
           message: newTribute,
         });
         setNewTribute("");

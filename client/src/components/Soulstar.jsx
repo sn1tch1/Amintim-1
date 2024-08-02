@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import avatar from "../assets/avatar.png";
+import BaseURL from "../utils/BaseURL";
 
 const SoulStarsTab = () => {
   const [memorialPages, setMemorialPages] = useState([]);
@@ -13,7 +14,7 @@ const SoulStarsTab = () => {
     const fetchMemorialPages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/memorial/user/66ab9b2a413797d85938774c`,
+          `${BaseURL}/memorial/user/66ab9b2a413797d85938774c`,
           {
             withCredentials: true,
           }
