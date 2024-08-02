@@ -38,7 +38,7 @@ const Checkout = () => {
   });
 
   const groupCartItems = (cartItems) => {
-    const groupedItems = cartItems?.reduce((acc, item) => {
+    const groupedItems = cartItems.reduce((acc, item) => {
       const existingItem = acc.find((i) => i.id === item.id);
       const quantity = item.quantity || (item.type === "buy2" ? 2 : 1);
       if (existingItem) {
@@ -115,13 +115,13 @@ const Checkout = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex">
+    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex flex-col lg:flex-row">
       {!isLoggedIn && (
         <div className="fixed top-16 left-0 w-full bg-red-800 text-[12px] text-white text-center py-1 z-50">
           <p>You must be logged in to complete your purchase.</p>
         </div>
       )}
-      <div className="w-3/5 px-12 py-[100px] overflow-y-auto">
+      <div className="w-full lg:w-3/5 px-4 py-6 lg:px-12 lg:py-[100px] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Contact</h2>
         <div className="mb-6">
           <input
@@ -162,7 +162,7 @@ const Checkout = () => {
               {/* Add more options as needed */}
             </select>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="firstName">
                 First name
@@ -216,7 +216,7 @@ const Checkout = () => {
               placeholder="Apartment, room, etc."
             />
           </div>
-          <div className="flex space-x-4">
+          <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="postalCode">
                 Postal code
@@ -267,7 +267,7 @@ const Checkout = () => {
                 placeholder="Card number"
               />
             </div>
-            <div className="flex space-x-4">
+            <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
               <div className="flex-1">
                 <label className="block font-medium mb-2" htmlFor="expiryDate">
                   Valid until (MM / YY)
@@ -331,8 +331,8 @@ const Checkout = () => {
         </div>
       </div>
 
-      <div className="w-2/5 px-12 py-12 bg-gray-100">
-        <div className=" sticky top-24">
+      <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
+        <div className="sticky top-24">
           <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
           {groupedCart.map((item, index) => (
             <tr
@@ -366,10 +366,10 @@ const Checkout = () => {
             <p className="text-gray-800 font-medium">DKK {SubTotal}</p>
           </div>
           <button
-            className={`w-full py-3  font-bold rounded-md ${
+            className={`w-full py-3 font-bold rounded-md ${
               isFormValid()
                 ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
-                : " cursor-not-allowed bg-[#fadc8d] "
+                : "cursor-not-allowed bg-[#fadc8d]"
             }`}
             disabled={!isFormValid() || loading}
             onClick={handlePurchase}

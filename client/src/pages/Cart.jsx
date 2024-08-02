@@ -7,23 +7,20 @@ import BaseURL from "../utils/BaseURL";
 
 const Cart = () => {
   const [cart, setCart] = useState(() => {
-    // Initialize state from local storage
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  console.log("hihihi", cart);
   const { removeFromCart, calculateSubtotal } = useCart();
 
   const [isLoading, setIsLoading] = useState(true);
 
+  // Uncomment this if you need to fetch data from an API
   // useEffect(() => {
-  //   // Simulate fetching cart from an API
   //   const fetchCart = async () => {
   //     try {
   //       const response = await axios.get(`${BaseURL}/cart`, {
   //         withCredentials: true,
   //       });
-  //       console.log("Whyyyy TF???", response.data); // Log response
   //       setCart(response.data);
   //     } catch (error) {
   //       console.error("Failed to fetch cart:", error);
@@ -60,21 +57,17 @@ const Cart = () => {
     toast.success("Removed from cart");
   };
 
-  // const calculateTotal = (items) => {
-  //   return items.reduce((total, item) => total + item.price * item.quantity, 0);
-  // };
-
   const SubTotal = calculateSubtotal().toFixed(2);
 
   return (
     <>
-      {groupedCart.length !== 0 || null ? (
+      {groupedCart.length > 0 ? (
         <div className="container mx-auto px-4 py-[100px]">
           <h1 className="text-3xl font-semibold mb-4">Shopping Cart</h1>
           <p className="mb-8">Shipping is free for your order</p>
-          <div className="flex justify-between">
-            <div className="w-2/3">
-              <table className="w-full">
+          <div className="flex flex-col md:flex-row justify-between">
+            <div className="w-full md:w-2/3 overflow-x-auto">
+              <table className="w-full min-w-[600px]">
                 <thead>
                   <tr>
                     <th className="text-left">Product</th>
@@ -118,7 +111,7 @@ const Cart = () => {
                 </tbody>
               </table>
             </div>
-            <div className="w-1/3 p-4 border rounded-lg">
+            <div className="w-full md:w-1/3 p-4 border rounded-lg mt-4 md:mt-0">
               <h2 className="text-xl font-semibold mb-4">Subtotal</h2>
               <div className="flex justify-between mb-4">
                 <p className="text-gray-500">DKK {SubTotal}</p>
@@ -132,16 +125,16 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <section className="flex flex-col gap-8 min-h-screen items-center justify-center">
+        <section className="flex flex-col gap-8 min-h-screen items-center justify-center px-4 py-8">
           <div className="relative w-[52px] h-[52px]">
             <div>
-              <span className=" bg-black rounded-full text-tiny p-2 absolute -top-2 -right-2 text-white">
+              <span className="bg-black rounded-full text-tiny p-2 absolute -top-2 -right-2 text-white">
                 0
               </span>
             </div>
             <svg
               role="presentation"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               focusable="false"
               width="52"
               height="52"
@@ -152,8 +145,8 @@ const Cart = () => {
                 d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>
             </svg>
           </div>
@@ -161,7 +154,7 @@ const Cart = () => {
             {isLoading ? "Loading..." : "Your shopping basket is empty"}
           </h4>
           <Link to="/shop">
-            <button className="py-4 px-8 font-[700] bg-black text-white hover:text-black hover:bg-transparent border-black border-2 ">
+            <button className="py-4 px-8 font-[700] bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
               Continue Shopping
             </button>
           </Link>
