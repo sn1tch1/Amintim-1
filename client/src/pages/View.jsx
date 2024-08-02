@@ -140,7 +140,7 @@ const View = () => {
             />
           ) : (
             <img
-              src={`/public/users/${coverImage}`}
+              src={`/users/${coverImage}`}
               alt="Cover"
               className="w-full h-[150px] object-cover"
             />
@@ -158,7 +158,7 @@ const View = () => {
               />
             ) : (
               <img
-                src={`/public/users/${profileImage}`}
+                src={`/users/${profileImage}`}
                 alt="Profile"
                 className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
               />
@@ -234,7 +234,7 @@ const View = () => {
                   mediaImages?.map((image, index) => (
                     <img
                       key={index}
-                      src={`/public/users/mediaImages/${image}`}
+                      src={`/users/mediaImages/${image}`}
                       alt={`Media ${index}`}
                       className="w-full h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
                       onClick={() => handleImageClick(index)}
@@ -286,7 +286,7 @@ const View = () => {
                         <div className="flex-shrink-0 mr-4">
                           {tribute.user.profileImage && (
                             <img
-                              src={`/public/users/${tribute.user.profileImage}`}
+                              src={`/users/${tribute.user.profileImage}`}
                               alt={`${tribute.user.name}'s profile`}
                               className="h-16 w-16 object-cover rounded-full"
                             />
@@ -341,7 +341,7 @@ const View = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={`/public/users/mediaImages/${mediaImages[selectedImageIndex]}`}
+              src={`/users/mediaImages/${mediaImages[selectedImageIndex]}`}
               alt="Full size"
               className="h-[400px] object-contain"
             />

@@ -11,27 +11,29 @@ const Cart = () => {
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  console.log("hihihi", cart);
   const { removeFromCart, calculateSubtotal } = useCart();
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Simulate fetching cart from an API
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get(`${BaseURL}/cart`, {
-          withCredentials: true,
-        });
-        setCart(response.data);
-      } catch (error) {
-        console.error("Failed to fetch cart:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   // Simulate fetching cart from an API
+  //   const fetchCart = async () => {
+  //     try {
+  //       const response = await axios.get(`${BaseURL}/cart`, {
+  //         withCredentials: true,
+  //       });
+  //       console.log("Whyyyy TF???", response.data); // Log response
+  //       setCart(response.data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchCart();
-  }, []);
+  //   fetchCart();
+  // }, []);
 
   const groupCartItems = (cartItems) => {
     const groupedItems = cartItems.reduce((acc, item) => {

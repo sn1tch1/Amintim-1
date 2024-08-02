@@ -110,12 +110,16 @@ const SettingsTab = () => {
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
               {avatar ? (
                 <img
-                  src={`/public/users/${avatar}`}
+                  src={`/users/${avatar}`}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full"
                 />
               ) : (
-                <span className="text-4xl font-bold text-gray-500">H</span>
+                <img
+                  src={`/src/assets/avatar.png`}
+                  alt="Avatar"
+                  className="w-24 h-24 rounded-full"
+                />
               )}
             </div>
           </label>
