@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ const Login = () => {
         if (response.status === 201) {
           toast.success("Registered Successfully");
           navigate("/verify", { state: { email } });
+          login();
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
           navigate("/manage-account/settings");

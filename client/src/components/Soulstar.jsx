@@ -13,8 +13,12 @@ const SoulStarsTab = () => {
     const fetchMemorialPages = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/memorial/user/66a6617c55a3668d7ac17a39"
+          `http://localhost:5000/api/memorial/user/66ab9b2a413797d85938774c`,
+          {
+            withCredentials: true,
+          }
         );
+
         console.log("API Response:", response.data);
         setMemorialPages(response.data);
       } catch (error) {
@@ -36,11 +40,9 @@ const SoulStarsTab = () => {
     return <p>Error: {error}</p>;
   }
 
-  console.log("Memorial Pages State:", memorialPages);
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px]">
-      {memorialPages.length > 0 ? (
+      {memorialPages.length > 0 || memorialPages === null || undefined ? (
         <div className="flex flex-col items-center w-full">
           <p className="text-xl text-center font-[600]">Memorial Pages</p>
           <div className="mt-4 space-y-4 w-full">

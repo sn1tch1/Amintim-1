@@ -3,16 +3,21 @@ import axios from "axios";
 import avatar from "../assets/avatar.png";
 import { format } from "date-fns";
 import coverAvatar from "../assets/cover.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import { FaBirthdayCake } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
+import { useAuth } from "../context/AuthContext";
+import { Spinner } from "@chakra-ui/react";
 
 const View = () => {
   const { id } = useParams();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState("");
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
@@ -102,15 +107,24 @@ const View = () => {
   };
 
   const handleTributeSubmit = async () => {
-    try {
-      await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
-        message: newTribute,
-      });
-      setNewTribute("");
-      // Optionally refetch tributes or update state
-      toast.success("Tribute added successfully!");
-    } catch (error) {
-      toast.error("Failed to add tribute.");
+    if (!isLoggedIn) {
+      toast.error("Please login first.");
+      navigate("/login");
+      return;
+    } else {
+      setLoading(true);
+      try {
+        await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
+          message: newTribute,
+        });
+        setNewTribute("");
+        // Optionally refetch tributes or update state
+        toast.success("Tribute added successfully!");
+      } catch (error) {
+        toast.error("Failed to add tribute.");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -119,21 +133,37 @@ const View = () => {
       <div className="relative bg-white">
         {/* Cover Image */}
         <div className="relative">
-          <img
-            src={`/public/users/${coverImage}`}
-            alt="Cover"
-            className="w-full h-[150px] object-cover"
-          />
+          {!coverImage ? (
+            <img
+              src={`/src/assets/cover.png`}
+              alt="Profile"
+              className="w-full h-[150px] object-cover"
+            />
+          ) : (
+            <img
+              src={`/public/users/${coverImage}`}
+              alt="Cover"
+              className="w-full h-[150px] object-cover"
+            />
+          )}
         </div>
 
         {/* Profile Image */}
         <div className="relative flex justify-center -mt-16">
           <div className="relative">
-            <img
-              src={`/public/users/${profileImage}`}
-              alt="Profile"
-              className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
-            />
+            {!profileImage ? (
+              <img
+                src={`/src/assets/avatar.png`}
+                alt="Profile"
+                className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
+              />
+            ) : (
+              <img
+                src={`/public/users/${profileImage}`}
+                alt="Profile"
+                className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
+              />
+            )}
           </div>
         </div>
         <div className="text-center mt-2 space-y-2">
@@ -207,7 +237,7 @@ const View = () => {
                       key={index}
                       src={`/public/users/mediaImages/${image}`}
                       alt={`Media ${index}`}
-                      className="w-full h-[100px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                      className="w-full h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
                       onClick={() => handleImageClick(index)}
                     />
                   ))
@@ -232,10 +262,13 @@ const View = () => {
                       className="h-full w-full p-3 rounded-lg"
                     />
                     <button
-                      className="bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer py-3 w-full my-3"
+                      disabled={loading}
+                      className={`bg-[#F9CA4F] ${
+                        !loading && "hover:bg-[#f8c238]"
+                      } cursor-pointer py-3 w-full my-3`}
                       onClick={handleTributeSubmit}
                     >
-                      Submit Tribute
+                      {loading ? <Spinner /> : "Submit Tribute"}
                     </button>
                   </div>
                 </>
@@ -279,13 +312,16 @@ const View = () => {
                       value={newTribute}
                       onChange={handleTributeChange}
                       placeholder="Add a tribute..."
-                      className="h-full w-full p-3"
+                      className="h-full w-full p-3 rounded-lg"
                     />
                     <button
-                      className="bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer py-3 w-full my-3"
+                      disabled={loading}
+                      className={`bg-[#F9CA4F] ${
+                        !loading && "hover:bg-[#f8c238]"
+                      } cursor-pointer py-3 w-full my-3`}
                       onClick={handleTributeSubmit}
                     >
-                      Submit Tribute
+                      {loading ? <Spinner /> : "Submit Tribute"}
                     </button>
                   </div>
                 </>

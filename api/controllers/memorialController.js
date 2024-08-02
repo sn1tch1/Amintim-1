@@ -61,10 +61,9 @@ exports.getMemorialPagesByUser = async (req, res) => {
   try {
     const user = req.user.id;
     // const user = req.params.userId;
-    console.log(user);
     const memorialPages = await MemorialPage.find({ user });
     console.log(memorialPages);
-    if (memorialPages.length === 0) {
+    if (!memorialPages) {
       return res
         .status(404)
         .json({ message: "No memorial pages found for this user" });
@@ -123,9 +122,11 @@ exports.deleteMemorialPage = async (req, res) => {
 // Create a new tribute
 exports.createTribute = async (req, res) => {
   const user = req.user.id;
+  console.log(user);
   try {
     // Find the memorial page by ID
     const memorialPage = await MemorialPage.findById(req.params.id);
+    console.log(memorialPage);
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });
     }
@@ -137,6 +138,7 @@ exports.createTribute = async (req, res) => {
       memorialPage: req.params.id, // Set the memorial page reference
     });
 
+    console.log("why", tribute);
     // Save the tribute
     await tribute.save();
 

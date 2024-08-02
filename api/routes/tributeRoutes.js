@@ -13,7 +13,7 @@ const { protect } = require("../middleware/authMiddleware.js");
 router.post("/create/:id", protect, createTribute);
 
 // Get all tributes for a memorial page
-router.get("/memorialPage/:id", getAllTributes);
+router.get("/memorialPage/:id", protect, getAllTributes);
 
 // Get a tribute by ID
 router.get("/:id", getTributeById);

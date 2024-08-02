@@ -10,10 +10,12 @@ import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import { FaBirthdayCake } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
+import { Spinner } from "@chakra-ui/react";
 
 const Memorial = () => {
   const { id } = useParams();
   const [profileImage, setProfileImage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
   const [mediaImages, setMediaImages] = useState([]);
@@ -78,7 +80,6 @@ const Memorial = () => {
           `http://localhost:5000/api/tributes/memorialPage/${id}`
         ); // Replace with your actual API endpoint
         setTributes(response.data);
-        console.log(response);
       } catch (error) {
         console.error("Error fetching tributes:", error);
       }
@@ -242,6 +243,7 @@ const Memorial = () => {
   };
 
   const handleTributeSubmit = async () => {
+    setLoading(true);
     try {
       await axios.post(`http://localhost:5000/api/tributes/create/${id}`, {
         message: newTribute,
@@ -251,6 +253,9 @@ const Memorial = () => {
       toast.success("Tribute added successfully!");
     } catch (error) {
       toast.error("Failed to add tribute.");
+      console.log("error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -259,11 +264,19 @@ const Memorial = () => {
       <div className="relative bg-white">
         {/* Cover Image */}
         <div className="relative">
-          <img
-            src={`/public/users/${coverImage}`}
-            alt="Cover"
-            className="w-full h-[150px] object-cover"
-          />
+          {!coverImage ? (
+            <img
+              src={`/src/assets/cover.png`}
+              alt="Profile"
+              className="w-full h-[150px] object-cover"
+            />
+          ) : (
+            <img
+              src={`/public/users/${coverImage}`}
+              alt="Cover"
+              className="w-full h-[150px] object-cover"
+            />
+          )}
           <label
             htmlFor="coverImageInput"
             className="absolute bottom-2 right-2 bg-gray-700 text-white p-1 rounded-full cursor-pointer"
@@ -282,11 +295,19 @@ const Memorial = () => {
         {/* Profile Image */}
         <div className="relative flex justify-center -mt-16">
           <div className="relative">
-            <img
-              src={`/public/users/${profileImage}`}
-              alt="Profile"
-              className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
-            />
+            {!profileImage ? (
+              <img
+                src={`/src/assets/avatar.png`}
+                alt="Profile"
+                className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
+              />
+            ) : (
+              <img
+                src={`/public/users/${profileImage}`}
+                alt="Profile"
+                className="w-32 h-32 rounded-full bg-white border-4 border-white object-cover"
+              />
+            )}
             <label
               htmlFor="profileImageInput"
               className="absolute bottom-0 right-0 bg-gray-700 text-white p-1 rounded-full cursor-pointer"
@@ -452,7 +473,7 @@ const Memorial = () => {
                       key={index}
                       src={`/public/users/mediaImages/${image}`}
                       alt={`Media ${index}`}
-                      className="w-full h-[100px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                      className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
                       onClick={() => handleImageClick(index)}
                     />
                   ))
@@ -482,7 +503,26 @@ const Memorial = () => {
           {activeTab === "tributes" && (
             <div className="px-[3%] md:px-[7%] mb-[50px] lg:px-[10%] py-[12px]">
               {tributes.length === 0 ? (
-                <p>No tributes available.</p>
+                <>
+                  <p>No tributes available.</p>
+                  <div className="w-full border h-[100px] border-black rounded-lg my-6">
+                    <textarea
+                      value={newTribute}
+                      onChange={handleTributeChange}
+                      placeholder="Add a tribute..."
+                      className="h-full w-full p-3 rounded-lg"
+                    />
+                    <button
+                      disabled={loading}
+                      className={`bg-[#F9CA4F] ${
+                        !loading && "hover:bg-[#f8c238]"
+                      } cursor-pointer py-3 w-full my-3`}
+                      onClick={handleTributeSubmit}
+                    >
+                      {loading ? <Spinner /> : "Submit Tribute"}
+                    </button>
+                  </div>
+                </>
               ) : (
                 <>
                   <h1 className="text-2xl font-bold text-center p-6">
@@ -523,13 +563,16 @@ const Memorial = () => {
                       value={newTribute}
                       onChange={handleTributeChange}
                       placeholder="Add a tribute..."
-                      className="h-full w-full p-3"
+                      className="h-full w-full p-3 rounded-lg"
                     />
                     <button
-                      className="bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer py-3 w-full my-3"
+                      disabled={loading}
+                      className={`bg-[#F9CA4F] ${
+                        !loading && "hover:bg-[#f8c238]"
+                      } cursor-pointer py-3 w-full my-3`}
                       onClick={handleTributeSubmit}
                     >
-                      Submit Tribute
+                      {loading ? <Spinner /> : "Submit Tribute"}
                     </button>
                   </div>
                 </>

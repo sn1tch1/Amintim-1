@@ -15,7 +15,7 @@ const Proceed = () => {
       navigate("/tribute");
     } else {
       console.log("Linking to an existing tribute page");
-      navigate("/memorial/profile");
+      navigate("/manage-account/settings");
     }
   };
 
