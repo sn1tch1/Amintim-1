@@ -138,3 +138,7 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
+
+app.get("/", (req, res) => {
+  res.status(200).send("The application is running.");
+});
