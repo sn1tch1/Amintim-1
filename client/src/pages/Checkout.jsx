@@ -9,8 +9,8 @@ import BaseURL from "../utils/BaseURL";
 
 const Checkout = () => {
   const { calculateSubtotal, clearCart } = useCart();
-  const navigate = useNavigate(); // Initialize the navigate function
-  const { isLoggedIn } = useAuth(); // Get login status from context
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
@@ -39,7 +39,9 @@ const Checkout = () => {
 
   const groupCartItems = (cartItems) => {
     const groupedItems = cartItems.reduce((acc, item) => {
-      const existingItem = acc.find((i) => i.id === item.id);
+      const existingItem = acc.find(
+        (i) => i.id === item.id && i.type === item.type
+      );
       const quantity = item.quantity || (item.type === "buy2" ? 2 : 1);
       if (existingItem) {
         existingItem.quantity += quantity;
@@ -92,9 +94,16 @@ const Checkout = () => {
         },
         credentials: "include", // Include credentials with the request
         body: JSON.stringify({
-          deliveryInfo, // Send only delivery details
+          deliveryInfo,
+          items: groupedCart.map((item) => ({
+            id: item.id,
+            type: item.id, // Ensure type is included
+            price: item.price,
+            quantity: item.quantity,
+          })),
         }),
       });
+      console.log("asdfafd", groupedCart);
 
       if (!response.ok) {
         toast.error("Error Occured");
@@ -334,25 +343,29 @@ const Checkout = () => {
       <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
         <div className="sticky top-24">
           <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
-          {groupedCart.map((item, index) => (
-            <tr
-              key={index}
-              className="border-b flex items-center justify-between"
-            >
-              <td className="flex items-center py-4">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-16 h-16 mr-4"
-                />
-                <div>
-                  <h5 className="font-medium">{item.title}</h5>
-                  <p className="text-gray-500">DKK {item.price}</p>
-                </div>
-              </td>
-              <td className="py-4">{item.quantity}</td>
-            </tr>
-          ))}
+          <table className="w-full">
+            <tbody>
+              {groupedCart.map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-b flex items-center justify-between"
+                >
+                  <td className="flex items-center py-4">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-16 h-16 mr-4"
+                    />
+                    <div>
+                      <h5 className="font-medium">{item.title}</h5>
+                      <p className="text-gray-500">DKK {item.price}</p>
+                    </div>
+                  </td>
+                  <td className="py-4">{item.quantity}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <div className="flex justify-between items-center mb-2">
             <p className="text-gray-600">Subtotal</p>
             <p className="text-gray-800 font-medium">DKK {SubTotal}</p>

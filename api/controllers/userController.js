@@ -1,7 +1,6 @@
 const User = require("../models/User");
-const sendEmail = require("../utils/sendEmail");
+const sendEmail = require("../utils/sendVerification");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 exports.registerUser = async (req, res) => {
   const { email } = req.body;
@@ -36,12 +35,7 @@ exports.registerUser = async (req, res) => {
       });
 
       await user.save();
-
-      await sendEmail(
-        user.email,
-        "Verify your email",
-        `Your verification code is ${verificationCode}`
-      );
+      await sendEmail(user.email, `${verificationCode}`);
 
       res.status(201).json({ message: "Verification email sent" });
     }
@@ -160,11 +154,7 @@ exports.resendVerificationCode = async (req, res) => {
     user.verificationCode = verificationCode;
     await user.save();
 
-    await sendEmail(
-      user.email,
-      "Resend Verification Code",
-      `Your new verification code is ${verificationCode}`
-    );
+    await sendEmail(user.email, `${verificationCode}`);
 
     res.status(200).json({ message: "Verification code resent" });
   } catch (error) {

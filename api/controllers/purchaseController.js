@@ -1,6 +1,6 @@
 const path = require("path");
 const User = require("../models/User");
-const Card = require("../models/purchase");
+const Purchase = require("../models/purchase");
 const express = require("express");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail"); // Ensure this function is available
@@ -15,13 +15,20 @@ exports.purchaseSoulStar = async (req, res) => {
   console.log("purchaseSoulStar called");
   console.log(`userId: ${userId}`);
 
-  // Extract delivery information from the request body
-  const { deliveryInfo } = req.body;
+  // Extract delivery information and items from the request body
+  const { deliveryInfo, items } = req.body;
 
-  if (!deliveryInfo) {
+  if (!deliveryInfo || !items || !Array.isArray(items)) {
     return res
       .status(400)
-      .json({ message: "Delivery information is required" });
+      .json({ message: "Delivery information and items are required" });
+  }
+
+  // Validate items
+  for (const item of items) {
+    if (!item.id || !item.type || !item.price || !item.quantity) {
+      return res.status(400).json({ message: "Invalid item data" });
+    }
   }
 
   try {
@@ -32,34 +39,60 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Generate a unique key
-    const key = crypto.randomBytes(16).toString("hex");
+    // Calculate totalBuy1 and totalBuy2 quantities
+    let totalBuy1 = 0;
+    let totalBuy2 = 0;
 
-    console.log(`Key generated: ${key}`);
+    items.forEach((item) => {
+      if (item.type === "buy1") {
+        totalBuy1 += item.quantity;
+      } else if (item.type === "buy2") {
+        totalBuy2 += item.quantity;
+      }
+    });
+    console.log("buy1", totalBuy1);
+    console.log("buy2", totalBuy2);
 
-    // Create a new card entry
-    const card = new Card({
-      userId: user._id,
-      cardName: "Soul Star", // Customize this as needed
-      key,
+    let totalKeys = totalBuy1 + totalBuy2 * 2;
+
+    console.log("total", totalKeys);
+
+    // Generate all keys
+    const allKeys = [];
+    for (let i = 0; i < totalKeys; i++) {
+      const key = crypto.randomBytes(16).toString("hex");
+      allKeys.push(key);
+      console.log(`Generated key: ${key}`);
+    }
+    
+    // Distribute the keys to items
+    const itemKeys = items.map((item) => {
+      const keys = [];
+      const keysNeeded =
+        item.type === "buy1" ? item.quantity : item.quantity * 2;
+      for (let i = 0; i < keysNeeded; i++) {
+        keys.push(allKeys.pop()); // Take the keys from allKeys
+      }
+      return { ...item, keys };
     });
 
-    await card.save();
+    console.log(`Keys generated: ${JSON.stringify(itemKeys)}`);
 
-    // Save delivery information
-    user.deliveryInfo = deliveryInfo;
+    // Create a new purchase entry
+    const purchase = new Purchase({
+      userId: user._id,
+      items: itemKeys,
+      deliveryInfo,
+    });
 
-    await user.save();
+    await purchase.save();
 
     // Log email sending attempt
-    console.log("Attempting to send email with key...");
+    console.log("Attempting to send email with keys...");
 
     try {
-      await sendEmail(
-        user.email,
-        "Your Key for Soul Star Purchase",
-        `Your key for the Soul Star purchase is: ${key}`
-      );
+      const keysFlat = itemKeys
+      await sendEmail(user.email, keysFlat);
 
       console.log("Email successfully sent to:", user.email);
     } catch (emailError) {
@@ -67,9 +100,9 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(500).json({ message: "Error sending email" });
     }
 
-    res.status(200).json({ key });
+    res.status(200).json({ keys: itemKeys, totalBuy1, totalBuy2 });
   } catch (error) {
-    console.error("Error generating or saving key:", error);
+    console.error("Error generating or saving keys:", error);
     res.status(400).json({ message: error.message });
   }
 };

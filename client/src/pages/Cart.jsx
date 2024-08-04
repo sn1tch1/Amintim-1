@@ -14,24 +14,6 @@ const Cart = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // Uncomment this if you need to fetch data from an API
-  // useEffect(() => {
-  //   const fetchCart = async () => {
-  //     try {
-  //       const response = await axios.get(`${BaseURL}/cart`, {
-  //         withCredentials: true,
-  //       });
-  //       setCart(response.data);
-  //     } catch (error) {
-  //       console.error("Failed to fetch cart:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchCart();
-  // }, []);
-
   const groupCartItems = (cartItems) => {
     const groupedItems = cartItems.reduce((acc, item) => {
       const existingItem = acc.find((i) => i.id === item.id);
