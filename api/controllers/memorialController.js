@@ -1,8 +1,98 @@
-const { MemorialPage, Tribute } = require("../models/MemorialPage");
+const { MemorialPage } = require("../models/MemorialPage");
+const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
+const QRCode = require("qrcode");
+const Card = require("../models/purchase");
 
-// Create a new memorial page
+// Ensure upload directory exists
+const uploadDir = path.join(__dirname, "../uploads/QRs");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure Multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const user = req.user;
+    const userId = user ? user.id : "default";
+    const ext = file.originalname.split(".").pop();
+    const filename = `${userId}_${Date.now()}.${ext}`;
+    cb(null, filename);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 510 * 1024 * 1024, // 510 MB
+  },
+});
+
+// exports.createMemorialPage = async (req, res) => {
+//   const user = req.user.id;
+//   const {
+//     title,
+//     firstName,
+//     middleName,
+//     profileImage,
+//     coverImage,
+//     lastName,
+//     note,
+//     about,
+//     gallery,
+//     birthDate,
+//     deathDate,
+//     isHuman,
+//   } = req.body;
+
+//   try {
+//     const newMemorialPage = new MemorialPage({
+//       user,
+//       title,
+//       firstName,
+//       middleName,
+//       profileImage,
+//       coverImage,
+//       lastName,
+//       note,
+//       about,
+//       gallery,
+//       birthDate,
+//       deathDate,
+//       isHuman,
+//     });
+
+//     await newMemorialPage.save();
+
+//     console.log("here", newMemorialPage);
+
+//     if (newMemorialPage) {
+//       const qrCodeFilename = `${newMemorialPage._id}.png`;
+//       const qrCodeData = `http://localhost:5173/profile/view/${newMemorialPage._id}`;
+//       const qrCodePath = path.join(uploadDir, qrCodeFilename);
+
+//       // Generate QR code and save it to disk
+//       await QRCode.toFile(qrCodePath, qrCodeData);
+
+//       console.log(`QR code generated and saved at: ${qrCodeData}`);
+//     }
+
+//     res.status(201).json({
+//       message: "Memorial Page created successfully",
+//       memorialPage: newMemorialPage,
+//     });
+//   } catch (error) {
+//     console.error("Error creating memorial page:", error);
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// };
+
 exports.createMemorialPage = async (req, res) => {
-  const user = req.user.id;
+  const userId = req.user.id;
   const {
     title,
     firstName,
@@ -16,11 +106,22 @@ exports.createMemorialPage = async (req, res) => {
     birthDate,
     deathDate,
     isHuman,
+    key, // Add key to request body
   } = req.body;
 
   try {
+    const card = await Card.findOne({ userId, key });
+
+    if (!card) {
+      return res.status(400).json({ message: "Please enter a key to Proceed" });
+    }
+
+    if (card.isUsed) {
+      return res.status(400).json({ message: "Key has already been used" });
+    }
+
     const newMemorialPage = new MemorialPage({
-      user,
+      user: userId,
       title,
       firstName,
       middleName,
@@ -37,6 +138,22 @@ exports.createMemorialPage = async (req, res) => {
 
     await newMemorialPage.save();
 
+    console.log("here", newMemorialPage);
+
+    if (newMemorialPage) {
+      const qrCodeFilename = `${newMemorialPage._id}.png`;
+      const qrCodeData = `http://localhost:5173/profile/view/${newMemorialPage._id}`;
+      const qrCodePath = path.join(uploadDir, qrCodeFilename);
+
+      // Generate QR code and save it to disk
+      await QRCode.toFile(qrCodePath, qrCodeData);
+
+      console.log(`QR code generated and saved at: ${qrCodeData}`);
+    }
+
+    card.isUsed = true;
+    await card.save();
+
     res.status(201).json({
       message: "Memorial Page created successfully",
       memorialPage: newMemorialPage,
@@ -44,6 +161,30 @@ exports.createMemorialPage = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
+};
+
+// File upload handler
+exports.uploadFile = (req, res) => {
+  upload.single("file")(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json({ message: err.message });
+    } else if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+
+    try {
+      console.log("Uploading file:", req.file.filename);
+      await uploadProfileImage(req.user.id, req.file.filename); // Ensure this function is defined elsewhere in your code
+      res.status(200).json({ filename: req.file.filename });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      res.status(500).send("Error uploading file.");
+    }
+  });
 };
 
 // Get all memorial pages

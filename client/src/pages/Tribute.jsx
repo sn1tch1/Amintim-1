@@ -18,6 +18,7 @@ const TributePageSetup = () => {
     deathDate: "",
     profileImage: "",
     coverImage: "",
+    key: "", // Add key to form data
   });
   const navigate = useNavigate();
 
@@ -29,7 +30,6 @@ const TributePageSetup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const response = await axios.post(`${BaseURL}/memorial`, {
         ...formData,
@@ -37,13 +37,19 @@ const TributePageSetup = () => {
       });
       if (response.status === 201 || 200) {
         toast.success("Tribute Page Created Successfully");
-        console.log("iiiii", response);
         navigate(`/memorial/profile/${response.data.memorialPage._id}`);
       } else {
-        toast.error("Error Creating Tribute Page. Please try again.");
+        toast.error(
+          response.data.message ||
+            "Error Creating Tribute Page. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Error Creating Tribute Page. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -167,6 +173,19 @@ const TributePageSetup = () => {
             id="deathDate"
             type="date"
             value={formData.deathDate}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2" htmlFor="key">
+            Key
+          </label>
+          <input
+            className="w-full p-2 border border-gray-300 rounded-md"
+            id="key"
+            type="text"
+            placeholder="Enter your key"
+            value={formData.key}
             onChange={handleChange}
           />
         </div>
