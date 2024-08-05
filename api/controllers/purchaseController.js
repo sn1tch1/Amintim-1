@@ -64,7 +64,7 @@ exports.purchaseSoulStar = async (req, res) => {
       allKeys.push(key);
       console.log(`Generated key: ${key}`);
     }
-    
+
     // Distribute the keys to items
     const itemKeys = items.map((item) => {
       const keys = [];
@@ -91,8 +91,11 @@ exports.purchaseSoulStar = async (req, res) => {
     console.log("Attempting to send email with keys...");
 
     try {
-      const keysFlat = itemKeys
-      await sendEmail(user.email, keysFlat);
+      const keysFlat = itemKeys.flatMap((item) => item.keys);
+      const subject = "Your Soul Star Purchase Keys";
+
+      console.log("asd", keysFlat);
+      await sendEmail(user.email, subject, keysFlat);
 
       console.log("Email successfully sent to:", user.email);
     } catch (emailError) {
@@ -100,7 +103,7 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(500).json({ message: "Error sending email" });
     }
 
-    res.status(200).json({ keys: itemKeys, totalBuy1, totalBuy2 });
+    res.status(200).json({ keys: itemKeys });
   } catch (error) {
     console.error("Error generating or saving keys:", error);
     res.status(400).json({ message: error.message });
