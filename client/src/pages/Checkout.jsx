@@ -114,7 +114,7 @@ const Checkout = () => {
       toast.success("Soulstar Purchased");
       localStorage.removeItem("cartItems");
       clearCart();
-      navigate("/tribute");
+      navigate("/congratulations");
       console.log("Purchase successful:", data);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);

@@ -1,9 +1,10 @@
-const { MemorialPage } = require("../models/MemorialPage");
+const { MemorialPage, Tribute } = require("../models/MemorialPage");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const QRCode = require("qrcode");
 const Purchase = require("../models/purchase");
+
 // Ensure upload directory exists
 const uploadDir = path.join(__dirname, "../uploads/QRs");
 if (!fs.existsSync(uploadDir)) {
@@ -295,11 +296,9 @@ exports.deleteMemorialPage = async (req, res) => {
 // Create a new tribute
 exports.createTribute = async (req, res) => {
   const user = req.user.id;
-  console.log(user);
   try {
     // Find the memorial page by ID
     const memorialPage = await MemorialPage.findById(req.params.id);
-    console.log(memorialPage);
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });
     }

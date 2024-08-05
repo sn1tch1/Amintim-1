@@ -35,7 +35,7 @@ const Navbar = () => {
         console.log("responseeee", response);
       }
     } catch (error) {
-      toast.error("Error logging in. Please try again catch.");
+      toast.error("Please try again catch.");
     }
   };
 
@@ -214,7 +214,14 @@ const Navbar = () => {
                 />
               </svg>
             </Link>
-            <Link to={"/cart"} className="w-[22px] h-[22px]">
+            <Link to={"/cart"} className="relative w-[22px] h-[22px]">
+              {cartItems.length >= 1 && (
+                <span className="rounded-full bg-gray-700 text-white absolute w-[17px] h-[17px] top-0 left-3 flex items-center justify-center">
+                  <p className="text-[14px] font-[800] p-[2px]">
+                    {cartItems.length}
+                  </p>
+                </span>
+              )}
               <svg
                 role="presentation"
                 stroke-width="1.5"

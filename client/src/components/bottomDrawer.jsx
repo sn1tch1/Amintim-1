@@ -63,9 +63,9 @@ function BottomDrawer({
                 <li>Log In</li>
               </Link>
             ) : (
-              <button onClick={handleLogout} className="hover:text-black/70">
+              <Link onClick={handleLogout} className="hover:text-black/70">
                 <li>Log out</li>
-              </button>
+              </Link>
             )}
           </ul>
         </DrawerBody>

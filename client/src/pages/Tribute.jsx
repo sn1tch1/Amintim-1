@@ -191,7 +191,7 @@ const TributePageSetup = () => {
           className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200"
           type="submit"
         >
-          {loading ? <Spinner /> : "Save"}
+          {loading ? <Spinner /> : "Create"}
         </button>
       </form>
 
