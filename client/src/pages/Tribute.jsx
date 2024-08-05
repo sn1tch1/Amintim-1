@@ -18,8 +18,9 @@ const TributePageSetup = () => {
     deathDate: "",
     profileImage: "",
     coverImage: "",
-    key: "", // Add key to form data
+    key: "", // Key included in formData
   });
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,15 +28,23 @@ const TributePageSetup = () => {
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setModalOpen(true); // Open the modal
+  };
+
+  const handleKeyChange = (e) => {
+    setFormData((prevData) => ({ ...prevData, key: e.target.value }));
+  };
+
+  const handleFormSubmit = async () => {
     setLoading(true);
     try {
       const response = await axios.post(`${BaseURL}/memorial`, {
         ...formData,
         isHuman: selectedTab === "Human",
       });
-      if (response.status === 201 || 200) {
+      if (response.status === 201 || response.status === 200) {
         toast.success("Tribute Page Created Successfully");
         navigate(`/memorial/profile/${response.data.memorialPage._id}`);
       } else {
@@ -52,6 +61,7 @@ const TributePageSetup = () => {
       );
     } finally {
       setLoading(false);
+      setModalOpen(false); // Close the modal
     }
   };
 
@@ -176,19 +186,6 @@ const TributePageSetup = () => {
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label className="block font-medium mb-2" htmlFor="key">
-            Key
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md"
-            id="key"
-            type="text"
-            placeholder="Enter your key"
-            value={formData.key}
-            onChange={handleChange}
-          />
-        </div>
         <button
           disabled={loading}
           className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200"
@@ -197,6 +194,36 @@ const TributePageSetup = () => {
           {loading ? <Spinner /> : "Save"}
         </button>
       </form>
+
+      {/* Modal for key input */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h3 className="text-xl font-semibold mb-4">Enter Key</h3>
+            <input
+              className="w-full p-2 border border-gray-300 rounded-md"
+              type="text"
+              placeholder="Enter your key"
+              value={formData.key}
+              onChange={handleKeyChange}
+            />
+            <div className="flex justify-end mt-4 space-x-2">
+              <button
+                className="px-4 py-2 bg-gray-300 text-black rounded-full"
+                onClick={() => setModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-black text-white rounded-full"
+                onClick={handleFormSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,8 +3,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const QRCode = require("qrcode");
-const Card = require("../models/purchase");
-
+const Purchase = require("../models/purchase");
 // Ensure upload directory exists
 const uploadDir = path.join(__dirname, "../uploads/QRs");
 if (!fs.existsSync(uploadDir)) {
@@ -110,13 +109,17 @@ exports.createMemorialPage = async (req, res) => {
   } = req.body;
 
   try {
-    const card = await Card.findOne({ userId, key });
+       const purchase = await Purchase.findOne({
+         userId,
+         "items.keys": key,
+       });
+    console.log("purchase", purchase);
 
-    if (!card) {
+    if (!purchase) {
       return res.status(400).json({ message: "Please enter a key to Proceed" });
     }
 
-    if (card.isUsed) {
+    if (purchase.isUsed) {
       return res.status(400).json({ message: "Key has already been used" });
     }
 
@@ -151,8 +154,8 @@ exports.createMemorialPage = async (req, res) => {
       console.log(`QR code generated and saved at: ${qrCodeData}`);
     }
 
-    card.isUsed = true;
-    await card.save();
+    purchase.isUsed = true;
+    await purchase.save();
 
     res.status(201).json({
       message: "Memorial Page created successfully",
