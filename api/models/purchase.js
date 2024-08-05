@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
+
+const keySchema = new Schema({
+  key: { type: String, required: true },
+  isUsed: { type: Boolean, default: false },
+});
 
 const itemSchema = new Schema({
   id: { type: String, required: true },
-  type: { type: String, required: true }, // Ensure type is required
+  type: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, required: true }, // Ensure quantity is required
-  keys: [{ type: String }], // Array of keys
+  quantity: { type: Number, required: true },
+  keys: [keySchema], // Array of key objects
 });
 
 const purchaseSchema = new Schema({
@@ -14,9 +19,9 @@ const purchaseSchema = new Schema({
   deliveryInfo: {
     country: { type: String, required: true },
     firstName: { type: String, required: true },
-    lastName: { type: String, required: false },
+    lastName: { type: String },
     address: { type: String, required: true },
-    apartment: { type: String, required: false },
+    apartment: { type: String },
     postalCode: { type: String, required: true },
     city: { type: String, required: true },
   },

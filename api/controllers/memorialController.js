@@ -109,20 +109,49 @@ exports.createMemorialPage = async (req, res) => {
   } = req.body;
 
   try {
-       const purchase = await Purchase.findOne({
-         userId,
-         "items.keys": key,
-       });
-    console.log("purchase", purchase);
+    // Find all purchases for the user
+    const purchases = await Purchase.find({ userId });
 
-    if (!purchase) {
-      return res.status(400).json({ message: "Please enter a key to Proceed" });
+    // Log purchases in a more readable format
+
+    if (!purchases || purchases.length === 0) {
+      return res.status(400).json({ message: "Invalid key" });
     }
 
-    if (purchase.isUsed) {
+    let keyFound = false;
+    let keyUsed = false;
+    let foundPurchase = null;
+
+    // Iterate through purchases to find the key
+    for (const purchase of purchases) {
+      for (const item of purchase.items) {
+        for (const k of item.keys) {
+          console.log(JSON.stringify(k, null, 2));
+          if (k.key === key) {
+            keyFound = true;
+            if (k.isUsed) {
+              keyUsed = true;
+            } else {
+              k.isUsed = true;
+              foundPurchase = purchase;
+            }
+            break;
+          }
+        }
+        if (keyFound) break;
+      }
+      if (keyFound) break;
+    }
+
+    if (!keyFound) {
+      return res.status(400).json({ message: "Invalid key" });
+    }
+
+    if (keyUsed) {
       return res.status(400).json({ message: "Key has already been used" });
     }
 
+    // Create a new memorial page
     const newMemorialPage = new MemorialPage({
       user: userId,
       title,
@@ -154,8 +183,8 @@ exports.createMemorialPage = async (req, res) => {
       console.log(`QR code generated and saved at: ${qrCodeData}`);
     }
 
-    purchase.isUsed = true;
-    await purchase.save();
+    // Save the updated purchase with the key marked as used
+    await foundPurchase.save();
 
     res.status(201).json({
       message: "Memorial Page created successfully",

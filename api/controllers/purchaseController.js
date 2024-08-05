@@ -50,12 +50,8 @@ exports.purchaseSoulStar = async (req, res) => {
         totalBuy2 += item.quantity;
       }
     });
-    console.log("buy1", totalBuy1);
-    console.log("buy2", totalBuy2);
 
     let totalKeys = totalBuy1 + totalBuy2 * 2;
-
-    console.log("total", totalKeys);
 
     // Generate all keys
     const allKeys = [];
@@ -71,7 +67,7 @@ exports.purchaseSoulStar = async (req, res) => {
       const keysNeeded =
         item.type === "buy1" ? item.quantity : item.quantity * 2;
       for (let i = 0; i < keysNeeded; i++) {
-        keys.push(allKeys.pop()); // Take the keys from allKeys
+        keys.push({ key: allKeys.pop(), isUsed: false });
       }
       return { ...item, keys };
     });
@@ -91,10 +87,9 @@ exports.purchaseSoulStar = async (req, res) => {
     console.log("Attempting to send email with keys...");
 
     try {
-      const keysFlat = itemKeys.flatMap((item) => item.keys);
+      const keysFlat = itemKeys.flatMap((item) => item.keys.map((k) => k.key));
       const subject = "Your Soul Star Purchase Keys";
 
-      console.log("asd", keysFlat);
       await sendEmail(user.email, subject, keysFlat);
 
       console.log("Email successfully sent to:", user.email);
