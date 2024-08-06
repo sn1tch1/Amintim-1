@@ -22,13 +22,10 @@ const Login = () => {
         const response = await axios.post(`${BaseURL}/users/register`, {
           email,
         });
-        if (response.status === 201) {
+        if (response.status === 200 || 201) {
           toast.success("Registered Successfully");
+          localStorage.setItem("token", data.token);
           navigate("/verify", { state: { email } });
-          login();
-        } else if (response.status === 200) {
-          toast.success("Logged In Successfully");
-          navigate("/manage-account/settings");
           login();
         } else {
           console.log("responseeee", response);

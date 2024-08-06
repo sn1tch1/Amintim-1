@@ -22,7 +22,7 @@ exports.registerUser = async (req, res) => {
           path: "/",
         })
         .status(200)
-        .json({ message: "Logged in successfully" });
+        .json({ message: "Logged in successfully", token });
     } else {
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
