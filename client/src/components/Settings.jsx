@@ -24,6 +24,7 @@ const SettingsTab = () => {
         const { firstName, lastName, city, country, zipcode, profileImage } =
           response.data;
         setFormData({ firstName, lastName, city, country, zipcode });
+        console.log("ihihihi", response);
         if (profileImage) {
           setAvatar(profileImage);
         }
@@ -61,13 +62,13 @@ const SettingsTab = () => {
       if (response.status === 200) {
         const { url } = response.data;
         setAvatar(url);
-        console.log(url);
+        // console.log(url);
         toast.success("Avatar updated successfully");
       } else {
         toast.error("Error updating avatar. Please try again.");
       }
     } catch (error) {
-      console.log("not runnnong", error);
+      // console.log("not runnnong", error);
       toast.error("Error updating avatar. Please try again.");
     }
   };
@@ -106,7 +107,7 @@ const SettingsTab = () => {
         `${BaseURL}/users/update`,
         {
           ...formData,
-          avatar,
+          profileImage: avatar,
         },
         {
           withCredentials: true,

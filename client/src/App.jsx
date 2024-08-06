@@ -61,8 +61,12 @@ const AppContent = () => {
         />
         <Route
           path="/manage-account/settings"
-          element={<PrivateRoute element={<Settings />} />}
+          element={<Settings />}
         />
+        {/* <Route
+          path="/manage-account/settings"
+          element={<PrivateRoute element={<Settings />} />}
+        /> */}
         <Route
           path="/memorial/profile/:id"
           element={<PrivateRoute element={<Memorial />} />}
