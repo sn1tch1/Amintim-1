@@ -59,6 +59,12 @@ app.post("/api/users/upload", upload.single("file"), (req, res) => {
   res.json({ url: req.file.path });
 });
 
+app.post("/api/users/upload/media", upload.array("files", 10), (req, res) => {
+  const files = req.files;
+  const urls = files.map((file) => file.path);
+  res.json({ urls: urls });
+});
+
 // const uploadDir = path.join(__dirname, "/uploads/users");
 // if (!fs.existsSync(uploadDir)) {
 //   fs.mkdirSync(uploadDir, { recursive: true });

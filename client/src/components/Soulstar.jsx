@@ -51,7 +51,7 @@ const SoulStarsTab = () => {
                 ? format(new Date(page.deathDate), "dd MMMM yyyy")
                 : "";
               const profileImageSrc = page.profileImage
-                ? `${IMAGES_BASE_URL}/uploads/users/${page.profileImage}`
+                ? `${page.profileImage}`
                 : avatar;
               return (
                 <div
