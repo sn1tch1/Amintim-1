@@ -20,7 +20,6 @@ const SoulStarsTab = () => {
           }
         );
 
-        console.log("API Response:", response.data);
         setMemorialPages(response.data);
       } catch (error) {
         console.error("Error fetching memorial pages:", error);

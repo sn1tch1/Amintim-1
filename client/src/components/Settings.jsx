@@ -14,7 +14,6 @@ const SettingsTab = () => {
     country: "",
     zipcode: "",
   });
-  const Image = `${IMAGES_BASE_URL}/uploads/users/${avatar}`;
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -60,16 +59,45 @@ const SettingsTab = () => {
       });
 
       if (response.status === 200) {
-        const { filename } = response.data;
-        setAvatar(filename);
+        const { url } = response.data;
+        setAvatar(url);
+        console.log(url);
         toast.success("Avatar updated successfully");
       } else {
         toast.error("Error updating avatar. Please try again.");
       }
     } catch (error) {
+      console.log("not runnnong", error);
       toast.error("Error updating avatar. Please try again.");
     }
   };
+
+  // const handleAvatarChange = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+
+  //   try {
+  //     const response = await axios.post(`${BaseURL}/users/upload`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //       withCredentials: true,
+  //     });
+
+  //     if (response.status === 200) {
+  //       const { filename } = response.data;
+  //       setAvatar(filename);
+  //       toast.success("Avatar updated successfully");
+  //     } else {
+  //       toast.error("Error updating avatar. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error updating avatar. Please try again.");
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,6 +123,8 @@ const SettingsTab = () => {
     }
   };
 
+  console.log(avatar);
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-center mb-8">
@@ -108,9 +138,9 @@ const SettingsTab = () => {
           />
           <label htmlFor="avatar-upload">
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
-              {Image ? (
+              {avatar ? (
                 <img
-                  src={Image}
+                  src={avatar}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full"
                 />

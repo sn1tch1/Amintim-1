@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+key
+key.pub
 
 # Environment files
 .env
