@@ -15,14 +15,14 @@ exports.registerUser = async (req, res) => {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           // sameSite: "strict",
           sameSite: "none",
           domain: process.env.DOMAIN,
           path: "/",
         })
         .status(200)
-        .json({ message: "Logged in successfully" });
+        .json({ message: "Logged in successfully", token });
     } else {
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
@@ -163,8 +163,16 @@ exports.resendVerificationCode = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  const { firstName, lastName, city, country, zipcode, deathDate, birthDate } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    city,
+    country,
+    zipcode,
+    deathDate,
+    birthDate,
+    profileImage,
+  } = req.body;
   const userId = req.user.id;
 
   try {
@@ -183,6 +191,7 @@ exports.updateUser = async (req, res) => {
     if (zipcode) user.zipcode = zipcode;
     if (birthDate) user.birthDate = birthDate;
     if (deathDate) user.deathDate = deathDate;
+    if (profileImage) user.profileImage = profileImage;
 
     // Save the updated user
     await user.save();
