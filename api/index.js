@@ -38,9 +38,9 @@ app.use(cors(corsOptions));
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: "mern-practice",
-  api_key: "748289359289231",
-  api_secret: "Qz_0OA9kSwfu0sV5DVCYet2TfHc",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
 // Set up multer-storage-cloudinary

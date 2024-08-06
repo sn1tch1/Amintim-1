@@ -15,6 +15,7 @@ const memorialPageSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String },
   firstName: { type: String },
+  QRCode: { type: String },
   middleName: { type: String },
   lastName: { type: String },
   profileImage: { type: String },

@@ -46,6 +46,7 @@ const Memorial = () => {
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
+  const [QRCode, setQRCode] = useState("");
   const [newMiddleName, setNewMiddleName] = useState("");
   const [tributes, setTributes] = useState([]);
   const [newLastName, setNewLastName] = useState("");
@@ -117,6 +118,7 @@ const Memorial = () => {
         setProfileImage(response.data.profileImage);
         setCoverImage(response.data.coverImage);
         setMediaImages(response.data.gallery);
+        setQRCode(response.data.QRCode);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
       }
@@ -654,7 +656,7 @@ const Memorial = () => {
             padding="4"
           >
             <ModalCloseButton />
-            <img src={imageUrl} alt="QR Code" />
+            <img src={QRCode} alt="QR Code" />
             <Button onClick={handleDownload} colorScheme="blue" mt="4">
               Download
             </Button>
