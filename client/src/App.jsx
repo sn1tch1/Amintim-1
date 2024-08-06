@@ -59,14 +59,11 @@ const AppContent = () => {
           path="/proceed"
           element={<PrivateRoute element={<Proceed />} />}
         />
+
         <Route
           path="/manage-account/settings"
-          element={<Settings />}
-        />
-        {/* <Route
-          path="/manage-account/settings"
           element={<PrivateRoute element={<Settings />} />}
-        /> */}
+        />
         <Route
           path="/memorial/profile/:id"
           element={<PrivateRoute element={<Memorial />} />}
