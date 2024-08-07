@@ -83,8 +83,8 @@ const Checkout = () => {
   const SubTotal = calculateSubtotal().toFixed(2);
 
   const handlePurchase = async () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     if (!isFormValid()) return; // Prevent submission if form is invalid
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     setLoading(true);
 
     try {
@@ -92,11 +92,9 @@ const Checkout = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },
-        credentials: "include", // Include credentials with the request
-        headers: {
           Authorization: `Bearer ${token}`, // Include token in request headers
         },
+        credentials: "include", // Include credentials with the request
         body: JSON.stringify({
           deliveryInfo,
           items: groupedCart.map((item) => ({
