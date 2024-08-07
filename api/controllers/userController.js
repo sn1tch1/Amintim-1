@@ -14,13 +14,13 @@ exports.registerUser = async (req, res) => {
 
       res
         .cookie("token", token, {
-          httpOnly: false,
-          // secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
-          // sameSite: "strict",
-          secure: true,
-          same_site: "none",
-          domain: process.env.DOMAIN,
-          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
+          sameSite: "strict",
+          // secure: true,
+          // same_site: "none",
+          // domain: process.env.DOMAIN,
+          // path: "/",
         })
 
         .status(200)
