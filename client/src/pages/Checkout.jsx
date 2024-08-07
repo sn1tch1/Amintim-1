@@ -127,8 +127,8 @@ const Checkout = () => {
   // };
 
   const handlePurchase = async () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
-    if (!isFormValid()) return; // Prevent submission if form is invalid
+    const token = localStorage.getItem("token");
+    if (!isFormValid()) return;
     setLoading(true);
 
     try {
@@ -145,7 +145,6 @@ const Checkout = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`, // Include token in request headers
           },
           withCredentials: true, // Include credentials with the request
