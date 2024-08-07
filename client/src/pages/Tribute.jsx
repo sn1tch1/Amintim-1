@@ -38,12 +38,22 @@ const TributePageSetup = () => {
   };
 
   const handleFormSubmit = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     setLoading(true);
     try {
-      const response = await axios.post(`${BaseURL}/memorial`, {
-        ...formData,
-        isHuman: selectedTab === "Human",
-      });
+      const response = await axios.post(
+        `${BaseURL}/memorial`,
+        {
+          ...formData,
+          isHuman: selectedTab === "Human",
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
+        }
+      );
       if (response.status === 201 || response.status === 200) {
         toast.success("Tribute Page Created Successfully");
         navigate(`/memorial/profile/${response.data.memorialPage._id}`);

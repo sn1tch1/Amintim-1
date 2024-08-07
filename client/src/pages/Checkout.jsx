@@ -93,6 +93,9 @@ const Checkout = () => {
           "Content-Type": "application/json",
         },
         credentials: "include", // Include credentials with the request
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in request headers
+        },
         body: JSON.stringify({
           deliveryInfo,
           items: groupedCart.map((item) => ({

@@ -108,6 +108,7 @@ const View = () => {
   };
 
   const handleTributeSubmit = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     if (!isLoggedIn) {
       toast.error("Please login first.");
       navigate("/login");
@@ -115,9 +116,18 @@ const View = () => {
     } else {
       setLoading(true);
       try {
-        await axios.post(`${BaseURL}/tributes/create/${id}`, {
-          message: newTribute,
-        });
+        await axios.post(
+          `${BaseURL}/tributes/create/${id}`,
+          {
+            message: newTribute,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in request headers
+            },
+          }
+        );
         setNewTribute("");
         // Optionally refetch tributes or update state
         toast.success("Tribute added successfully!");
