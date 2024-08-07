@@ -165,7 +165,7 @@ const SettingsTab = () => {
           <input
             type="text"
             name="firstName"
-            value={formData.firstName}
+            value={formData?.firstName || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="First Name"
@@ -176,7 +176,7 @@ const SettingsTab = () => {
           <input
             type="text"
             name="lastName"
-            value={formData.lastName}
+            value={formData?.lastName || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Last Name"
@@ -187,7 +187,7 @@ const SettingsTab = () => {
           <input
             type="text"
             name="city"
-            value={formData.city}
+            value={formData?.city || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="City"
@@ -198,7 +198,7 @@ const SettingsTab = () => {
           <input
             type="text"
             name="country"
-            value={formData.country}
+            value={formData?.country || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Country"
@@ -209,7 +209,7 @@ const SettingsTab = () => {
           <input
             type="text"
             name="zipcode"
-            value={formData.zipcode}
+            value={formData?.zipcode || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
             placeholder="Zip/Postal Code"
