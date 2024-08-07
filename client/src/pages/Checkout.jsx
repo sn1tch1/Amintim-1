@@ -83,6 +83,7 @@ const Checkout = () => {
   const SubTotal = calculateSubtotal().toFixed(2);
 
   const handlePurchase = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     if (!isFormValid()) return; // Prevent submission if form is invalid
     setLoading(true);
 
