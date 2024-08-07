@@ -426,7 +426,7 @@ const Checkout = () => {
                 ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
                 : "cursor-not-allowed bg-[#fadc8d]"
             }`}
-            disabled={!isFormValid() || loading}
+            // disabled={!isFormValid() || loading}
             onClick={handlePurchase}
           >
             {loading ? <Spinner /> : "Complete Purchase"}
