@@ -16,10 +16,10 @@ exports.registerUser = async (req, res) => {
         .cookie("token", token, {
           httpOnly: true,
           secure: true,
-          // sameSite: "strict",
-          sameSite: "none",
-          domain: process.env.DOMAIN,
-          path: "/",
+          sameSite: "strict",
+          // sameSite: "none",
+          // domain: process.env.DOMAIN,
+          // path: "/",
         })
         .status(200)
         .json({ message: "Logged in successfully", token });
