@@ -29,6 +29,7 @@ const Login = () => {
           login();
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
+          localStorage.setItem("token", response?.data.token);
           navigate("/manage-account/settings");
           login();
         } else {
