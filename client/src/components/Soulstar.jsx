@@ -12,11 +12,15 @@ const SoulStarsTab = () => {
 
   useEffect(() => {
     const fetchMemorialPages = async () => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
       try {
         const response = await axios.get(
           `${BaseURL}/memorial/user/66ab9b2a413797d85938774c`,
           {
             withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in request headers
+            },
           }
         );
 
@@ -46,7 +50,7 @@ const SoulStarsTab = () => {
         <div className="flex flex-col items-center w-full">
           <p className="text-xl text-center font-[600]">Memorial Pages</p>
           <div className="mt-4 space-y-4 w-full">
-            {memorialPages.map((page) => {
+            {memorialPages?.map((page) => {
               const formattedDeathDate = page.deathDate
                 ? format(new Date(page.deathDate), "dd MMMM yyyy")
                 : "";
