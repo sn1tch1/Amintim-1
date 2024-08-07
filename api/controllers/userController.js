@@ -17,9 +17,7 @@ exports.registerUser = async (req, res) => {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
           // sameSite: "strict",
-          sameSite: "none",
-          // secure: true,
-          // same_site: "none",
+          sameSite: "lax",
           domain: process.env.DOMAIN,
           path: "/",
         })
