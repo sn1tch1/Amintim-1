@@ -17,9 +17,13 @@ const SettingsTab = () => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
       try {
         const response = await axios.get(`${BaseURL}/users/me`, {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
         });
         const { firstName, lastName, city, country, zipcode, profileImage } =
           response.data;
@@ -102,6 +106,7 @@ const SettingsTab = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.put(
         `${BaseURL}/users/update`,
