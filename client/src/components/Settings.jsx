@@ -106,6 +106,7 @@ const SettingsTab = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
     try {
       const response = await axios.put(
@@ -116,6 +117,9 @@ const SettingsTab = () => {
         },
         {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
         }
       );
 
