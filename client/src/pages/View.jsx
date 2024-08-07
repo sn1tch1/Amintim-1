@@ -52,6 +52,8 @@ const View = () => {
           `${BaseURL}/tributes/memorialPage/${id}`
         ); // Replace with your actual API endpoint
         setTributes(response.data);
+
+        console.log(response);
       } catch (error) {
         console.error("Error fetching tributes:", error);
       }
@@ -278,7 +280,7 @@ const View = () => {
                   </h1>
 
                   <div className="space-y-5">
-                    {tributes.map((tribute) => (
+                    {tributes?.map((tribute) => (
                       <div
                         key={tribute._id}
                         className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
