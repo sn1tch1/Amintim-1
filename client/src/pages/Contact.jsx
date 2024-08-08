@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Contact = () => {
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div>
       <section className="md:py-[5%] md:min-h-screen px-[4%] font-[700] grid md:grid-cols-2 items-center gap-12 pt-[100px] pb-[50px]">

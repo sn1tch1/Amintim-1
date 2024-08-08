@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const QRLink = () => {
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className="flex flex-col mt-[50px] items-center justify-center min-h-screen bg-white px-4 py-6">
       <h1 className="text-3xl font-bold text-center mb-4">

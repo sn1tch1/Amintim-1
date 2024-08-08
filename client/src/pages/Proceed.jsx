@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Proceed = () => {
@@ -7,6 +7,11 @@ const Proceed = () => {
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
+
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleContinue = () => {
     // Logic to handle the continue action based on the selected option

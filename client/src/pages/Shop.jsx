@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -22,6 +22,11 @@ const Shop = () => {
   const images = [Image1, Image2, Image3, Image4, Image5];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedOption, setSelectedOption] = useState("buy1");
+
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleAddToCart = () => {
     const item = {

@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image1 from "../assets/about/img-1.webp";
 import Image2 from "../assets/about/img-2.webp";
 import Image3 from "../assets/about/img-3.webp";
 import HappyCustomersCarousel from "../components/Testimonials";
 
 const About = () => {
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <div>
       <section className="py-[90px] lg:py-[8%] px-[20px] lg:px-[10%] font-[700]">

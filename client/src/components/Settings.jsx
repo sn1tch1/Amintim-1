@@ -145,18 +145,18 @@ const SettingsTab = () => {
             className="hidden"
           />
           <label htmlFor="avatar-upload">
-            <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
+            <div className="w-24 h-24 overflow-hidden bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
               {avatar ? (
                 <img
                   src={avatar}
                   alt="Avatar"
-                  className="w-24 h-24 rounded-full"
+                  className="w-full h-full object-cover rounded-full"
                 />
               ) : (
                 <img
                   src={`/src/assets/avatar.png`}
                   alt="Avatar"
-                  className="w-24 h-24 rounded-full"
+                  className="w-full h-full object-cover rounded-full"
                 />
               )}
             </div>

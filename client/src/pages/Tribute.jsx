@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
@@ -22,6 +22,11 @@ const TributePageSetup = () => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleChange = (e) => {
     const { id, value } = e.target;

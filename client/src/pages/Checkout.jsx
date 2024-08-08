@@ -126,45 +126,6 @@ const Checkout = () => {
     }
   };
 
-  // const handlePurchase = async () => {
-  //   const token = localStorage.getItem("token"); // Retrieve token from localStorage
-  //   if (!isFormValid()) return; // Prevent submission if form is invalid
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${BaseURL}/purchase/purchase`,
-  //       {
-  //         deliveryInfo,
-  //         items: groupedCart.map((item) => ({
-  //           id: item.id,
-  //           type: item.type, // Ensure type is included
-  //           price: item.price,
-  //           quantity: item.quantity,
-  //         })),
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`, // Include token in request headers
-  //         },
-  //         withCredentials: true, // Include credentials with the request
-  //       }
-  //     );
-
-  //     toast.success("Soulstar Purchased");
-  //     localStorage.removeItem("cartItems");
-  //     clearCart();
-  //     navigate("/congratulations");
-  //     console.log("Purchase successful:", response.data);
-  //   } catch (error) {
-  //     console.error("There was a problem with the axios operation:", error);
-  //     toast.error("Error Occured");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex flex-col lg:flex-row">
       {!isLoggedIn && (
@@ -172,12 +133,12 @@ const Checkout = () => {
           <p>You must be logged in to complete your purchase.</p>
         </div>
       )}
-      <div className="w-full lg:w-3/5 px-4 py-6 lg:px-12 lg:py-[100px] overflow-y-auto">
+      <div className="w-full lg:w-3/5 px-4 py-6 lg:px-12 mt-[60px] lg:py-[100px] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Contact</h2>
         <div className="mb-6">
           <input
             className="w-full p-2 border border-gray-300 rounded-md mb-2"
-            type="text"
+            type="email"
             id="email"
             value={contactInfo.email}
             onChange={(e) => handleInputChange(e, setContactInfo)}
@@ -210,6 +171,7 @@ const Checkout = () => {
               onChange={(e) => handleInputChange(e, setDeliveryInfo)}
             >
               <option>Iceland</option>
+              <option>Poland</option>
               {/* Add more options as needed */}
             </select>
           </div>
@@ -312,7 +274,7 @@ const Checkout = () => {
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="cardNumber"
-                type="text"
+                type="number"
                 value={paymentInfo.cardNumber}
                 onChange={(e) => handleInputChange(e, setPaymentInfo)}
                 placeholder="Card number"
@@ -342,7 +304,7 @@ const Checkout = () => {
                 <input
                   className="w-full p-2 border border-gray-300 rounded-md"
                   id="securityCode"
-                  type="text"
+                  type="number"
                   value={paymentInfo.securityCode}
                   onChange={(e) => handleInputChange(e, setPaymentInfo)}
                   placeholder="Security code"

@@ -60,7 +60,7 @@ const SoulStarsTab = () => {
               return (
                 <div
                   key={page._id}
-                  className="border flex justify-between items-center p-4 px-8 rounded-lg w-full shadow-md"
+                  className="border flex justify-between items-center p-2 md:p-4 px-8 rounded-lg w-full shadow-md"
                 >
                   <div className="flex gap-3 items-center justify-center">
                     <div className="w-14 h-14 rounded-full overflow-hidden">

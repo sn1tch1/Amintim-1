@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SettingsTab from "../components/Settings";
 import SoulStarsTab from "../components/Soulstar";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("SoulStars");
   const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);

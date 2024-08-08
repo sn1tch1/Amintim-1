@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
 import BG from "../assets/home/img-1.webp";
 import Carousel from "../components/Carousel";
 
 const Home = () => {
+  useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
   return (
     <div className="bg-[#f7f7f7]">
       <section

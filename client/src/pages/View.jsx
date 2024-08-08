@@ -78,8 +78,8 @@ const View = () => {
       try {
         const response = await axios.get(`${BaseURL}/memorial/${id}`);
         setMemorialData(response.data);
-        setProfileImage(response.data.profileImage);
-        setCoverImage(response.data.coverImage);
+        setProfileImage(response.data.profileImage || avatar);
+        setCoverImage(response.data.coverImage || coverAvatar);
         setMediaImages(response.data.gallery);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
