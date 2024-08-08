@@ -58,7 +58,7 @@ const Navbar = () => {
           <Link to="/contact" className="hover:text-black/70">
             <li>Contact</li>
           </Link>
-          {isLoggedIn !== true ? (
+          {!isLoggedIn === true ? (
             <Link to="/login" className="hover:text-black/70">
               <li>Log In</li>
             </Link>

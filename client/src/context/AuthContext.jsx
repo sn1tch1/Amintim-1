@@ -8,7 +8,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState();
   // let isLoggedIn;
+
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${BaseURL}/users/me`, {
@@ -29,6 +31,10 @@ export const AuthProvider = ({ children }) => {
       }
     };
     fetchUserData();
+
+    {
+      !token ? setIsLoggedIn(false) : setIsLoggedIn(true);
+    }
   }, []);
 
   const login = async () => {
