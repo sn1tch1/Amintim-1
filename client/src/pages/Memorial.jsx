@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useClipboard } from "@chakra-ui/react";
+import BASE_URL from "../utils/BaseURL";
 
 const Memorial = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const Memorial = () => {
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
   const [mediaImages, setMediaImages] = useState([]);
+  const [videoUrls, setVideoUrls] = useState([]);
+  const [audioUrls, setAudioUrls] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memorialData, setMemorialData] = useState(null);
   const [newTribute, setNewTribute] = useState("");
@@ -59,6 +62,8 @@ const Memorial = () => {
   const toggleEditName = () => {
     setIsEditingName(!isEditingName);
   };
+  const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
+  const MAX_AUDIO_SIZE = 5 * 1024 * 1024; // 5MB
 
   const handleTributeChange = (event) => {
     setNewTribute(event.target.value);
@@ -201,6 +206,122 @@ const Memorial = () => {
       toast.error("Error updating media images. Please try again.");
     }
   };
+
+  // const handleVideoUpload = async (event) => {
+  //   const files = event.target.files;
+  //   const urls = [];
+
+  //   for (let i = 0; i < files.length; i++) {
+  //     const formData = new FormData();
+  //     formData.append("video", files[i]);
+
+  //     try {
+  //       const response = await fetch(`${BASE_URL}/users/upload/video`, {
+  //         method: "POST",
+  //         body: formData,
+  //       });
+
+  //       const data = await response.json();
+  //       urls.push(data.secure_url);
+  //     } catch (error) {
+  //       console.error("Error uploading video:", error);
+  //     }
+  //   }
+
+  //   setVideoUrls((prevUrls) => [...prevUrls, ...urls]);
+  // };
+
+  // const handleAudioUpload = async (event) => {
+  //   const files = event.target.files;
+  //   const urls = [];
+
+  //   for (let i = 0; i < files.length; i++) {
+  //     const formData = new FormData();
+  //     formData.append("audio", files[i]);
+
+  //     try {
+  //       const response = await fetch(`${BASE_URL}/users/upload/audio`, {
+  //         method: "POST",
+  //         body: formData,
+  //       });
+
+  //       const data = await response.json();
+  //       urls.push(data.secure_url);
+  //     } catch (error) {
+  //       console.error("Error uploading audio:", error);
+  //     }
+  //   }
+
+  const handleVideoUpload = async (event) => {
+    const files = event.target.files;
+    const urls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      // Check file size
+      if (file.size > MAX_VIDEO_SIZE) {
+        toast.error("Video Audio file should be smaller than 20MB.");
+        continue; // Skip this file and move to the next
+      }
+      {
+        const formData = new FormData();
+        formData.append("video", file);
+
+        try {
+          const response = await fetch(`${BASE_URL}/users/upload/video`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+          urls.push(data.secure_url);
+        } catch (error) {
+          console.error("Error uploading video:", error);
+          toast.error("Error uploading video.");
+        }
+      }
+    }
+
+    setVideoUrls((prevUrls) => [...prevUrls, ...urls]);
+  };
+
+  const handleAudioUpload = async (event) => {
+    const files = event.target.files;
+    const urls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      // Check file size
+      if (file.size > MAX_AUDIO_SIZE) {
+        toast.error("Audio file should be smaller than 5MB.");
+        continue; // Skip this file and move to the next
+      } else {
+        const formData = new FormData();
+        formData.append("audio", file);
+
+        try {
+          const response = await fetch(`${BASE_URL}/users/upload/audio`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+          urls.push(data.secure_url);
+        } catch (error) {
+          console.error("Error uploading audio:", error);
+          toast.error("Error uploading audio.");
+        }
+      }
+    }
+
+    // Update state with URLs of uploaded files
+    setAudioUrls((prevUrls) => [...prevUrls, ...urls]);
+  };
+
+  //   setAudioUrls((prevUrls) => [...prevUrls, ...urls]);
+  // };
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
@@ -493,16 +614,47 @@ const Memorial = () => {
             {activeTab === "media" && (
               <div>
                 <div className="grid grid-cols-3 gap-2">
-                  {mediaImages?.length > 0 ? (
-                    mediaImages?.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`Media ${index}`}
-                        className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
-                        onClick={() => handleImageClick(index)}
-                      />
-                    ))
+                  {mediaImages?.length > 0 ||
+                  videoUrls?.length > 0 ||
+                  audioUrls?.length > 0 ? (
+                    <>
+                      {/* Render Images */}
+                      {mediaImages?.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Media ${index}`}
+                          className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                          onClick={() => handleImageClick(index)}
+                        />
+                      ))}
+
+                      {/* Render Videos */}
+                      {videoUrls?.map((url, index) => (
+                        <video
+                          key={index}
+                          controls
+                          onClick={() => handleImageClick(index)}
+                          className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                        >
+                          <source src={url} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      ))}
+
+                      {/* Render Audios */}
+                      {audioUrls?.map((url, index) => (
+                        <audio
+                          key={index}
+                          controls
+                          className="w-full  my-auto"
+                          onClick={() => handleImageClick(index)}
+                        >
+                          <source src={url} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      ))}
+                    </>
                   ) : (
                     <div className="col-span-3 text-center text-gray-500">
                       No media available. Click the button below to upload
@@ -523,6 +675,37 @@ const Memorial = () => {
                     className="hidden"
                     onChange={handleMediaImageChange}
                     multiple
+                  />
+                </div>
+                <div className="flex justify-center mt-4">
+                  <label
+                    htmlFor="videoInput"
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer"
+                  >
+                    Upload Video
+                  </label>
+                  <input
+                    type="file"
+                    id="videoInput"
+                    className="hidden"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                  />
+                </div>
+
+                <div className="flex justify-center mt-4">
+                  <label
+                    htmlFor="audioInput"
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer"
+                  >
+                    Upload Audio
+                  </label>
+                  <input
+                    type="file"
+                    id="audioInput"
+                    className="hidden"
+                    accept="audio/*"
+                    onChange={handleAudioUpload}
                   />
                 </div>
               </div>
