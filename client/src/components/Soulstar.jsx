@@ -71,24 +71,25 @@ const SoulStarsTab = () => {
                       />
                     </div>
                     <div>
-                      <h2 className="text-lg font-bold">
-                        {page.firstName} {page.middleName} {page.lastName}
+                      <h2 className="text-md md:text-lg font-bold">
+                        {page.firstName} {page.middleName}
+                        <span className="hidden md:block">{page.lastName}</span>
                       </h2>
-                      <h2 className="text-lg text-gray-800">
+                      <h2 className="text-sm md:text-lg text-gray-800">
                         {formattedDeathDate}
                       </h2>
                     </div>
                   </div>
-                  <div className="space-x-5">
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-5">
                     <Link
                       to={`/profile/view/${page._id}`}
-                      className="text-lg font-bold underline text-green-800 underline-offset-2"
+                      className="text-md md:text-lg font-bold underline text-green-800 underline-offset-2"
                     >
                       View
                     </Link>
                     <Link
                       to={`/memorial/profile/${page._id}`}
-                      className="text-lg font-bold underline text-blue-800 underline-offset-2"
+                      className="text-md md:text-lg font-bold underline text-blue-800 underline-offset-2"
                     >
                       Edit
                     </Link>

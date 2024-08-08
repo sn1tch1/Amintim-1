@@ -24,7 +24,7 @@ import { useClipboard } from "@chakra-ui/react";
 
 const Memorial = () => {
   const { id } = useParams();
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState(avatar);
   const [loading, setLoading] = useState(false);
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
@@ -378,7 +378,7 @@ const Memorial = () => {
                 </button>
               </p>
             )}
-            <div className="flex gap-6 items-center justify-center">
+            <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
               <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
                 <FaBirthdayCake size={20} />
                 {isEditingBirthDate ? (
