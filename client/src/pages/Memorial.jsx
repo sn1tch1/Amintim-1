@@ -124,6 +124,9 @@ const Memorial = () => {
         setCoverImage(response.data.coverImage);
         setMediaImages(response.data.gallery);
         setQRCode(response.data.QRCode);
+        setVideoUrls(response.data.videoGallery);
+        setAudioUrls(response.data.audioGallery);
+        console.log(response);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
       }
@@ -206,51 +209,6 @@ const Memorial = () => {
       toast.error("Error updating media images. Please try again.");
     }
   };
-
-  // const handleVideoUpload = async (event) => {
-  //   const files = event.target.files;
-  //   const urls = [];
-
-  //   for (let i = 0; i < files.length; i++) {
-  //     const formData = new FormData();
-  //     formData.append("video", files[i]);
-
-  //     try {
-  //       const response = await fetch(`${BASE_URL}/users/upload/video`, {
-  //         method: "POST",
-  //         body: formData,
-  //       });
-
-  //       const data = await response.json();
-  //       urls.push(data.secure_url);
-  //     } catch (error) {
-  //       console.error("Error uploading video:", error);
-  //     }
-  //   }
-
-  //   setVideoUrls((prevUrls) => [...prevUrls, ...urls]);
-  // };
-
-  // const handleAudioUpload = async (event) => {
-  //   const files = event.target.files;
-  //   const urls = [];
-
-  //   for (let i = 0; i < files.length; i++) {
-  //     const formData = new FormData();
-  //     formData.append("audio", files[i]);
-
-  //     try {
-  //       const response = await fetch(`${BASE_URL}/users/upload/audio`, {
-  //         method: "POST",
-  //         body: formData,
-  //       });
-
-  //       const data = await response.json();
-  //       urls.push(data.secure_url);
-  //     } catch (error) {
-  //       console.error("Error uploading audio:", error);
-  //     }
-  //   }
 
   const handleVideoUpload = async (event) => {
     const files = event.target.files;
@@ -349,6 +307,8 @@ const Memorial = () => {
           profileImage,
           coverImage,
           gallery: mediaImages,
+          videoGallery: videoUrls,
+          audioGallery: audioUrls,
           birthDate: newBirthDate,
           deathDate: newDeathDate,
           about: newAbout,
@@ -361,6 +321,7 @@ const Memorial = () => {
         }
       );
       if (response.status === 200) {
+        console.log("heheh", response);
         toast.success("Memorial page updated successfully");
       } else {
         toast.error("Error updating memorial page. Please try again.");
@@ -662,51 +623,53 @@ const Memorial = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex justify-center mt-4">
-                  <label
-                    htmlFor="mediaImageInput"
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer"
-                  >
-                    Upload Photos
-                  </label>
-                  <input
-                    type="file"
-                    id="mediaImageInput"
-                    className="hidden"
-                    onChange={handleMediaImageChange}
-                    multiple
-                  />
-                </div>
-                <div className="flex justify-center mt-4">
-                  <label
-                    htmlFor="videoInput"
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer"
-                  >
-                    Upload Video
-                  </label>
-                  <input
-                    type="file"
-                    id="videoInput"
-                    className="hidden"
-                    accept="video/*"
-                    onChange={handleVideoUpload}
-                  />
-                </div>
+                <div className="flex gap-4 items-center justify-center">
+                  <div className="flex justify-center items-center text-center mt-4">
+                    <label
+                      htmlFor="mediaImageInput"
+                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                    >
+                      Upload Photos
+                    </label>
+                    <input
+                      type="file"
+                      id="mediaImageInput"
+                      className="hidden"
+                      onChange={handleMediaImageChange}
+                      multiple
+                    />
+                  </div>
+                  <div className="flex justify-center items-center text-center mt-4">
+                    <label
+                      htmlFor="videoInput"
+                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                    >
+                      Upload Video
+                    </label>
+                    <input
+                      type="file"
+                      id="videoInput"
+                      className="hidden"
+                      accept="video/*"
+                      onChange={handleVideoUpload}
+                    />
+                  </div>
 
-                <div className="flex justify-center mt-4">
-                  <label
-                    htmlFor="audioInput"
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer"
-                  >
-                    Upload Audio
-                  </label>
-                  <input
-                    type="file"
-                    id="audioInput"
-                    className="hidden"
-                    accept="audio/*"
-                    onChange={handleAudioUpload}
-                  />
+                  <div className="flex justify-center items-center text-center mt-4">
+                    <label
+                      htmlFor="audioInput"
+                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                    >
+                      Upload Audio
+                    </label>
+                    <input
+                      type="file"
+                      id="audioInput"
+                      className="hidden"
+                      accept="audio/*"
+                      onChange={handleAudioUpload}
+                    />
+                  </div>
                 </div>
               </div>
             )}

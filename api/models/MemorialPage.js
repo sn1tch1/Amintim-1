@@ -25,6 +25,8 @@ const memorialPageSchema = new mongoose.Schema({
   birthDate: { type: Date },
   deathDate: { type: Date },
   gallery: [{ type: String }],
+  videoGallery: [{ type: String }],
+  audioGallery: [{ type: String }],
   tributes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tribute" }],
   createdAt: { type: Date, default: Date.now },
   isHuman: { type: Boolean, required: true }, // New boolean field to distinguish between human and pet
