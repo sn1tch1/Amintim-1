@@ -12,7 +12,7 @@ const SoulStarsTab = () => {
 
   useEffect(() => {
     const fetchMemorialPages = async () => {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
           `${BaseURL}/memorial/user/66ab9b2a413797d85938774c`,

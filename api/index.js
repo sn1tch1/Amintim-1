@@ -44,26 +44,101 @@ cloudinary.config({
 });
 
 // Set up multer-storage-cloudinary
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "Amintim",
+//     format: async (req, file) => "jpg", // supports promises as well
+//     public_id: (req, file) => file.originalname,
+//   },
+// });
+
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "Amintim",
-    format: async (req, file) => "jpg", // supports promises as well
+    format: async (req, file) => {
+      // Adjust based on file type
+      return file.mimetype.split("/")[1];
+    },
     public_id: (req, file) => file.originalname,
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  // Define allowed MIME types and file extensions
+  const allowedTypes = {
+    "image/jpeg": /jpeg|jpg/,
+    "image/png": /png/,
+    "image/gif": /gif/,
+    "audio/mpeg": /mp3/,
+    "audio/wav": /wav/,
+    "video/mp4": /mp4/,
+    "video/x-msvideo": /avi/,
+  };
+
+  const extname = Object.values(allowedTypes).some((regex) =>
+    regex.test(path.extname(file.originalname).toLowerCase())
+  );
+  const mimetype = Object.keys(allowedTypes).includes(file.mimetype);
+
+  if (extname && mimetype) {
+    return cb(null, true);
+  } else {
+    return cb(
+      new Error(
+        "Invalid file type. Only images, audio, and video files are allowed."
+      )
+    );
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+});
 
 app.post("/api/users/upload", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
   res.json({ url: req.file.path });
 });
 
 app.post("/api/users/upload/media", upload.array("files", 10), (req, res) => {
-  const files = req.files;
-  const urls = files.map((file) => file.path);
-  res.json({ urls: urls });
+  if (!req.files || req.files.length === 0) {
+    console.error("No files uploaded or files array is empty");
+    return res.status(400).json({ error: "No files uploaded" });
+  }
+
+  console.log("Uploaded files:", req.files);
+
+  try {
+    const urls = req.files.map((file) => file.path);
+    res.json({ urls: urls });
+  } catch (error) {
+    console.error("Error processing files:", error);
+    res.status(500).json({ error: "Error processing files" });
+  }
 });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
+// const upload = multer({ storage: storage });
+
+// app.post("/api/users/upload", upload.single("file"), (req, res) => {
+//   res.json({ url: req.file.path });
+// });
+
+// app.post("/api/users/upload/media", upload.array("files", 10), (req, res) => {
+//   const files = req.files;
+//   const urls = files.map((file) => file.path);
+//   res.json({ urls: urls });
+// });
 
 // const uploadDir = path.join(__dirname, "/uploads/users");
 // if (!fs.existsSync(uploadDir)) {

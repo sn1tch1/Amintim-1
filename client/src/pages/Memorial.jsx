@@ -378,7 +378,7 @@ const Memorial = () => {
                 </button>
               </p>
             )}
-            <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-6 items-center justify-center">
               <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
                 <FaBirthdayCake size={20} />
                 {isEditingBirthDate ? (
