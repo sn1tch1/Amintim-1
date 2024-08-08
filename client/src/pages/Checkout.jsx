@@ -83,86 +83,87 @@ const Checkout = () => {
 
   const SubTotal = calculateSubtotal().toFixed(2);
 
-  // const handlePurchase = async () => {
-  //   if (!isFormValid()) return; // Prevent submission if form is invalid
-  //   const token = localStorage.getItem("token"); // Retrieve token from localStorage
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch(`${BaseURL}/purchase/purchase`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`, // Include token in request headers
-  //       },
-  //       credentials: "include", // Include credentials with the request
-  //       body: JSON.stringify({
-  //         deliveryInfo,
-  //         items: groupedCart.map((item) => ({
-  //           id: item.id,
-  //           type: item.id, // Ensure type is included
-  //           price: item.price,
-  //           quantity: item.quantity,
-  //         })),
-  //       }),
-  //     });
-  //     console.log("asdfafd", groupedCart);
-
-  //     if (!response.ok) {
-  //       toast.error("Error Occured");
-  //       throw new Error("Network response was not ok");
-  //     }
-
-  //     const data = await response.json();
-  //     toast.success("Soulstar Purchased");
-  //     localStorage.removeItem("cartItems");
-  //     clearCart();
-  //     navigate("/congratulations");
-  //     console.log("Purchase successful:", data);
-  //   } catch (error) {
-  //     console.error("There was a problem with the fetch operation:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handlePurchase = async () => {
-    const token = localStorage.getItem("token");
-    if (!isFormValid()) return;
+    if (!isFormValid()) return; // Prevent submission if form is invalid
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${BaseURL}/purchase/purchase`,
-        {
+      const response = await fetch(`${BaseURL}/purchase/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in request headers
+        },
+        credentials: "include", // Include credentials with the request
+        body: JSON.stringify({
           deliveryInfo,
           items: groupedCart.map((item) => ({
             id: item.id,
-            type: item.type, // Ensure type is included
+            type: item.id, // Ensure type is included
             price: item.price,
             quantity: item.quantity,
           })),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include token in request headers
-          },
-          withCredentials: true, // Include credentials with the request
-        }
-      );
+        }),
+      });
+      console.log("asdfafd", groupedCart);
 
+      if (!response.ok) {
+        toast.error("Error Occured");
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
       toast.success("Soulstar Purchased");
       localStorage.removeItem("cartItems");
       clearCart();
       navigate("/congratulations");
-      console.log("Purchase successful:", response.data);
+      console.log("Purchase successful:", data);
     } catch (error) {
-      console.error("There was a problem with the axios operation:", error);
-      toast.error("Error Occured");
+      console.error("There was a problem with the fetch operation:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  // const handlePurchase = async () => {
+  //   const token = localStorage.getItem("token"); // Retrieve token from localStorage
+  //   if (!isFormValid()) return; // Prevent submission if form is invalid
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${BaseURL}/purchase/purchase`,
+  //       {
+  //         deliveryInfo,
+  //         items: groupedCart.map((item) => ({
+  //           id: item.id,
+  //           type: item.type, // Ensure type is included
+  //           price: item.price,
+  //           quantity: item.quantity,
+  //         })),
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`, // Include token in request headers
+  //         },
+  //         withCredentials: true, // Include credentials with the request
+  //       }
+  //     );
+
+  //     toast.success("Soulstar Purchased");
+  //     localStorage.removeItem("cartItems");
+  //     clearCart();
+  //     navigate("/congratulations");
+  //     console.log("Purchase successful:", response.data);
+  //   } catch (error) {
+  //     console.error("There was a problem with the axios operation:", error);
+  //     toast.error("Error Occured");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md flex flex-col lg:flex-row">

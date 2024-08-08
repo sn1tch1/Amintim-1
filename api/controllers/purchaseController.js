@@ -51,6 +51,8 @@ exports.purchaseSoulStar = async (req, res) => {
       }
     });
 
+    console.log(items);
+
     let totalKeys = totalBuy1 + totalBuy2 * 2;
 
     // Generate all keys
