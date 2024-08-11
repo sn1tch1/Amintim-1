@@ -10,7 +10,7 @@ const {
 const { protect } = require("../middleware/authMiddleware.js");
 
 // Create a new tribute
-router.post("/create/:id", protect, createTribute);
+router.post("/create/:id", createTribute);
 
 // Get all tributes for a memorial page
 router.get("/memorialPage/:id", getAllTributes);

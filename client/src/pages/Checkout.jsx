@@ -84,45 +84,68 @@ const Checkout = () => {
   const SubTotal = calculateSubtotal().toFixed(2);
 
   const handlePurchase = async () => {
-    if (!isFormValid()) return; // Prevent submission if form is invalid
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
-    setLoading(true);
+    const { email } = contactInfo;
+    const { firstName, lastName, address, postalCode, city } = deliveryInfo;
+    const { cardNumber, expiryDate, securityCode, cardHolderName } =
+      paymentInfo;
 
-    try {
-      const response = await fetch(`${BaseURL}/purchase/purchase`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include token in request headers
-        },
-        credentials: "include", // Include credentials with the request
-        body: JSON.stringify({
-          deliveryInfo,
-          items: groupedCart.map((item) => ({
-            id: item.id,
-            type: item.id, // Ensure type is included
-            price: item.price,
-            quantity: item.quantity,
-          })),
-        }),
+    const missingFields = [];
+
+    if (!email) missingFields.push("Email");
+    if (!firstName) missingFields.push("First Name");
+    if (!address) missingFields.push("Address");
+    if (!postalCode) missingFields.push("Postal Code");
+    if (!city) missingFields.push("City");
+    if (!cardNumber) missingFields.push("Card Number");
+    if (!expiryDate) missingFields.push("Expiry Date");
+    if (!securityCode) missingFields.push("Security Code");
+    if (!cardHolderName) missingFields.push("Card Holder Name");
+
+    if (missingFields.length > 0) {
+      missingFields.forEach((field) => {
+        toast.error(`${field} is required.`);
       });
-      console.log("asdfafd", groupedCart);
+      return;
+    } else {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      setLoading(true);
 
-      if (!response.ok) {
-        toast.error("Error Occured");
-        throw new Error("Network response was not ok");
+      try {
+        const response = await fetch(`${BaseURL}/purchase/purchase`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
+          credentials: "include", // Include credentials with the request
+          body: JSON.stringify({
+            deliveryInfo,
+            items: groupedCart.map((item) => ({
+              id: item.id,
+              type: item.id, // Ensure type is included
+              price: item.price,
+              quantity: item.quantity,
+            })),
+          }),
+        });
+        console.log("asdfafd", groupedCart);
+
+        if (!response.ok) {
+          toast.error("Error Occured");
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        toast.success("Soulstar Purchased");
+        localStorage.removeItem("cartItems");
+        clearCart();
+        navigate("/congratulations");
+        console.log("Purchase successful:", data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      } finally {
+        setLoading(false);
       }
-
-      const data = await response.json();
-      toast.success("Soulstar Purchased");
-      localStorage.removeItem("cartItems");
-      clearCart();
-      navigate("/congratulations");
-      console.log("Purchase successful:", data);
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -134,7 +157,9 @@ const Checkout = () => {
         </div>
       )}
       <div className="w-full lg:w-3/5 px-4 py-6 lg:px-12 mt-[60px] lg:py-[100px] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">Contact</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Contact <span className="text-red-500">*</span>
+        </h2>
         <div className="mb-6">
           <input
             className="w-full p-2 border border-gray-300 rounded-md mb-2"
@@ -158,11 +183,11 @@ const Checkout = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mb-4">Delivery</h2>
+        <h2 className="text-2xl font-bold mb-4">Delivery </h2>
         <div className="space-y-4 mb-6">
           <div>
             <label className="block font-medium mb-2" htmlFor="countryRegion">
-              Country/Region
+              Country/Region <span className="text-red-500">*</span>
             </label>
             <select
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -178,7 +203,7 @@ const Checkout = () => {
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="firstName">
-                First name
+                First name <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -205,7 +230,7 @@ const Checkout = () => {
           </div>
           <div>
             <label className="block font-medium mb-2" htmlFor="address">
-              Address
+              Address <span className="text-red-500">*</span>
             </label>
             <input
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -232,7 +257,7 @@ const Checkout = () => {
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="postalCode">
-                Postal code
+                Postal code <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -245,7 +270,7 @@ const Checkout = () => {
             </div>
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="city">
-                City
+                City <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -269,7 +294,7 @@ const Checkout = () => {
           <form className="space-y-4">
             <div>
               <label className="block font-medium mb-2" htmlFor="cardNumber">
-                Card number
+                Card number <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -283,7 +308,7 @@ const Checkout = () => {
             <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
               <div className="flex-1">
                 <label className="block font-medium mb-2" htmlFor="expiryDate">
-                  Valid until (MM / YY)
+                  Valid until (MM / YY) <span className="text-red-500">*</span>
                 </label>
                 <input
                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -299,7 +324,7 @@ const Checkout = () => {
                   className="block font-medium mb-2"
                   htmlFor="securityCode"
                 >
-                  Security code
+                  Security code <span className="text-red-500">*</span>
                 </label>
                 <input
                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -316,7 +341,7 @@ const Checkout = () => {
                 className="block font-medium mb-2"
                 htmlFor="cardHolderName"
               >
-                Name of Cardholder
+                Name of Cardholder <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -384,11 +409,11 @@ const Checkout = () => {
           </div>
           <button
             className={`w-full py-3 font-bold rounded-md ${
-              isFormValid()
+              loading === false
                 ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
                 : "cursor-not-allowed bg-[#fadc8d]"
             }`}
-            disabled={!isFormValid() || loading}
+            disabled={loading}
             onClick={handlePurchase}
           >
             {loading ? <Spinner /> : "Complete Purchase"}

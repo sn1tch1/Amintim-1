@@ -33,6 +33,7 @@ const View = () => {
     ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
     : "";
   const [newAbout, setNewAbout] = useState("");
+  const [note, setNote] = useState("");
   const [newFirstName, setNewFirstName] = useState("");
   const [newMiddleName, setNewMiddleName] = useState("");
   const [tributes, setTributes] = useState([]);
@@ -52,8 +53,6 @@ const View = () => {
           `${BaseURL}/tributes/memorialPage/${id}`
         ); // Replace with your actual API endpoint
         setTributes(response.data);
-
-        console.log(response);
       } catch (error) {
         console.error("Error fetching tributes:", error);
       }
@@ -70,6 +69,7 @@ const View = () => {
       setNewAbout(memorialData.about || "");
       setNewBirthDate(memorialData.birthDate || "");
       setNewDeathDate(memorialData.deathDate || "");
+      setNote(memorialData.note || "");
     }
   }, [memorialData]);
 
@@ -107,35 +107,62 @@ const View = () => {
     );
   };
 
+  // const handleTributeSubmit = async () => {
+  //   // const token = localStorage.getItem("token"); // Retrieve token from localStorage
+  //   // if (!isLoggedIn) {
+  //   //   toast.error("Please login first.");
+  //   //   navigate("/login");
+  //   //   return;
+  //   // } else {
+  //   setLoading(true);
+  //   try {
+  //     await axios.post(
+  //       `${BaseURL}/tributes/create/${id}`,
+  //       {
+  //         message: newTribute,
+  //       },
+  //       {
+  //         withCredentials: true,
+  //         // headers: {
+  //         //   Authorization: `Bearer ${token}`, // Include token in request headers
+  //         // },
+  //       }
+  //     );
+  //     setNewTribute("");
+  //     // Optionally refetch tributes or update state
+  //     toast.success("Tribute added successfully!");
+  //   } catch (error) {
+  //     toast.error("Failed to add tribute.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   // }
+  // };
+
   const handleTributeSubmit = async () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
-    if (!isLoggedIn) {
-      toast.error("Please login first.");
-      navigate("/login");
-      return;
-    } else {
-      setLoading(true);
-      try {
-        await axios.post(
-          `${BaseURL}/tributes/create/${id}`,
-          {
-            message: newTribute,
-          },
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${token}`, // Include token in request headers
-            },
-          }
-        );
-        setNewTribute("");
-        // Optionally refetch tributes or update state
-        toast.success("Tribute added successfully!");
-      } catch (error) {
-        toast.error("Failed to add tribute.");
-      } finally {
-        setLoading(false);
-      }
+    // const token = localStorage.getItem("token");
+    setLoading(true);
+    try {
+      await axios.post(
+        `${BaseURL}/tributes/create/${id}`,
+        {
+          message: newTribute,
+        },
+        {
+          withCredentials: true,
+          // headers: {
+          //   Authorization: `Bearer ${token}`, // Include token in request headers
+          // },
+        }
+      );
+      setNewTribute("");
+      // Optionally refetch tributes or update state
+      toast.success("Tribute added successfully!");
+    } catch (error) {
+      toast.error("Failed to add tribute.");
+      console.log("error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,13 +175,13 @@ const View = () => {
             <img
               src={`/src/assets/cover.png`}
               alt="Profile"
-              className="w-full h-[150px] object-cover"
+              className="w-full h-[220px] object-cover"
             />
           ) : (
             <img
               src={coverImage}
               alt="Cover"
-              className="w-full h-[150px] object-cover"
+              className="w-full h-[220px] object-cover"
             />
           )}
         </div>
@@ -178,7 +205,7 @@ const View = () => {
           </div>
         </div>
         <div className="text-center mt-2 space-y-2">
-          <h2 className="text-xl">In memory of</h2>
+          <h2 className="text-xl">{note ? note : "In memory of"}</h2>
 
           <p className="text-gray-600 text-lg font-bold font-berkshire">
             {newFirstName} {newMiddleName} {newLastName}
@@ -295,20 +322,20 @@ const View = () => {
                         key={tribute._id}
                         className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
                       >
-                        <div className="flex-shrink-0 mr-4">
+                        {/* <div className="flex-shrink-0 mr-4">
                           {tribute.user.profileImage && (
                             <img
                               src={tribute.user.profileImage}
                               alt={`${tribute.user.name}'s profile`}
                               className="h-16 w-16 object-cover rounded-full"
                             />
-                          )}
-                        </div>
+                          )} 
+                        </div> */}
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
-                            <div className="font-semibold">
+                            {/* <div className="font-semibold">
                               {tribute.user.firstName}
-                            </div>
+                            </div> */}
                             <div className="text-sm text-gray-700">
                               {new Date(tribute.createdAt).toLocaleDateString()}
                             </div>

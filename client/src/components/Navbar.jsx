@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import BaseURL from "../utils/BaseURL";
+import { Select } from "@chakra-ui/react";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -106,25 +107,25 @@ const Navbar = () => {
           <option value="VND">(Vietnam) VND ₫</option>
           <option value="MYR">(Malaysia) MYR RM</option>
           <option value="PKR">(Pakistan) PKR Rs.</option>
-        </Select>
-        <Select
-          border="none"
-          outline="none"
-          width={"90px"}
-          size="sm"
-          placeholder="English"
-          className="font-[500]"
-        >
-          <option value="English">English</option>
-          <option value="Italian">Italian</option>
-          <option value="French">French</option>
-          <option value="Russian">Russian</option>
-          <option value="Dutch">Dutch</option>
-          <option value="Turkish">Turkish</option>
-          <option value="Polish">Polish</option>
-          <option value="Ukranian">Ukranian</option>
-          <option value="Arabic">Arabic</option>
         </Select> */}
+          <Select
+            border="none"
+            outline="none"
+            width={"110px"}
+            size="sm"
+            placeholder="English"
+            className="font-[500]"
+          >
+            <option value="English">English</option>
+            <option value="Italian">Italian</option>
+            <option value="French">French</option>
+            <option value="Russian">Russian</option>
+            <option value="Dutch">Dutch</option>
+            <option value="Turkish">Turkish</option>
+            <option value="Polish">Polish</option>
+            <option value="Ukranian">Ukranian</option>
+            <option value="Arabic">Arabic</option>
+          </Select>
           <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
             <svg
               xmlns="http://www.w3.org/2000/svg"

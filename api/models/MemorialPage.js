@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const tributeSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  // user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   message: { type: String, required: true },
   memorialPage: {
     type: mongoose.Schema.Types.ObjectId,

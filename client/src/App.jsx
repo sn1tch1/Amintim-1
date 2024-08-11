@@ -17,6 +17,7 @@ import Captcha from "./pages/Captcha";
 import Settings from "./pages/Settings";
 import QRLink from "./pages/QRLink";
 import Proceed from "./pages/Proceed";
+import FAQ from "./pages/FAQ";
 import Memorial from "./pages/Memorial";
 import TributePageSetup from "./pages/Tribute";
 import Checkout from "./pages/Checkout";
@@ -31,12 +32,14 @@ const AppContent = () => {
     "/",
     "/shop",
     "/aboutus",
+    "/faq",
     "/contact",
     "/cart",
     "/checkout",
     "/manage-account/settings",
+    "/login",
   ];
-  const headerPaths = ["/login", "/verify"];
+  const headerPaths = ["/tribute", "/verify"];
 
   const showNavbar = navbarPaths.includes(location.pathname);
   const showHeader = headerPaths.includes(location.pathname);
@@ -51,6 +54,7 @@ const AppContent = () => {
         <Route path="/shop" element={<Shop />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
         <Route path="/congratulations" element={<Congratulations />} />

@@ -3,13 +3,19 @@ import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
 import BG from "../assets/home/img-1.webp";
 import Carousel from "../components/Carousel";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/shop");
+  };
   useEffect(() => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  
+
   return (
     <div className="bg-[#f7f7f7]">
       <section
@@ -20,7 +26,11 @@ const Home = () => {
 
         <p className="z-20">Memories that last forever</p>
         <h2 className="text-5xl z-20 font-berkshire">Your soul star</h2>
-        <button className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2 ">
+
+        <button
+          onClick={handleClick}
+          className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2"
+        >
           To your soul star
         </button>
       </section>
@@ -40,9 +50,11 @@ const Home = () => {
           </p>
           <p>Create your memory.</p>
         </div>
-        <button className="py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2 ">
-          To your soul star
-        </button>
+        <Link to="/shop" className="block">
+          <button className="w-full h-full py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
+            To your soul star
+          </button>
+        </Link>
       </section>
 
       {/* <Carousel /> */}

@@ -468,7 +468,7 @@ exports.deleteMemorialPage = async (req, res) => {
 
 // Create a new tribute
 exports.createTribute = async (req, res) => {
-  const user = req.user.id;
+  // const user = req.user.id;
   try {
     // Find the memorial page by ID
     const memorialPage = await MemorialPage.findById(req.params.id);
@@ -478,7 +478,7 @@ exports.createTribute = async (req, res) => {
 
     // Create a new tribute
     const tribute = new Tribute({
-      user,
+      // user,
       message: req.body.message,
       memorialPage: req.params.id, // Set the memorial page reference
     });
@@ -508,10 +508,10 @@ exports.getAllTributes = async (req, res) => {
   try {
     const memorialPage = await MemorialPage.findById(req.params.id).populate({
       path: "tributes",
-      populate: {
-        path: "user", // Populate user information within tributes
-        select: "firstName profileImage", // Select only the fields you need
-      },
+      // populate: {
+      //   path: "user", // Populate user information within tributes
+      //   select: "firstName profileImage", // Select only the fields you need
+      // },
     });
     if (!memorialPage) {
       return res.status(404).json({ message: "Memorial page not found" });

@@ -44,6 +44,7 @@ const Memorial = () => {
     ? format(new Date(memorialData?.birthDate), "dd MMMM yyyy")
     : "";
   const [newAbout, setNewAbout] = useState("");
+  const [note, setNote] = useState("");
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
@@ -112,6 +113,7 @@ const Memorial = () => {
       setNewAbout(memorialData.about || "");
       setNewBirthDate(memorialData.birthDate || "");
       setNewDeathDate(memorialData.deathDate || "");
+      setNote(memorialData.note || "");
     }
   }, [memorialData]);
 
@@ -126,6 +128,7 @@ const Memorial = () => {
         setQRCode(response.data.QRCode);
         setVideoUrls(response.data.videoGallery);
         setAudioUrls(response.data.audioGallery);
+
         console.log(response);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
@@ -332,7 +335,7 @@ const Memorial = () => {
   };
 
   const handleTributeSubmit = async () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     setLoading(true);
     try {
       await axios.post(
@@ -342,9 +345,9 @@ const Memorial = () => {
         },
         {
           withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`, // Include token in request headers
-          },
+          // headers: {
+          //   Authorization: `Bearer ${token}`, // Include token in request headers
+          // },
         }
       );
       setNewTribute("");
@@ -362,6 +365,27 @@ const Memorial = () => {
     saveAs(imageUrl);
   };
 
+  const profileLink = `https://Amintim.vercel.app/profile/view/${id}`; // Update this with the correct URL
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Check out this memorial profile",
+          url: profileLink,
+        })
+        .then(() => {
+          toast.success("Link shared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error sharing:", error);
+          toast.error("Failed to share the link.");
+        });
+    } else {
+      toast.error("Share functionality is not supported on this browser.");
+    }
+  };
+
   return (
     <>
       <div className="min-h-screen bg-white">
@@ -372,13 +396,13 @@ const Memorial = () => {
               <img
                 src={`/src/assets/cover.png`}
                 alt="Profile"
-                className="w-full h-[150px] object-cover"
+                className="w-full h-[220px] object-cover"
               />
             ) : (
               <img
                 src={coverImage}
                 alt="Cover"
-                className="w-full h-[150px] object-cover"
+                className="w-full h-[220px] object-cover"
               />
             )}
             <label
@@ -427,7 +451,9 @@ const Memorial = () => {
             </div>
           </div>
           <div className="text-center mt-2 space-y-2">
-            <h2 className="text-xl">In memory of</h2>
+            <h2 className="text-xl md:w-1/2 w-full px-6 mx-auto">
+              {note ? note : "In memory of"}
+            </h2>
             {isEditingName ? (
               <div>
                 <input
@@ -496,6 +522,7 @@ const Memorial = () => {
               </p>
             </div>
           </div>
+
           <div className="flex justify-center mt-4 space-x-2">
             <button
               // to="/manage-account/settings"
@@ -708,7 +735,7 @@ const Memorial = () => {
                           key={tribute._id}
                           className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
                         >
-                          <div className="flex-shrink-0 mr-4">
+                          {/* <div className="flex-shrink-0 mr-4">
                             {tribute.user.profileImage && (
                               <img
                                 src={tribute.user.profileImage}
@@ -716,12 +743,12 @@ const Memorial = () => {
                                 className="h-16 w-16 object-cover rounded-full"
                               />
                             )}
-                          </div>
+                          </div> */}
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="font-semibold">
+                              {/* <div className="font-semibold">
                                 {tribute.user.firstName}
-                              </div>
+                              </div> */}
                               <div className="text-sm text-gray-700">
                                 {new Date(
                                   tribute.createdAt
@@ -813,6 +840,9 @@ const Memorial = () => {
           >
             <ModalCloseButton />
             <img src={QRCode} alt="QR Code" />
+            <Button colorScheme="teal" onClick={handleShare} className="mt-4">
+              Share Profile Link
+            </Button>
             <Button onClick={handleDownload} colorScheme="blue" mt="4">
               Download
             </Button>

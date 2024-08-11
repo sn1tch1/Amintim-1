@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
           // const userData = await response.json();
           setUser(response.data);
-          setIsLoggedIn(true);
+          // setIsLoggedIn(true);
           localStorage.setItem("user", JSON.stringify(response.data));
         } else {
           // Handle error if fetching user data fails

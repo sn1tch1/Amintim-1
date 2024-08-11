@@ -1,5 +1,7 @@
 import React from "react";
 import Logo from "../assets/logo-white.png";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <div className="bg-[#1D1D1D] p-14 text-white space-y-8">
@@ -14,22 +16,41 @@ const Footer = () => {
 
         <ul className="space-y-4 text-center lg:text-start">
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            Despre Noi
+            <Link to="/aboutus">Despre Noi</Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            Contact
+            <Link to="/contact">Contact</Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            FAQ
+            <Link to="/faq">FAQ</Link>
+          </li>
+
+          <li className="cursor-pointer text-white/70 hover:text-white duration-300">
+            <a
+              href="URL_FOR_TERMS_CONDITIONS"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Termeni si Conditii
+            </a>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            Termeni si Conditii
+            <a
+              href="URL_FOR_COOKIE_POLICY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Politica Cookie
+            </a>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            Politica Cookie
-          </li>
-          <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            Politica de Conidentialitate
+            <a
+              href="URL_FOR_PRIVACY_POLICY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Politica de Conidentialitate
+            </a>
           </li>
         </ul>
       </div>

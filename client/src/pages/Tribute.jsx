@@ -127,7 +127,7 @@ const TributePageSetup = () => {
         </div>
         <div>
           <label className="block font-medium mb-2" htmlFor="firstName">
-            First Name
+            {selectedTab === "Human" ? "First Name" : "Name"}
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -138,32 +138,36 @@ const TributePageSetup = () => {
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label className="block font-medium mb-2" htmlFor="middleName">
-            Middle Name
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md"
-            id="middleName"
-            type="text"
-            placeholder="Middle Name"
-            value={formData.middleName}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-2" htmlFor="lastName">
-            Last Name
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md"
-            id="lastName"
-            type="text"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </div>
+        {selectedTab === "Human" && (
+          <>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="middleName">
+                Middle Name
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="middleName"
+                type="text"
+                placeholder="Middle Name"
+                value={formData.middleName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="lastName"
+                type="text"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
         <div>
           <label className="block font-medium mb-2" htmlFor="note">
             Introductory Note

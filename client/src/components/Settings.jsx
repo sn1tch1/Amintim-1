@@ -135,7 +135,7 @@ const SettingsTab = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-center mb-8">
+      {/* <div className="flex justify-center mb-8">
         <div className="relative">
           <input
             type="file"
@@ -162,7 +162,7 @@ const SettingsTab = () => {
             </div>
           </label>
         </div>
-      </div>
+      </div> */}
       <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-gray-700">First Name</label>
