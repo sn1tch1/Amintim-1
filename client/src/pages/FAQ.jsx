@@ -3,7 +3,7 @@ import FAQs from "../components/FAQs";
 
 const FAQ = () => {
   return (
-    <div>
+    <div className="mt-[80px] md:mt-0">
       <FAQs />
     </div>
   );
