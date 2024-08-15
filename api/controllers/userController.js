@@ -117,7 +117,6 @@ exports.verifyUser = async (req, res) => {
     if (!user || user.verificationCode !== verificationCode) {
       return res.status(400).json({ message: "Invalid verification code" });
     }
-
     user.isVerified = true;
     user.verificationCode = null;
     await user.save();
