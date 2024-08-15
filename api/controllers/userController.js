@@ -28,17 +28,15 @@ exports.registerUser = async (req, res) => {
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
       ).toString();
-      console.log("object", verificationCode);
 
       user.email = email;
       user.verificationCode = verificationCode;
       user.isVerified = false;
 
-      console.log("object", user);
+      let subject = "Please verify your email";
 
       await user.save();
-      console.log("object");
-      await sendEmail(user.email, `${verificationCode}`);
+      await sendEmail(user.email, subject, `${verificationCode}`);
 
       res.status(201).json({ message: "Verification email sent" });
     }
@@ -157,7 +155,9 @@ exports.resendVerificationCode = async (req, res) => {
     user.verificationCode = verificationCode;
     await user.save();
 
-    await sendEmail(user.email, `${verificationCode}`);
+    let subject = "Please verify your email";
+
+    await sendEmail(user.email, subject, `${verificationCode}`);
 
     res.status(200).json({ message: "Verification code resent" });
   } catch (error) {
