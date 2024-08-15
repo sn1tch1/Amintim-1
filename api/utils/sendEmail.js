@@ -18,9 +18,7 @@ const sendEmail = async (to, subject, keysFlat) => {
     <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
       <h1 style="color: #007BFF;">Amintim</h1>
       <p style="font-size: 16px; line-height: 1.5;">Hello,</p>
-      <p style="font-size: 16px; line-height: 1.5;">Thank you for your purchase from Amintim! We're excited to let you know that your key for the Soul Star purchase is ready.</p>
-      <p style="font-size: 16px; line-height: 1.5;"><strong>Your Key:</strong> <code style="background: #f1f1f1; padding: 4px; border-radius: 4px;">${keysList}</code></p>
-      <p style="font-size: 16px; line-height: 1.5;">Please keep this key safe as it is required for accessing your purchased items.</p>
+      <p style="font-size: 16px; line-height: 1.5;">Thank you for your purchase from Amintim! We're excited to let you know that you have purchased a Soul Star.</p>
       <p style="font-size: 16px; line-height: 1.5;">If you have any questions or need assistance, feel free to <a href="mailto:support@amintim.com" style="color: #007BFF;">contact our support team</a>.</p>
       <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
       <p style="font-size: 16px; line-height: 1.5;">The Amintim Team</p>

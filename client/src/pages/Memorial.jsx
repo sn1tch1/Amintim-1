@@ -36,7 +36,6 @@ const Memorial = () => {
   const [memorialData, setMemorialData] = useState(null);
   const [newTribute, setNewTribute] = useState("");
   const imageUrl = `${IMAGES_BASE_URL}/uploads/QRs/${id}.png`;
-  const { hasCopied, onCopy } = useClipboard(imageUrl);
   const formattedDeathDate = memorialData
     ? format(new Date(memorialData?.deathDate), "dd MMMM yyyy")
     : "";
@@ -45,6 +44,7 @@ const Memorial = () => {
     : "";
   const [newAbout, setNewAbout] = useState("");
   const [note, setNote] = useState("");
+  const [human, setHuman] = useState("");
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
@@ -133,6 +133,7 @@ const Memorial = () => {
       setNewBirthDate(memorialData.birthDate || "");
       setNewDeathDate(memorialData.deathDate || "");
       setNote(memorialData.note || "");
+      setHuman(memorialData.isHuman || "");
     }
   }, [memorialData]);
 
@@ -497,26 +498,31 @@ const Memorial = () => {
           </div>
           <div className="text-center mt-2 space-y-2">
             <h2 className="text-xl md:w-1/2 w-full px-6 mx-auto">
-              {isEditingAnimal ? (
-                <div>
-                  <input
-                    type="text"
-                    value={animalName}
-                    onChange={handleAnimalChange}
-                    className="border rounded px-2 py-1"
-                  />
-                  <button onClick={toggleEditAnimal} className="ml-2">
-                    <CiEdit size={22} />
-                  </button>
-                </div>
-              ) : (
-                <p className="text-gray-600 text-lg font-bold font-berkshire">
-                  {animalName && animalName}
-                  <button onClick={toggleEditAnimal} className="ml-2">
-                    <CiEdit size={22} />
-                  </button>
-                </p>
+              {human !== true && (
+                <>
+                  {isEditingAnimal ? (
+                    <div>
+                      <input
+                        type="text"
+                        value={animalName}
+                        onChange={handleAnimalChange}
+                        className="border rounded px-2 py-1"
+                      />
+                      <button onClick={toggleEditAnimal} className="ml-2">
+                        <CiEdit size={22} />
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-gray-600 text-lg font-bold font-berkshire">
+                      {animalName}
+                      <button onClick={toggleEditAnimal} className="ml-2">
+                        <CiEdit size={22} />
+                      </button>
+                    </p>
+                  )}
+                </>
               )}
+
               {isEditingNote ? (
                 <div>
                   <input
@@ -570,26 +576,31 @@ const Memorial = () => {
                 </button>
               </p>
             )}
-            {isEditingBreed ? (
-              <div>
-                <input
-                  type="text"
-                  value={breedName}
-                  onChange={handleBreedChange}
-                  className="border rounded px-2 py-1"
-                />
-                <button onClick={toggleEditBreed} className="ml-2">
-                  <CiEdit size={22} />
-                </button>
-              </div>
-            ) : (
-              <p className="text-gray-600 text-lg font-bold font-berkshire">
-                {breedName && breedName}
-                <button onClick={toggleEditBreed} className="ml-2">
-                  <CiEdit size={22} />
-                </button>
-              </p>
+            {human !== true && (
+              <>
+                {isEditingBreed ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={breedName}
+                      onChange={handleBreedChange}
+                      className="border rounded px-2 py-1"
+                    />
+                    <button onClick={toggleEditBreed} className="ml-2">
+                      <CiEdit size={22} />
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-gray-600 text-lg font-bold font-berkshire">
+                    {breedName && breedName}
+                    <button onClick={toggleEditBreed} className="ml-2">
+                      <CiEdit size={22} />
+                    </button>
+                  </p>
+                )}
+              </>
             )}
+
             <div className="flex flex-col md:flex-row gap-3 md:gap-6 items-center justify-center">
               <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
                 <FaBirthdayCake size={20} />
@@ -843,8 +854,8 @@ const Memorial = () => {
                             {
                               <img
                                 src={
-                                  tribute?.user?.profileImage ||
-                                  tribute?.profileImage ||
+                                  // tribute?.user?.profileImage ||
+                                  // tribute?.profileImage ||
                                   avatar
                                 }
                                 alt={`${tribute?.user?.name}'s profile`}

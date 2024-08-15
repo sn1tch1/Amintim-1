@@ -323,11 +323,7 @@ const View = () => {
                         <div className="flex-shrink-0 mr-4">
                           {
                             <img
-                              src={
-                                tribute?.user?.profileImage ||
-                                tribute?.profileImage ||
-                                avatar
-                              }
+                              src={avatar}
                               alt={`${tribute?.user?.name}'s profile`}
                               className="h-16 w-16 object-cover rounded-full"
                             />

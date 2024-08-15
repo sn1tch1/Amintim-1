@@ -17,11 +17,9 @@ const TributePageSetup = () => {
     deathDate: "",
     profileImage: "",
     coverImage: "",
-    key: "",
     animal: "", // New field for animal name
     breed: "", // New field for breed
   });
-  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,18 +31,12 @@ const TributePageSetup = () => {
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setModalOpen(true);
-  };
+  const handleFormSubmit = async (event) => {
+    event.preventDefault(); // Prevents the default form submission behavior
 
-  const handleKeyChange = (e) => {
-    setFormData((prevData) => ({ ...prevData, key: e.target.value }));
-  };
-
-  const handleFormSubmit = async () => {
     const token = localStorage.getItem("token");
     setLoading(true);
+
     try {
       const response = await axios.post(
         `${BaseURL}/memorial`,
@@ -76,9 +68,9 @@ const TributePageSetup = () => {
       );
     } finally {
       setLoading(false);
-      setModalOpen(false);
     }
   };
+
 
   return (
     <div className="p-4 mx-auto bg-white rounded-lg shadow-md py-[80px]">
@@ -111,7 +103,7 @@ const TributePageSetup = () => {
           Animal
         </button>
       </div>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4" onSubmit={handleFormSubmit}>
         {selectedTab === "Human" ? (
           <>
             <div>
@@ -242,36 +234,6 @@ const TributePageSetup = () => {
           {loading ? <Spinner /> : "Create"}
         </button>
       </form>
-
-      {/* Modal for key input */}
-      {modalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h3 className="text-xl font-semibold mb-4">Enter Key</h3>
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md"
-              type="text"
-              placeholder="Enter your key"
-              value={formData.key}
-              onChange={handleKeyChange}
-            />
-            <div className="flex justify-end mt-4 space-x-2">
-              <button
-                className="px-4 py-2 bg-gray-300 text-black rounded-full"
-                onClick={() => setModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-black text-white rounded-full"
-                onClick={handleFormSubmit}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
