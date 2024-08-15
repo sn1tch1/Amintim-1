@@ -5,10 +5,11 @@ import { useAuth } from "../context/AuthContext";
 import BaseURL from "../utils/BaseURL";
 
 const PrivateRoute = ({ element }) => {
-  const { isLoggedIn, token } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [userVerified, setUserVerified] = useState(true);
   const location = useLocation();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUserData = async () => {
