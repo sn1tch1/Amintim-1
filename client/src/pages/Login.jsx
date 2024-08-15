@@ -28,7 +28,7 @@ const Login = () => {
           email,
         });
         if (response.status === 201) {
-          toast.success("Registered Successfully");
+          toast.success("Verify Your Email");
           localStorage.setItem("token", response?.data.token);
           navigate("/verify", { state: { email } });
           login();

@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
 const tributeSchema = new mongoose.Schema({
-  // user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  profileImage: { type: String },
+  firstName: { type: String },
   message: { type: String, required: true },
   memorialPage: {
     type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +16,8 @@ const tributeSchema = new mongoose.Schema({
 const memorialPageSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String },
+  animal: { type: String },
+  breed: { type: String },
   firstName: { type: String },
   QRCode: { type: String },
   middleName: { type: String },

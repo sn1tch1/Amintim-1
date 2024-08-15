@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import avatar from "../assets/avatar.png";
-import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
+import BaseURL from "../utils/BaseURL";
 
 const SoulStarsTab = () => {
   const [memorialPages, setMemorialPages] = useState([]);

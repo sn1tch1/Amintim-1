@@ -8,7 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
-import { FaBirthdayCake } from "react-icons/fa";
+import { FaBirthdayCake, FaHome } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { useAuth } from "../context/AuthContext";
 import { Spinner } from "@chakra-ui/react";
@@ -35,6 +35,8 @@ const View = () => {
   const [newAbout, setNewAbout] = useState("");
   const [note, setNote] = useState("");
   const [newFirstName, setNewFirstName] = useState("");
+  const [breedName, setBreedName] = useState("");
+  const [animalName, setAnimalName] = useState("");
   const [newMiddleName, setNewMiddleName] = useState("");
   const [tributes, setTributes] = useState([]);
   const [newLastName, setNewLastName] = useState("");
@@ -64,6 +66,8 @@ const View = () => {
   useEffect(() => {
     if (memorialData) {
       setNewFirstName(memorialData.firstName || "");
+      setBreedName(memorialData.breed || "");
+      setAnimalName(memorialData.animal || "");
       setNewMiddleName(memorialData.middleName || "");
       setNewLastName(memorialData.lastName || "");
       setNewAbout(memorialData.about || "");
@@ -107,54 +111,41 @@ const View = () => {
     );
   };
 
-  // const handleTributeSubmit = async () => {
-  //   // const token = localStorage.getItem("token"); // Retrieve token from localStorage
-  //   // if (!isLoggedIn) {
-  //   //   toast.error("Please login first.");
-  //   //   navigate("/login");
-  //   //   return;
-  //   // } else {
-  //   setLoading(true);
-  //   try {
-  //     await axios.post(
-  //       `${BaseURL}/tributes/create/${id}`,
-  //       {
-  //         message: newTribute,
-  //       },
-  //       {
-  //         withCredentials: true,
-  //         // headers: {
-  //         //   Authorization: `Bearer ${token}`, // Include token in request headers
-  //         // },
-  //       }
-  //     );
-  //     setNewTribute("");
-  //     // Optionally refetch tributes or update state
-  //     toast.success("Tribute added successfully!");
-  //   } catch (error) {
-  //     toast.error("Failed to add tribute.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //   // }
-  // };
-
   const handleTributeSubmit = async () => {
-    // const token = localStorage.getItem("token");
+    const User = localStorage.getItem("user");
+    const userParsed = JSON.parse(User);
     setLoading(true);
     try {
-      await axios.post(
-        `${BaseURL}/tributes/create/${id}`,
-        {
-          message: newTribute,
-        },
-        {
-          withCredentials: true,
-          // headers: {
-          //   Authorization: `Bearer ${token}`, // Include token in request headers
-          // },
-        }
-      );
+      if (userParsed) {
+        await axios.post(
+          `${BaseURL}/tributes/create/${id}`,
+          {
+            firstName: userParsed.firstName,
+            profileImage,
+            message: newTribute,
+          },
+          {
+            withCredentials: true,
+            // headers: {
+            //   Authorization: `Bearer ${token}`, // Include token in request headers
+            // },
+          }
+        );
+      } else {
+        await axios.post(
+          `${BaseURL}/tributes/create/${id}`,
+          {
+            message: newTribute,
+          },
+          {
+            withCredentials: true,
+            // headers: {
+            //   Authorization: `Bearer ${token}`, // Include token in request headers
+            // },
+          }
+        );
+      }
+
       setNewTribute("");
       // Optionally refetch tributes or update state
       toast.success("Tribute added successfully!");
@@ -169,6 +160,11 @@ const View = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="relative bg-white">
+        <Link to="/">
+          <button className="bg-white absolute top-4 p-2 left-4 z-[100] backdrop-blur-md rounded-full shadow-md">
+            <FaHome size={20} />
+          </button>
+        </Link>
         {/* Cover Image */}
         <div className="relative">
           {!coverImage ? (
@@ -205,11 +201,13 @@ const View = () => {
           </div>
         </div>
         <div className="text-center mt-2 space-y-2">
+          <h2 className="text-xl">{animalName && animalName}</h2>
           <h2 className="text-xl">{note ? note : "In memory of"}</h2>
 
           <p className="text-gray-600 text-lg font-bold font-berkshire">
             {newFirstName} {newMiddleName} {newLastName}
           </p>
+          <h2 className="text-xl">{breedName && breedName}</h2>
 
           <div className="flex gap-6 items-center justify-center">
             <p className="text-gray-600 flex gap-3 items-center justify-center font-bold">
@@ -322,20 +320,26 @@ const View = () => {
                         key={tribute._id}
                         className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
                       >
-                        {/* <div className="flex-shrink-0 mr-4">
-                          {tribute.user.profileImage && (
+                        <div className="flex-shrink-0 mr-4">
+                          {
                             <img
-                              src={tribute.user.profileImage}
-                              alt={`${tribute.user.name}'s profile`}
+                              src={
+                                tribute?.user?.profileImage ||
+                                tribute?.profileImage ||
+                                avatar
+                              }
+                              alt={`${tribute?.user?.name}'s profile`}
                               className="h-16 w-16 object-cover rounded-full"
                             />
-                          )} 
-                        </div> */}
+                          }
+                        </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
-                            {/* <div className="font-semibold">
-                              {tribute.user.firstName}
-                            </div> */}
+                            <div className="font-semibold">
+                              {tribute?.user?.firstName ||
+                                tribute?.firstName ||
+                                "Anonymous"}
+                            </div>
                             <div className="text-sm text-gray-700">
                               {new Date(tribute.createdAt).toLocaleDateString()}
                             </div>

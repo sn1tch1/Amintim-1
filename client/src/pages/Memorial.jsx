@@ -8,7 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
-import { FaBirthdayCake } from "react-icons/fa";
+import { FaBirthdayCake, FaHome } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { ModalCloseButton, Spinner, useDisclosure } from "@chakra-ui/react";
 import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
@@ -49,7 +49,12 @@ const Memorial = () => {
   const [isEditingBirthDate, setIsEditingBirthDate] = useState(false);
   const [isEditingDeathDate, setIsEditingDeathDate] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingNote, setIsEditingNote] = useState(false);
+  const [isEditingAnimal, setIsEditingAnimal] = useState(false);
+  const [isEditingBreed, setIsEditingBreed] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
+  const [breedName, setBreedName] = useState("");
+  const [animalName, setAnimalName] = useState("");
   const [QRCode, setQRCode] = useState("");
   const [newMiddleName, setNewMiddleName] = useState("");
   const [tributes, setTributes] = useState([]);
@@ -60,8 +65,20 @@ const Memorial = () => {
   const handleFirstNameChange = (e) => setNewFirstName(e.target.value);
   const handleMiddleNameChange = (e) => setNewMiddleName(e.target.value);
   const handleLastNameChange = (e) => setNewLastName(e.target.value);
+  const handleNoteChange = (e) => setNote(e.target.value);
+  const handleAnimalChange = (e) => setAnimalName(e.target.value);
+  const handleBreedChange = (e) => setBreedName(e.target.value);
   const toggleEditName = () => {
     setIsEditingName(!isEditingName);
+  };
+  const toggleEditNote = () => {
+    setIsEditingNote(!isEditingNote);
+  };
+  const toggleEditAnimal = () => {
+    setIsEditingAnimal(!isEditingAnimal);
+  };
+  const toggleEditBreed = () => {
+    setIsEditingBreed(!isEditingBreed);
   };
   const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
   const MAX_AUDIO_SIZE = 5 * 1024 * 1024; // 5MB
@@ -108,6 +125,8 @@ const Memorial = () => {
   useEffect(() => {
     if (memorialData) {
       setNewFirstName(memorialData.firstName || "");
+      setBreedName(memorialData.breed || "");
+      setAnimalName(memorialData.animal || "");
       setNewMiddleName(memorialData.middleName || "");
       setNewLastName(memorialData.lastName || "");
       setNewAbout(memorialData.about || "");
@@ -318,13 +337,15 @@ const Memorial = () => {
           firstName: newFirstName,
           middleName: newMiddleName,
           lastName: newLastName,
+          animal: animalName,
+          breed: breedName,
+          note,
         },
         {
           withCredentials: true,
         }
       );
       if (response.status === 200) {
-        console.log("heheh", response);
         toast.success("Memorial page updated successfully");
       } else {
         toast.error("Error updating memorial page. Please try again.");
@@ -335,21 +356,40 @@ const Memorial = () => {
   };
 
   const handleTributeSubmit = async () => {
-    // const token = localStorage.getItem("token");
+    const User = localStorage.getItem("user");
+    const userParsed = JSON.parse(User);
     setLoading(true);
     try {
-      await axios.post(
-        `${BaseURL}/tributes/create/${id}`,
-        {
-          message: newTribute,
-        },
-        {
-          withCredentials: true,
-          // headers: {
-          //   Authorization: `Bearer ${token}`, // Include token in request headers
-          // },
-        }
-      );
+      if (userParsed) {
+        await axios.post(
+          `${BaseURL}/tributes/create/${id}`,
+          {
+            firstName: userParsed.firstName,
+            profileImage,
+            message: newTribute,
+          },
+          {
+            withCredentials: true,
+            // headers: {
+            //   Authorization: `Bearer ${token}`, // Include token in request headers
+            // },
+          }
+        );
+      } else {
+        await axios.post(
+          `${BaseURL}/tributes/create/${id}`,
+          {
+            message: newTribute,
+          },
+          {
+            withCredentials: true,
+            // headers: {
+            //   Authorization: `Bearer ${token}`, // Include token in request headers
+            // },
+          }
+        );
+      }
+
       setNewTribute("");
       // Optionally refetch tributes or update state
       toast.success("Tribute added successfully!");
@@ -391,6 +431,11 @@ const Memorial = () => {
       <div className="min-h-screen bg-white">
         <div className="relative bg-white">
           {/* Cover Image */}
+          <Link to="/">
+            <button className="bg-white absolute top-4 p-2 left-4 z-[100] backdrop-blur-md rounded-full shadow-md">
+              <FaHome size={20} />
+            </button>
+          </Link>
           <div className="relative">
             {!coverImage ? (
               <img
@@ -452,7 +497,46 @@ const Memorial = () => {
           </div>
           <div className="text-center mt-2 space-y-2">
             <h2 className="text-xl md:w-1/2 w-full px-6 mx-auto">
-              {note ? note : "In memory of"}
+              {isEditingAnimal ? (
+                <div>
+                  <input
+                    type="text"
+                    value={animalName}
+                    onChange={handleAnimalChange}
+                    className="border rounded px-2 py-1"
+                  />
+                  <button onClick={toggleEditAnimal} className="ml-2">
+                    <CiEdit size={22} />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-gray-600 text-lg font-bold font-berkshire">
+                  {animalName && animalName}
+                  <button onClick={toggleEditAnimal} className="ml-2">
+                    <CiEdit size={22} />
+                  </button>
+                </p>
+              )}
+              {isEditingNote ? (
+                <div>
+                  <input
+                    type="text"
+                    value={note}
+                    onChange={handleNoteChange}
+                    className="border rounded px-2 py-1"
+                  />
+                  <button onClick={toggleEditNote} className="ml-2">
+                    <CiEdit size={22} />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-gray-600 text-lg font-bold font-berkshire">
+                  {note ? note : "In memory of"}
+                  <button onClick={toggleEditNote} className="ml-2">
+                    <CiEdit size={22} />
+                  </button>
+                </p>
+              )}
             </h2>
             {isEditingName ? (
               <div>
@@ -482,6 +566,26 @@ const Memorial = () => {
               <p className="text-gray-600 text-lg font-bold font-berkshire">
                 {newFirstName} {newMiddleName} {newLastName}
                 <button onClick={toggleEditName} className="ml-2">
+                  <CiEdit size={22} />
+                </button>
+              </p>
+            )}
+            {isEditingBreed ? (
+              <div>
+                <input
+                  type="text"
+                  value={breedName}
+                  onChange={handleBreedChange}
+                  className="border rounded px-2 py-1"
+                />
+                <button onClick={toggleEditBreed} className="ml-2">
+                  <CiEdit size={22} />
+                </button>
+              </div>
+            ) : (
+              <p className="text-gray-600 text-lg font-bold font-berkshire">
+                {breedName && breedName}
+                <button onClick={toggleEditBreed} className="ml-2">
                   <CiEdit size={22} />
                 </button>
               </p>
@@ -735,20 +839,26 @@ const Memorial = () => {
                           key={tribute._id}
                           className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
                         >
-                          {/* <div className="flex-shrink-0 mr-4">
-                            {tribute.user.profileImage && (
+                          <div className="flex-shrink-0 mr-4">
+                            {
                               <img
-                                src={tribute.user.profileImage}
-                                alt={`${tribute.user.name}'s profile`}
+                                src={
+                                  tribute?.user?.profileImage ||
+                                  tribute?.profileImage ||
+                                  avatar
+                                }
+                                alt={`${tribute?.user?.name}'s profile`}
                                 className="h-16 w-16 object-cover rounded-full"
                               />
-                            )}
-                          </div> */}
+                            }
+                          </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
-                              {/* <div className="font-semibold">
-                                {tribute.user.firstName}
-                              </div> */}
+                              <div className="font-semibold">
+                                {tribute?.user?.firstName ||
+                                  tribute?.firstName ||
+                                  "Anonymous"}
+                              </div>
                               <div className="text-sm text-gray-700">
                                 {new Date(
                                   tribute.createdAt

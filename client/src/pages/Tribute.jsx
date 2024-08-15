@@ -9,7 +9,6 @@ const TributePageSetup = () => {
   const [selectedTab, setSelectedTab] = useState("Human");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
     firstName: "",
     middleName: "",
     lastName: "",
@@ -18,13 +17,14 @@ const TributePageSetup = () => {
     deathDate: "",
     profileImage: "",
     coverImage: "",
-    key: "", // Key included in formData
+    key: "",
+    animal: "", // New field for animal name
+    breed: "", // New field for breed
   });
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -35,7 +35,7 @@ const TributePageSetup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalOpen(true); // Open the modal
+    setModalOpen(true);
   };
 
   const handleKeyChange = (e) => {
@@ -43,7 +43,7 @@ const TributePageSetup = () => {
   };
 
   const handleFormSubmit = async () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const token = localStorage.getItem("token");
     setLoading(true);
     try {
       const response = await axios.post(
@@ -55,7 +55,7 @@ const TributePageSetup = () => {
         {
           withCredentials: true,
           headers: {
-            Authorization: `Bearer ${token}`, // Include token in request headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -76,7 +76,7 @@ const TributePageSetup = () => {
       );
     } finally {
       setLoading(false);
-      setModalOpen(false); // Close the modal
+      setModalOpen(false);
     }
   };
 
@@ -112,34 +112,21 @@ const TributePageSetup = () => {
         </button>
       </div>
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <div>
-          <label className="block font-medium mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md"
-            id="title"
-            type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-2" htmlFor="firstName">
-            {selectedTab === "Human" ? "First Name" : "Name"}
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md"
-            id="firstName"
-            type="text"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </div>
-        {selectedTab === "Human" && (
+        {selectedTab === "Human" ? (
           <>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="firstName">
+                First Name
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="firstName"
+                type="text"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </div>
             <div>
               <label className="block font-medium mb-2" htmlFor="middleName">
                 Middle Name
@@ -163,6 +150,48 @@ const TributePageSetup = () => {
                 type="text"
                 placeholder="Last Name"
                 value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="animal">
+                Animal
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="animal"
+                type="text"
+                placeholder="Animal"
+                value={formData.animal}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="firstName">
+                Name
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="firstName"
+                type="text"
+                placeholder="Name"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-2" htmlFor="breed">
+                Breed
+              </label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-md"
+                id="breed"
+                type="text"
+                placeholder="Breed"
+                value={formData.breed}
                 onChange={handleChange}
               />
             </div>

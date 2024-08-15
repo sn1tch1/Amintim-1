@@ -6,7 +6,7 @@ exports.registerUser = async (req, res) => {
   const { email } = req.body;
   try {
     let user = await User.findOne({ email });
-
+    console.log("eeeee", user);
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
@@ -35,8 +35,11 @@ exports.registerUser = async (req, res) => {
         isVerified: false,
       });
 
+      let subject =
+        "Please verify your account by using this verification code.";
+
       await user.save();
-      await sendEmail(user.email, `${verificationCode}`);
+      await sendEmail(user.email, subject, `${verificationCode}`);
 
       res.status(201).json({ message: "Verification email sent" });
     }
@@ -226,6 +229,7 @@ exports.getUserDetails = async (req, res) => {
       country: user.country,
       zipcode: user.zipcode,
       profileImage: user.profileImage,
+      isVerified: user.isVerified,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
