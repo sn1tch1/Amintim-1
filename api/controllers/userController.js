@@ -6,8 +6,8 @@ exports.registerUser = async (req, res) => {
   const { email } = req.body;
   try {
     let user = await User.findOne({ email });
-    console.log("eeeee", user);
-    if (user) {
+
+    if (user?.isVerified === true) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
       });
@@ -28,18 +28,17 @@ exports.registerUser = async (req, res) => {
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
       ).toString();
+      console.log("object", verificationCode);
 
-      user = new User({
-        email,
-        verificationCode,
-        isVerified: false,
-      });
+      user.email = email;
+      user.verificationCode = verificationCode;
+      user.isVerified = false;
 
-      let subject =
-        "Please verify your account by using this verification code.";
+      console.log("object", user);
 
       await user.save();
-      await sendEmail(user.email, subject, `${verificationCode}`);
+      console.log("object");
+      await sendEmail(user.email, `${verificationCode}`);
 
       res.status(201).json({ message: "Verification email sent" });
     }
