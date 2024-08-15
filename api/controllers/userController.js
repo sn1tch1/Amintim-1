@@ -7,36 +7,55 @@ exports.registerUser = async (req, res) => {
   try {
     let user = await User.findOne({ email });
 
-    if (user?.isVerified === true) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+    if (user) {
+      if (user.isVerified) {
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "30d",
+        });
 
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
-          sameSite: "strict",
-          // sameSite: "none",
-          // domain: process.env.DOMAIN,
-          // path: "/",
-        })
+        res
+          .cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
+            sameSite: "strict",
+          })
+          .status(200)
+          .json({ message: "Logged in successfully", token });
+      } else {
+        const verificationCode = Math.floor(
+          10000 + Math.random() * 90000
+        ).toString();
 
-        .status(200)
-        .json({ message: "Logged in successfully", token });
+        user.verificationCode = verificationCode;
+        user.isVerified = false;
+
+        await user.save();
+        await sendEmail(
+          user.email,
+          "Please verify your email",
+          `${verificationCode}`
+        );
+
+        res.status(201).json({ message: "Verification email sent" });
+      }
     } else {
+      // Create a new user if not found
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
       ).toString();
 
-      user.email = email;
-      user.verificationCode = verificationCode;
-      user.isVerified = false;
+      const newUser = new User({
+        email,
+        verificationCode,
+        isVerified: false,
+      });
 
-      let subject = "Please verify your email";
-
-      await user.save();
-      await sendEmail(user.email, subject, `${verificationCode}`);
+      await newUser.save();
+      await sendEmail(
+        newUser.email,
+        "Please verify your email",
+        `${verificationCode}`
+      );
 
       res.status(201).json({ message: "Verification email sent" });
     }
