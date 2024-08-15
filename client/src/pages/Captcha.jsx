@@ -38,7 +38,7 @@ const CaptchaInput = () => {
 
       if (response.status === 200) {
         toast.success(`Welcome ${email}`);
-        localStorage.setItem("token", response?.data?.token);
+        localStorage.setItem("token", token);
         login();
         navigate("/proceed");
       } else {
