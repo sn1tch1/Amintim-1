@@ -28,13 +28,13 @@ const Login = () => {
           email,
         });
         if (response.status === 201) {
-          toast.success("Verify Your Email");
-          localStorage.setItem("token", response?.data.token);
-          navigate("/verify", { state: { email } });
-          login();
+          toast.success("Verify Your Email")
+          let token = response?.data?.token;
+          navigate("/verify", { state: { email, token } });
+          
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
-          localStorage.setItem("token", response?.data.token);
+          localStorage.setItem("token", response?.data?.token);
           navigate("/manage-account/settings");
           login();
         } else {

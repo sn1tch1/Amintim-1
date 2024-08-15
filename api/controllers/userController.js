@@ -4,14 +4,17 @@ const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
   const { email } = req.body;
+  console.log("hiiii");
   try {
     let user = await User.findOne({ email });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
-    });
+    let token;
 
     if (user) {
+      token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
       if (user.isVerified) {
+        console.log(token);
         res
           .cookie("token", token, {
             httpOnly: true,
@@ -43,18 +46,27 @@ exports.registerUser = async (req, res) => {
         10000 + Math.random() * 90000
       ).toString();
 
+      console.log(verificationCode);
+
       const newUser = new User({
         email,
         verificationCode,
         isVerified: false,
       });
 
+      console.log(newUser);
+
       await newUser.save();
+      console.log("newUser");
       await sendEmail(
         newUser.email,
         "Please verify your email",
         `${verificationCode}`
       );
+
+      token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
 
       res.status(201).json({ token, message: "Verification email sent" });
     }

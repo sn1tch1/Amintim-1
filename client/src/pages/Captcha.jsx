@@ -4,14 +4,17 @@ import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import BaseURL from "../utils/BaseURL";
+import { useAuth } from "../context/AuthContext";
 
 const CaptchaInput = () => {
   const [code, setCode] = useState(Array(5).fill(""));
   const [loading, setLoading] = useState(false);
   const inputsRef = useRef([]);
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state.email;
+  const token = location.state.token;
 
   const handleInputChange = (e, index) => {
     const { value } = e.target;
@@ -35,6 +38,8 @@ const CaptchaInput = () => {
 
       if (response.status === 200) {
         toast.success(`Welcome ${email}`);
+        localStorage.setItem("token", response?.data?.token);
+        login();
         navigate("/proceed");
       } else {
         toast.error("Invalid verification code. Please try again.");
