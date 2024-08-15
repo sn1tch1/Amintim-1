@@ -19,6 +19,7 @@ const View = () => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [userName, setUsername] = useState(null);
   const [profileImage, setProfileImage] = useState("");
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
@@ -93,6 +94,26 @@ const View = () => {
     fetchMemorialData();
   }, [id]);
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      try {
+        const response = await axios.get(`${BaseURL}/users/me`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
+        });
+        const { firstName } = response.data;
+        setUsername(firstName);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [memorialData]);
+
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
   };
@@ -120,7 +141,7 @@ const View = () => {
         await axios.post(
           `${BaseURL}/tributes/create/${id}`,
           {
-            firstName: userParsed.firstName,
+            firstName: userName || userParsed.firstName,
             profileImage,
             message: newTribute,
           },

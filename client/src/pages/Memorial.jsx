@@ -26,6 +26,7 @@ import BASE_URL from "../utils/BaseURL";
 const Memorial = () => {
   const { id } = useParams();
   const [profileImage, setProfileImage] = useState(avatar);
+  const [userName, setUsername] = useState(null);
   const [loading, setLoading] = useState(false);
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
@@ -157,6 +158,26 @@ const Memorial = () => {
 
     fetchMemorialData();
   }, [id]);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      try {
+        const response = await axios.get(`${BaseURL}/users/me`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
+        });
+        const { firstName } = response.data;
+        setUsername(firstName);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [memorialData]);
 
   const handleImageChange = async (e, type) => {
     const file = e.target.files[0];
@@ -365,7 +386,7 @@ const Memorial = () => {
         await axios.post(
           `${BaseURL}/tributes/create/${id}`,
           {
-            firstName: userParsed.firstName,
+            firstName: userName || userParsed.firstName,
             profileImage,
             message: newTribute,
           },

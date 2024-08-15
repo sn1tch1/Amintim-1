@@ -26,135 +26,6 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-// exports.createMemorialPage = async (req, res) => {
-//   const userId = req.user.id;
-//   const {
-//     title,
-//     firstName,
-//     animal,
-//     breed,
-//     middleName,
-//     profileImage,
-//     coverImage,
-//     lastName,
-//     note,
-//     about,
-//     gallery,
-//     birthDate,
-//     deathDate,
-//     isHuman,
-//     key, // Add key to request body
-//   } = req.body;
-
-//   try {
-//     // Find all purchases for the user
-//     const purchases = await Purchase.find({ userId });
-
-//     // Log purchases in a more readable format
-//     if (!purchases || purchases.length === 0) {
-//       return res.status(400).json({ message: "Invalid key" });
-//     }
-
-//     let keyFound = false;
-//     let keyUsed = false;
-//     let foundPurchase = null;
-
-//     // Iterate through purchases to find the key
-//     for (const purchase of purchases) {
-//       for (const item of purchase.items) {
-//         for (const k of item.keys) {
-//           console.log(JSON.stringify(k, null, 2));
-//           if (k.key === key) {
-//             keyFound = true;
-//             if (k.isUsed) {
-//               keyUsed = true;
-//             } else {
-//               k.isUsed = true;
-//               foundPurchase = purchase;
-//             }
-//             break;
-//           }
-//         }
-//         if (keyFound) break;
-//       }
-//       if (keyFound) break;
-//     }
-
-//     if (!keyFound) {
-//       return res.status(400).json({ message: "Invalid key" });
-//     }
-
-//     if (keyUsed) {
-//       return res.status(400).json({ message: "Key has already been used" });
-//     }
-
-//     // Create a new memorial page
-//     const newMemorialPage = new MemorialPage({
-//       user: userId,
-//       title,
-//       firstName,
-//       animal,
-//       breed,
-//       middleName,
-//       profileImage,
-//       coverImage,
-//       lastName,
-//       note,
-//       about,
-//       gallery,
-//       birthDate,
-//       deathDate,
-//       isHuman,
-//     });
-
-//     await newMemorialPage.save();
-
-//     console.log("here", newMemorialPage);
-
-//     if (newMemorialPage) {
-//       const qrCodeData = `https://amintim.vercel.app/profile/view/${newMemorialPage._id}`;
-//       const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
-
-//       // Upload the QR code buffer to Cloudinary
-//       const cloudinaryResponse = await new Promise((resolve, reject) => {
-//         const uploadStream = cloudinary.uploader.upload_stream(
-//           {
-//             folder: "Amintim",
-//             public_id: `${newMemorialPage._id}`,
-//             format: "png",
-//           },
-//           (error, result) => {
-//             if (error) {
-//               reject(new Error("Failed to upload QR code to Cloudinary"));
-//             } else {
-//               resolve(result);
-//             }
-//           }
-//         );
-//         uploadStream.end(qrCodeBuffer);
-//       });
-
-//       console.log(
-//         `QR code generated and saved at: ${cloudinaryResponse.secure_url}`
-//       );
-
-//       // Update the memorial page with the QR code URL
-//       newMemorialPage.QRCode = cloudinaryResponse.secure_url;
-//       await newMemorialPage.save();
-//     }
-
-//     // Save the updated purchase with the key marked as used
-//     await foundPurchase.save();
-
-//     res.status(201).json({
-//       message: "Memorial Page created successfully",
-//       memorialPage: newMemorialPage,
-//     });
-//   } catch (error) {
-//     console.error("Error creating memorial page:", error);
-//     res.status(500).json({ message: "Server error", error });
-//   }
-// };
 
 exports.createMemorialPage = async (req, res) => {
   const userId = req.user.id;
@@ -181,7 +52,7 @@ exports.createMemorialPage = async (req, res) => {
 
     // Check if any purchases exist for the user
     if (!purchases || purchases.length === 0) {
-      return res.status(400).json({ message: "No keys available" });
+      return res.status(400).json({ message: "Please Buy a SoulStar First" });
     }
 
     let keyFound = false;
