@@ -71,7 +71,6 @@ const TributePageSetup = () => {
     }
   };
 
-
   return (
     <div className="p-4 mx-auto bg-white rounded-lg shadow-md py-[80px]">
       <h2 className="text-2xl font-bold text-center mb-4">
@@ -156,7 +155,7 @@ const TributePageSetup = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="animal"
                 type="text"
-                placeholder="Animal"
+                placeholder="Cat"
                 value={formData.animal}
                 onChange={handleChange}
               />
