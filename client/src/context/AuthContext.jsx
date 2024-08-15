@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     {
       !token ? setIsLoggedIn(false) : setIsLoggedIn(true);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const login = async () => {
     // setUser(userData);

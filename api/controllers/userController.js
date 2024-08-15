@@ -6,13 +6,12 @@ exports.registerUser = async (req, res) => {
   const { email } = req.body;
   try {
     let user = await User.findOne({ email });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
 
     if (user) {
       if (user.isVerified) {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "30d",
-        });
-
         res
           .cookie("token", token, {
             httpOnly: true,
@@ -36,7 +35,7 @@ exports.registerUser = async (req, res) => {
           `${verificationCode}`
         );
 
-        res.status(201).json({ message: "Verification email sent" });
+        res.status(201).json({ token, message: "Verification email sent" });
       }
     } else {
       // Create a new user if not found
@@ -57,7 +56,7 @@ exports.registerUser = async (req, res) => {
         `${verificationCode}`
       );
 
-      res.status(201).json({ message: "Verification email sent" });
+      res.status(201).json({ token, message: "Verification email sent" });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
