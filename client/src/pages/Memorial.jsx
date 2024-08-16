@@ -22,6 +22,7 @@ import {
 import { saveAs } from "file-saver";
 import { useClipboard } from "@chakra-ui/react";
 import BASE_URL from "../utils/BaseURL";
+import { MdDelete } from "react-icons/md";
 
 const Memorial = () => {
   const { id } = useParams();
@@ -343,6 +344,18 @@ const Memorial = () => {
     );
   };
 
+  const handleDeleteImage = (index) => {
+    setMediaImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteVideo = (index) => {
+    setVideoUrls((prevVideo) => prevVideo.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteAudio = (index) => {
+    setAudioUrls((prevAudio) => prevAudio.filter((_, i) => i !== index));
+  };
+
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
@@ -445,6 +458,37 @@ const Memorial = () => {
         });
     } else {
       toast.error("Share functionality is not supported on this browser.");
+    }
+  };
+
+  const handleDeleteTribute = async (tributeId) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(`${BaseURL}/tributes/${tributeId}`, {
+        withCredentials: true,
+      });
+
+      // Assume the backend response contains a message field
+      const message =
+        response?.data?.message || "Tribute deleted successfully!";
+
+      // Update the state to reflect the deletion
+      setTributes((prevTributes) =>
+        prevTributes.filter((tribute) => tribute._id !== tributeId)
+      );
+
+      // Show success toast notification with the message from backend
+      toast.success(message);
+    } catch (error) {
+      // Default error message if the backend fails or no message is provided
+      const errorMessage =
+        error.response?.data?.message || "Failed to delete tribute.";
+
+      // Show error toast notification
+      toast.error(errorMessage);
+      console.log("error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -744,39 +788,68 @@ const Memorial = () => {
                     <>
                       {/* Render Images */}
                       {mediaImages?.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Media ${index}`}
-                          className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
-                          onClick={() => handleImageClick(index)}
-                        />
+                        <div className="relative">
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Media ${index}`}
+                            className="w-full  h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                            onClick={() => handleImageClick(index)}
+                          />
+                          <button className="absolute top-4 right-4 bg-white/60 group backdrop-blur-md p-3 rounded-full shadow-md  ">
+                            <MdDelete
+                              size={40}
+                              onClick={() => handleDeleteImage(index)}
+                              className="text-red-600 hover:text-red-800 hover:scale-105 hover:rotate-[10deg] duration-300"
+                            />
+                          </button>
+                        </div>
                       ))}
 
                       {/* Render Videos */}
                       {videoUrls?.map((url, index) => (
-                        <video
-                          key={index}
-                          controls
-                          onClick={() => handleImageClick(index)}
-                          className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
-                        >
-                          <source src={url} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
+                        <div className="relative">
+                          <video
+                            key={index}
+                            controls
+                            onClick={() => handleImageClick(index)}
+                            className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                          >
+                            <source src={url} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                          <button className="absolute top-4 right-4 bg-white/60 group backdrop-blur-md p-3 rounded-full shadow-md  ">
+                            <MdDelete
+                              size={40}
+                              onClick={() => handleDeleteVideo(index)}
+                              className="text-red-600 hover:text-red-800 hover:scale-105 hover:rotate-[10deg] duration-300"
+                            />
+                          </button>
+                        </div>
                       ))}
 
                       {/* Render Audios */}
                       {audioUrls?.map((url, index) => (
-                        <audio
-                          key={index}
-                          controls
-                          className="w-full  my-auto"
-                          onClick={() => handleImageClick(index)}
-                        >
-                          <source src={url} type="audio/mpeg" />
-                          Your browser does not support the audio element.
-                        </audio>
+                        <div className="relative h-full w-full my-auto flex items-center justify-center">
+                          <audio
+                            key={index}
+                            controls
+                            className="w-full max-w-xs" // Adjust max-width if needed
+                            onClick={() => handleImageClick(index)}
+                          >
+                            <source src={url} type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                          </audio>
+                          <button
+                            className="absolute top-4 right-4 bg-white/60 group backdrop-blur-md p-3 rounded-full shadow-md"
+                            onClick={() => handleDeleteAudio(index)}
+                          >
+                            <MdDelete
+                              size={40}
+                              className="text-red-600 hover:text-red-800 hover:scale-105 hover:rotate-[10deg] duration-300"
+                            />
+                          </button>
+                        </div>
                       ))}
                     </>
                   ) : (
@@ -869,8 +942,14 @@ const Memorial = () => {
                       {tributes?.map((tribute) => (
                         <div
                           key={tribute._id}
-                          className="flex items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
+                          className="flex relative items-start border border-black rounded-lg p-4 shadow-lg bg-gray-50"
                         >
+                          <button
+                            className="absolute bottom-2 right-2 text-red-600 hover:text-red-800 hover:scale-105 hover:rotate-[10deg] duration-300"
+                            onClick={() => handleDeleteTribute(tribute._id)}
+                          >
+                            <MdDelete size={30} />
+                          </button>
                           <div className="flex-shrink-0 mr-4">
                             {
                               <img

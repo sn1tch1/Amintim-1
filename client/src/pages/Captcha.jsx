@@ -40,7 +40,7 @@ const CaptchaInput = () => {
         toast.success(`Welcome ${email}`);
         localStorage.setItem("token", token);
         login();
-        navigate("/proceed");
+        navigate("/");
       } else {
         toast.error("Invalid verification code. Please try again.");
       }
