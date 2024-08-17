@@ -440,7 +440,7 @@ const Memorial = () => {
     saveAs(imageUrl);
   };
 
-  const profileLink = `https://Amintim.vercel.app/profile/view/${id}`; // Update this with the correct URL
+  const profileLink = `https://Amintim.ro/profile/view/${id}`; // Update this with the correct URL
 
   const handleShare = () => {
     if (navigator.share) {

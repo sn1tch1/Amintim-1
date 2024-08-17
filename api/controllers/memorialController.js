@@ -26,7 +26,6 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-
 exports.createMemorialPage = async (req, res) => {
   const userId = req.user.id;
   const {
@@ -106,7 +105,7 @@ exports.createMemorialPage = async (req, res) => {
     await newMemorialPage.save();
 
     // Generate QR code for the memorial page
-    const qrCodeData = `https://amintim.vercel.app/profile/view/${newMemorialPage._id}`;
+    const qrCodeData = `https://amintim.ro/profile/view/${newMemorialPage._id}`;
     const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
 
     // Upload the QR code buffer to Cloudinary
