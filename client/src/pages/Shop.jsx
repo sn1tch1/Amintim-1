@@ -68,18 +68,17 @@ const Shop = () => {
         <div>
           <h3 className="text-3xl font-[700]">Pachet Pagina Memoriala</h3>
           <p>
-            Save the most precious memories for eternity and share them with
-            your loved ones
+            Include pagina memoriala si codul QR atasat acesteia, printat pe o placuta metalica
           </p>
           <div className="flex justify-between items-end">
             <div className="flex flex-col items-center mt-4">
               <div className="bg-green-700 text-white px-2 py-1 rounded">
-                One time payment
+                Platesti o singura data
               </div>
               <div className="ml-auto flex items-center">
                 <span className=" text-xl">8.100 kr</span>
                 <span className="ml-3 lg:ml-0 line-through text-gray-500">
-                  DKK 13,500
+                  RON 280
                 </span>
               </div>
             </div>
@@ -110,7 +109,7 @@ const Shop = () => {
             </div>
           </div>
           <div className="text-green-700 mt-2">
-            Includes FREE premium shipping
+            Livrare GRATUITA
           </div>
           <div className="mt-4 space-y-5">
             <button
@@ -127,11 +126,11 @@ const Shop = () => {
                   checked={selectedOption === "buy1"}
                   onChange={() => setSelectedOption("buy1")}
                 />
-                Buy 1
+                Cumpara 1
               </div>
               <div>
-                <div className="text-black text-lg">DKK 8,100</div>
-                <div className="line-through text-gray-500">DKK 13,500</div>
+                <div className="text-black text-lg">RON 190</div>
+                <div className="line-through text-gray-500">RON 280</div>
               </div>
             </button>
             <button
@@ -149,13 +148,13 @@ const Shop = () => {
                   onChange={() => setSelectedOption("buy2")}
                 />
                 <div className="text-start">
-                  <div>Buy 2</div>
+                  <div>Cumpara 2</div>
                   <div className="text-sm text-gray-500">20% Discount</div>
                 </div>
               </div>
               <div>
-                <div className="text-black text-lg">DKK 12,960</div>
-                <div className="line-through text-gray-500">DKK 16,200</div>
+                <div className="text-black text-lg">RON 320</div>
+                <div className="line-through text-gray-500">RON 380</div>
               </div>
               <div className="absolute -top-2 right-4 bg-orange-500 text-white text-xs px-2 py-1 rounded ml-2">
                 Most Popular
@@ -167,7 +166,7 @@ const Shop = () => {
             onClick={handleAddToCart}
             className="bg-[#F9CA4F] my-6 font-[700] py-5 w-full"
           >
-            Add to Cart
+            Adauga in cos
           </button>
 
           <div className="py-12">
