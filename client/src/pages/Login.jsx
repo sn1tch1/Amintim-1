@@ -28,7 +28,7 @@ const Login = () => {
           email,
         });
         if (response.status === 201) {
-          toast.success("Verify Your Email")
+          toast.success("Verificati adresa de email")
           let token = response?.data?.token;
           navigate("/verify", { state: { email, token } });
           
@@ -39,15 +39,15 @@ const Login = () => {
           login();
         } else {
           console.log("responseeee", response);
-          toast.error("Error logging in. Please try again.");
+          toast.error("Eroare de logare. Va rugam sa incercati din nou.");
         }
       } catch (error) {
-        toast.error("Error logging in. Please try again catch.");
+        toast.error("Eroare de logare. Va rugam sa incercati din nou.");
       } finally {
         setLoading(false);
       }
     } else {
-      toast.error("Please enter a valid email address");
+      toast.error("Va rugam sa introduceti o adresa de email valida");
     }
   };
 
@@ -57,7 +57,7 @@ const Login = () => {
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-[700] mb-2 text-center">Login</h2>
         <p className="text-gray-600 mb-4 text-center">
-          For login, no registration is necessary.
+          Pentru autentificare nu este necesara inregistrarea.
         </p>
         <input
           type="email"
@@ -81,7 +81,7 @@ const Login = () => {
             alt="Google icon"
             className="w-5 h-5 mr-2"
           />
-          Login with Google
+          Conectare cu Google
         </button> */}
       </div>
     </div>
