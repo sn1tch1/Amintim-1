@@ -602,7 +602,7 @@ const Memorial = () => {
                 </div>
               ) : (
                 <p className="text-gray-600 text-lg font-bold font-berkshire">
-                  {note ? note : "In memory of"}
+                  {note ? note : "In amintirea lui"}
                   <button onClick={toggleEditNote} className="ml-2">
                     <CiEdit size={22} />
                   </button>
@@ -729,7 +729,7 @@ const Memorial = () => {
               }`}
               onClick={() => setActiveTab("about")}
             >
-              About me
+              Despre mine
             </button>
             <button
               className={`py-2 px-4 ${
@@ -749,7 +749,7 @@ const Memorial = () => {
               }`}
               onClick={() => setActiveTab("tributes")}
             >
-              Tributes
+              Lasa un mesaj
             </button>
           </div>
           <div className="p-4">
@@ -769,7 +769,7 @@ const Memorial = () => {
                     </div>
                   ) : (
                     <div>
-                      {newAbout || "No about information available."}
+                      {newAbout || "Nu exista informatii disponibile."}
                       <button onClick={toggleEditAbout} className="ml-2">
                         <CiEdit size={22} />
                       </button>
@@ -854,8 +854,8 @@ const Memorial = () => {
                     </>
                   ) : (
                     <div className="col-span-3 text-center text-gray-500">
-                      No media available. Click the button below to upload
-                      photos.
+                      Nu exista poze disponibile. Click mai jos pentru a le adauga.
+                    
                     </div>
                   )}
                 </div>
@@ -865,7 +865,7 @@ const Memorial = () => {
                       htmlFor="mediaImageInput"
                       className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
                     >
-                      Upload Photos
+                      Incarca Poze
                     </label>
                     <input
                       type="file"
@@ -880,7 +880,7 @@ const Memorial = () => {
                       htmlFor="videoInput"
                       className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
                     >
-                      Upload Video
+                      Incarca Video
                     </label>
                     <input
                       type="file"
@@ -896,7 +896,7 @@ const Memorial = () => {
                       htmlFor="audioInput"
                       className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
                     >
-                      Upload Audio
+                      Incarca Audio
                     </label>
                     <input
                       type="file"
@@ -913,7 +913,7 @@ const Memorial = () => {
               <div className="px-[3%] md:px-[7%] mb-[50px] lg:px-[10%] py-[12px]">
                 {tributes.length === 0 ? (
                   <>
-                    <p>No tributes available.</p>
+                    <p>Nu exista mesaje.</p>
                     <div className="w-full border h-[100px] border-black rounded-lg my-6">
                       <textarea
                         value={newTribute}
@@ -968,7 +968,7 @@ const Memorial = () => {
                               <div className="font-semibold">
                                 {tribute?.user?.firstName ||
                                   tribute?.firstName ||
-                                  "Anonymous"}
+                                  "Anonim"}
                               </div>
                               <div className="text-sm text-gray-700">
                                 {new Date(
@@ -1008,7 +1008,7 @@ const Memorial = () => {
             onClick={handleUpdate}
             className="fixed bottom-0 w-1/2 left-1/2 rounded-t-lg -translate-x-1/2 py-2 px-9 bg-black/90 hover:bg-black duration-200 cursor-pointer text-white"
           >
-            Update
+            Actualizeaza
           </button>
         </div>
 
@@ -1062,7 +1062,7 @@ const Memorial = () => {
             <ModalCloseButton />
             <img src={QRCode} alt="QR Code" />
             <Button colorScheme="teal" onClick={handleShare} className="mt-4">
-              Share Profile Link
+              Share Profile
             </Button>
             <Button onClick={handleDownload} colorScheme="blue" mt="4">
               Download
