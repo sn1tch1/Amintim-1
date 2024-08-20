@@ -9,8 +9,7 @@ const Footer = () => {
         <div className="w-full lg:w-[40%] space-y-4">
           <img src={Logo} />
           <p className="text-lg">
-            It's better to put a tagline here. If we remove this section footer
-            will look wierd
+            Un singur loc pentru toate amintirile frumoase
           </p>
         </div>
 
