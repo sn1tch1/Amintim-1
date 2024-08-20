@@ -45,16 +45,16 @@ const Cart = () => {
     <>
       {groupedCart.length > 0 ? (
         <div className="container mx-auto px-4 py-[100px]">
-          <h1 className="text-3xl font-semibold mb-4">Shopping Cart</h1>
-          <p className="mb-8">Shipping is free for your order</p>
+          <h1 className="text-3xl font-semibold mb-4">Cart</h1>
+          <p className="mb-8">Comanda dumneavoastra beneficiaza de livrare GRATIS</p>
           <div className="flex flex-col md:flex-row justify-between">
             <div className="w-full md:w-2/3 overflow-x-auto">
               <table className="w-full min-w-[600px]">
                 <thead>
                   <tr>
-                    <th className="text-left">Product</th>
-                    <th className="text-left">Quantity</th>
-                    <th className="text-left">Total amount</th>
+                    <th className="text-left">Produs</th>
+                    <th className="text-left">Cantitate</th>
+                    <th className="text-left">Suma totala</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,7 +82,7 @@ const Cart = () => {
                           className="text-blue-500 ml-4"
                           onClick={() => handleRemove(item.id)}
                         >
-                          Remove
+                          Elimina
                         </button>
                       </td>
                       <td className="py-4">
@@ -100,7 +100,7 @@ const Cart = () => {
               </div>
               <Link to="/checkout">
                 <button className="w-full py-2 bg-black text-white rounded-lg hover:bg-gray-800">
-                  To checkout
+                  Catre plata
                 </button>
               </Link>
             </div>
@@ -133,11 +133,11 @@ const Cart = () => {
             </svg>
           </div>
           <h4 className="text-2xl font-berkshire font-extralight">
-            {isLoading ? "Loading..." : "Your shopping basket is empty"}
+            {isLoading ? "Loading..." : "Cosul dumneavoastra este gol"}
           </h4>
           <Link to="/shop">
             <button className="py-4 px-8 font-[700] bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
-              Continue Shopping
+              Continua cumparaturile
             </button>
           </Link>
         </section>
