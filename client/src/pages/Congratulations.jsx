@@ -12,9 +12,9 @@ const Congratulations = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="p-10 rounded text-center max-w-4xl">
         <h1 className="text-3xl font-bold mb-4 font-berkshire">
-          Congratulations!
+          Felicitari!
         </h1>
-        <p className="mb-4">Your purchase was successful.</p>
+        <p className="mb-4">Tranzactia a fost cu succes!.</p>
         <p className="mb-4">
           Please check your email for further instructions.
         </p>
@@ -64,7 +64,7 @@ const Congratulations = () => {
           onClick={handleProceed}
           className="hover:bg-black text-white py-4 px-8  bg-black/90 duration-200"
         >
-          Proceed to Create Your SoulStar
+          Acum poti sa creezi profilul memorial
         </button>
       </div>
     </div>
