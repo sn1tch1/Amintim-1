@@ -167,7 +167,7 @@ const Checkout = () => {
             id="email"
             value={contactInfo.email}
             onChange={(e) => handleInputChange(e, setContactInfo)}
-            placeholder="Email or mobile number"
+            placeholder="Email sau numar de telefon"
           />
           <div className="flex items-center">
             <input
@@ -178,16 +178,16 @@ const Checkout = () => {
               onChange={(e) => handleInputChange(e, setContactInfo)}
             />
             <label className="font-medium" htmlFor="newsEmail">
-              Receive news and updates via email
+              Primeste noutati pe email
             </label>
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mb-4">Delivery </h2>
+        <h2 className="text-2xl font-bold mb-4">Livrare </h2>
         <div className="space-y-4 mb-6">
           <div>
             <label className="block font-medium mb-2" htmlFor="countryRegion">
-              Country/Region <span className="text-red-500">*</span>
+              Tara <span className="text-red-500">*</span>
             </label>
             <select
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -203,7 +203,7 @@ const Checkout = () => {
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="firstName">
-                First name <span className="text-red-500">*</span>
+                Prenume <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -216,7 +216,7 @@ const Checkout = () => {
             </div>
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="lastName">
-                Last name (optional)
+                Nume
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -230,7 +230,7 @@ const Checkout = () => {
           </div>
           <div>
             <label className="block font-medium mb-2" htmlFor="address">
-              Address <span className="text-red-500">*</span>
+              Adresa <span className="text-red-500">*</span>
             </label>
             <input
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -243,7 +243,7 @@ const Checkout = () => {
           </div>
           <div>
             <label className="block font-medium mb-2" htmlFor="apartment">
-              Apartment, room, etc. (optional)
+              Apartament, etaj, etc.
             </label>
             <input
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -257,7 +257,7 @@ const Checkout = () => {
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="postalCode">
-                Postal code <span className="text-red-500">*</span>
+                Cod Postal <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -270,7 +270,7 @@ const Checkout = () => {
             </div>
             <div className="flex-1">
               <label className="block font-medium mb-2" htmlFor="city">
-                City <span className="text-red-500">*</span>
+                Oras <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -284,8 +284,8 @@ const Checkout = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mb-4">Payment</h2>
-        <p className="mb-6">All transactions are secure and encrypted.</p>
+        <h2 className="text-2xl font-bold mb-4">Plata</h2>
+        <p className="mb-6">Toate tranzactiile sunt encriptate si securizate.</p>
 
         <div className="border p-4 rounded-lg mb-4 bg-gray-50">
           <div className="border-b pb-2 mb-4">
@@ -400,7 +400,7 @@ const Checkout = () => {
             <p className="text-gray-800 font-medium">DKK {SubTotal}</p>
           </div>
           <div className="flex justify-between items-center mb-2">
-            <p className="text-gray-600">Shipping</p>
+            <p className="text-gray-600">Livrare</p>
             <p className="text-gray-800 font-medium">00.00</p>
           </div>
           <div className="flex justify-between font-bold items-center mb-6">
@@ -416,7 +416,7 @@ const Checkout = () => {
             disabled={loading}
             onClick={handlePurchase}
           >
-            {loading ? <Spinner /> : "Complete Purchase"}
+            {loading ? <Spinner /> : "Finalizeaza"}
           </button>
         </div>
       </div>
