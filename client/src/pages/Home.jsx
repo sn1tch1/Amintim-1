@@ -24,7 +24,7 @@ const Home = () => {
       >
         <span className="absolute top-0 z-10 w-full h-full bg-black/20"></span>
 
- /*       <p className="z-20"> Un singur loc pentru toate amintirile frumoase </p> */
+    {/*   <p className="z-20"> Un singur loc pentru toate amintirile frumoase </p> */}
         <h2 className="text-5xl z-20 font-berkshire">Un singur loc pentru toate amintirile frumoase</h2>
 
         <button
