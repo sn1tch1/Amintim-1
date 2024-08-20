@@ -15,12 +15,11 @@ const FAQs = () => {
       className="w-[90%] lg:w-[60%] mx-auto text-center py-[8%] space-y-12"
     >
       <h3 className="text-3xl font-berkshire">
-        Frequently asked questions and answers
+        Intrebari frecvente
       </h3>
       <p>
-        Here you will find the most frequently asked questions. If you still
-        have a question, please feel free to send us an email to
-        support@remember-well.com or chat with us via Whatsapp.
+        Daca inca nu ati gasit raspuns la intrebarea dumneavoastra,
+        ne puteti trimite un mesaj la contact@amintim.ro sau pe Whatsapp
       </p>
 
       <Accordion
