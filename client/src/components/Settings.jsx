@@ -165,29 +165,29 @@ const SettingsTab = () => {
       </div> */}
       <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-gray-700">First Name</label>
+          <label className="block text-gray-700">Prenume</label>
           <input
             type="text"
             name="firstName"
             value={formData?.firstName || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
-            placeholder="First Name"
+            placeholder="Prenume"
           />
         </div>
         <div>
-          <label className="block text-gray-700">Last Name</label>
+          <label className="block text-gray-700">Nume</label>
           <input
             type="text"
             name="lastName"
             value={formData?.lastName || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
-            placeholder="Last Name"
+            placeholder="Nume"
           />
         </div>
         <div>
-          <label className="block text-gray-700">City</label>
+          <label className="block text-gray-700">Oras</label>
           <input
             type="text"
             name="city"
@@ -198,7 +198,7 @@ const SettingsTab = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700">Country</label>
+          <label className="block text-gray-700">Judet</label>
           <input
             type="text"
             name="country"
@@ -209,14 +209,14 @@ const SettingsTab = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700">Zip/Postal Code</label>
+          <label className="block text-gray-700">Zip/Cod Postal</label>
           <input
             type="text"
             name="zipcode"
             value={formData?.zipcode || ""}
             onChange={handleChange}
             className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
-            placeholder="Zip/Postal Code"
+            placeholder="Cod Postal"
           />
         </div>
 
