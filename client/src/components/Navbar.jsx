@@ -48,10 +48,10 @@ const Navbar = () => {
         </div>
         <ul className="flex gap-10 font-[700] text-[16px]">
           <Link to="/" className="hover:text-black/70">
-            <li>Home</li>
+            <li>Acasa</li>
           </Link>
-          <Link to="/shop" className="hover:text-black/70">
-            <li>Shop</li>
+          <Link to="/Cumpara" className="hover:text-black/70">
+            <li>Cumpara</li>
           </Link>
           <Link to="/aboutus" className="hover:text-black/70">
             <li>About Us</li>
