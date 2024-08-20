@@ -50,7 +50,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-black/70">
             <li>Acasa</li>
           </Link>
-          <Link to="/Cumpara" className="hover:text-black/70">
+          <Link to="/cumpara" className="hover:text-black/70">
             <li>Cumpara</li>
           </Link>
           <Link to="/desprenoi" className="hover:text-black/70">
