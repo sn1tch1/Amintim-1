@@ -24,8 +24,8 @@ const Home = () => {
       >
         <span className="absolute top-0 z-10 w-full h-full bg-black/20"></span>
 
-        <p className="z-20">Un singur loc pentru toate amintirile frumoase</p>
-        <h2 className="text-5xl z-20 font-berkshire">Creeaza o pagina memoriala</h2>
+      //  <p className="z-20">Un singur loc pentru toate amintirile frumoase</p>
+        <h2 className="text-5xl z-20 font-berkshire">Un singur loc pentru toate amintirile frumoase</h2>
 
         <button
           onClick={handleClick}
@@ -52,7 +52,7 @@ const Home = () => {
         </div>
         <Link to="/shop" className="block">
           <button className="w-full h-full py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
-            Un singur loc pentru toate amintirile frumoase
+            Salveaza amintirile frumoase
           </button>
         </Link>
       </section>
