@@ -33,7 +33,7 @@ const Shop = () => {
       id: selectedOption,
       image: selectedImage,
       title: "Pachet Pagina Memoriala",
-      price: selectedOption === "buy1" ? 8100 : 12960,
+      price: selectedOption === "buy1" ? 190 : 280,
     };
     addToCart(item);
     toast.success("Added to Cart");
@@ -76,7 +76,7 @@ const Shop = () => {
                 Platesti o singura data
               </div>
               <div className="ml-auto flex items-center">
-                <span className=" text-xl">8.100 kr</span>
+                <span className=" text-xl">190 EON</span>
                 <span className="ml-3 lg:ml-0 line-through text-gray-500">
                   RON 280
                 </span>
