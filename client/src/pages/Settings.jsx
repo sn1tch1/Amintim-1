@@ -29,9 +29,9 @@ const SettingsPage = () => {
   return (
     <div className="flex flex-col items-center pt-[100px] min-h-screen bg-white">
       <div className="w-full px-4">
-        <h2 className="text-3xl font-bold mb-2 text-center">Manage</h2>
+        <h2 className="text-3xl font-bold mb-2 text-center">Contul tau</h2>
         <p className="text-gray-600 mb-4 text-center">
-          Set up your account and manage your information.
+          Gestioneaza paginile memoriale create si setarile contului tau.
         </p>
         <div className="flex gap-4 justify-center mb-8">
           <button
@@ -42,7 +42,7 @@ const SettingsPage = () => {
                 : "border-2 border-gray-300 text-gray-500 rounded-full"
             }`}
           >
-            Soul Stars
+            Pagini Memoriale
           </button>
           <button
             onClick={() => handleTabClick("Settings")}
@@ -52,7 +52,7 @@ const SettingsPage = () => {
                 : "border-2 border-gray-300 text-gray-500 rounded-full"
             }`}
           >
-            Settings
+            Setari
           </button>
         </div>
         {activeTab === "SoulStars" ? (
