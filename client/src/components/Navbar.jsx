@@ -53,8 +53,8 @@ const Navbar = () => {
           <Link to="/Cumpara" className="hover:text-black/70">
             <li>Cumpara</li>
           </Link>
-          <Link to="/aboutus" className="hover:text-black/70">
-            <li>About Us</li>
+          <Link to="/desprenoi" className="hover:text-black/70">
+            <li>Despre noi</li>
           </Link>
           <Link to="/contact" className="hover:text-black/70">
             <li>Contact</li>
