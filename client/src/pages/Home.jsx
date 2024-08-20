@@ -31,7 +31,7 @@ const Home = () => {
           onClick={handleClick}
           className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2"
         >
-          Salveaza amintirile frumoase
+          Creeaza o pagina memoriala
         </button>
       </section>
 
@@ -52,7 +52,7 @@ const Home = () => {
         </div>
         <Link to="/shop" className="block">
           <button className="w-full h-full py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
-            To your soul star
+            Un singur loc pentru toate amintirile frumoase
           </button>
         </Link>
       </section>
