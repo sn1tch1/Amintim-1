@@ -57,7 +57,7 @@ const Home = () => {
         </Link>
       </section>
 
-      {/* <Carousel /> */}
+      <Carousel />
 
       <SideBar />
 
