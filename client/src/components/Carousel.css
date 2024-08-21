@@ -1,49 +1,24 @@
-/* Slider */
-.swiper {
-  width: 224.55px;
-  height: 311.82px;
-}
-
-.swiper-slide {
+.image-grid {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9px;
-  color: #fff;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* Remove shadow from slides */
-.slide {
-  box-shadow: none;
+.carousel-image {
+  width: calc(33.333% - 14px);
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-/* Navigation buttons */
-.swiper-button-next,
-.swiper-button-prev {
-  color: #000; /* Adjust color as needed */
-  width: 30px;
-  height: 30px;
-  background: rgba(
-    255,
-    255,
-    255,
-    0.8
-  ); /* Optional: add a background for better visibility */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 20px; /* Adjust size as needed */
-}
-
-/* Hide navigation buttons on smaller screens */
 @media (max-width: 768px) {
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: block;
+  .image-grid {
+    flex-direction: column;
+  }
+  
+  .carousel-image {
+    width: 100%;
+    margin-bottom: 20px;
   }
 }
