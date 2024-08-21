@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
-import BG from "../assets/home/img-1.webp";
+import BG from "../assets/home/bkg2.webp";
 import Carousel from "../components/Carousel";
 import { Link, useNavigate } from "react-router-dom";
 
