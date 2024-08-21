@@ -1,15 +1,33 @@
 .image-grid {
-  display: flex;
-  justify-content: space-between;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
   gap: 20px;
   padding: 20px;
+  width: 100% !important;
+}
+
+.carousel-item {
+  width: calc(33.333% - 20px) !important;
+  aspect-ratio: 3/4; /* Adjust this to match your image aspect ratio */
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .carousel-image {
-  width: calc(33.333% - 14px);
-  height: 300px;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
-  border-radius: 8px;
+}
+
+.arrow-icon {
+  font-size: 24px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.debug-border {
+  border: 2px solid red;
 }
 
 @media (max-width: 768px) {
@@ -17,8 +35,13 @@
     flex-direction: column;
   }
   
-  .carousel-image {
-    width: 100%;
-    margin-bottom: 20px;
+  .carousel-item {
+    width: 100% !important;
+    max-width: 300px; /* Adjust as needed */
+  }
+  
+  .arrow-icon {
+    transform: rotate(90deg);
+    margin: 10px 0;
   }
 }
