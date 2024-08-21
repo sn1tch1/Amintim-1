@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo2.png";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
