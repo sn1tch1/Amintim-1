@@ -17,6 +17,7 @@ const Carousel = () => {
       modules={[EffectCards, Navigation]}
       className="mySwiper"
       navigation
+      style={{ width: '100%', height: 'auto' }}
     >
       <SwiperSlide className="">
         <div className="relative h-[311.82px] w-[224.55px] rounded-[9.14px] ">
