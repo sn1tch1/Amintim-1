@@ -26,9 +26,9 @@
   flex-shrink: 0;
 }
 
-.debug-border {
+/*.debug-border {
   border: 2px solid red;
-}
+}*/
 
 @media (max-width: 768px) {
   .image-grid {
