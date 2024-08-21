@@ -6,10 +6,10 @@ import "./Carousel.css";
 
 const Carousel = () => {
   return (
-    <div className="image-grid">
-      <img src={Image1} alt="Carousel Image 1" className="carousel-image" />
-      <img src={Image2} alt="Carousel Image 2" className="carousel-image" />
-      <img src={Image3} alt="Carousel Image 3" className="carousel-image" />
+    <div className="image-grid debug-border">
+      <img src={Image1} alt="Carousel Image 1" className="carousel-image debug-border" />
+      <img src={Image2} alt="Carousel Image 2" className="carousel-image debug-border" />
+      <img src={Image3} alt="Carousel Image 3" className="carousel-image debug-border" />
     </div>
   );
 };
