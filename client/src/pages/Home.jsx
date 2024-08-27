@@ -29,7 +29,7 @@ const Home = () => {
 
         <button
           onClick={handleClick}
-          className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2"
+          className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
         >
           Creeaza o pagina memoriala
         </button>
