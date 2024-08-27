@@ -20,6 +20,12 @@
   z-index: 1; /* Bring it to the front */
 }
 
+.image-container {
+  width: 100%;
+  aspect-ratio: 3/4;
+  margin-bottom: 10px;
+}
+
 .carousel-item {
   width: calc(33.333% - 20px) !important;
   aspect-ratio: 3/4; /* Adjust this to match your image aspect ratio */
