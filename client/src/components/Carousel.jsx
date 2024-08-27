@@ -12,20 +12,20 @@ const Carousel = () => {
       <div className="carousel-item debug-border">
         <div className="image-container debug-border">
         <img src={Image1} alt="Carousel Image 1" className="carousel-image debug-border" />
-      </div>
         <p className="image-caption debug-border">Scan QR Code</p>
+          </div>
         </div>
       <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image2} alt="Carousel Image 2" className="carousel-image debug-border" />
-      </div>
        <p className="image-caption debug-border">Create Profile</p>
+        </div>
        </div>
       <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image3} alt="Carousel Image 3" className="carousel-image debug-border" />
-      </div>
     <p className="image-caption debug-border">Share Memories</p>
+        </div>
     </div>
     </div>
   );
