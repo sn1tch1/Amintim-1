@@ -25,7 +25,7 @@ const Home = () => {
         <span className="absolute top-0 z-10 w-full h-full bg-black/20"></span>
 
     {/*   <p className="z-20"> Un singur loc pentru toate amintirile frumoase </p> */}
-        <h2 className="text-3xl lg:text-5xl text-center lg:text-start font-berkshire ">Un singur loc pentru toate amintirile frumoase</h2>
+        <h2 className="text-3xl lg:text-5xl z-20 font-berkshire">Un singur loc pentru toate amintirile frumoase</h2>
 
         <button
           onClick={handleClick}
