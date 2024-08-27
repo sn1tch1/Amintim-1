@@ -3,6 +3,7 @@ import Image1 from "../assets/home/carousel-img-1.webp";
 import Image2 from "../assets/home/carousel-img-2.webp";
 import Image3 from "../assets/home/carousel-img-3.webp";
 import { FaArrowRight } from "react-icons/fa"; // Import arrow icon
+import { IoIosArrowForward } from "react-icons/io"; // Import arrow icon
 import "./Carousel.css";
 
 const Carousel = () => {
@@ -11,11 +12,11 @@ const Carousel = () => {
       <div className="carousel-item debug-border">
         <img src={Image1} alt="Carousel Image 1" className="carousel-image debug-border" />
       </div>
-      <FaArrowRight className="arrow-icon debug-border" />
+      <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image2} alt="Carousel Image 2" className="carousel-image debug-border" />
       </div>
-      <FaArrowRight className="arrow-icon debug-border" />
+      <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image3} alt="Carousel Image 3" className="carousel-image debug-border" />
       </div>
