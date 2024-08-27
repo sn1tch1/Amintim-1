@@ -7,6 +7,19 @@
   width: 100% !important;
 }
 
+.image-caption {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 500;
+  color: #333; /* Ensure this contrasts with your background */
+  font-size: 16px;
+  padding: 5px 0;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  width: 100%;
+  position: relative; /* Ensure it's not being pushed off-screen */
+  z-index: 1; /* Bring it to the front */
+}
+
 .carousel-item {
   width: calc(33.333% - 20px) !important;
   aspect-ratio: 3/4; /* Adjust this to match your image aspect ratio */
