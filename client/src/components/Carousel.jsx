@@ -11,14 +11,17 @@ const Carousel = () => {
     <div className="image-grid debug-border">
       <div className="carousel-item debug-border">
         <img src={Image1} alt="Carousel Image 1" className="carousel-image debug-border" />
+        <p className="image-caption">Scan QR Code</p>
       </div>
       <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image2} alt="Carousel Image 2" className="carousel-image debug-border" />
+        <p className="image-caption">Create Profile</p>
       </div>
       <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
         <img src={Image3} alt="Carousel Image 3" className="carousel-image debug-border" />
+        <p className="image-caption">Share Memories</p>
       </div>
     </div>
   );
