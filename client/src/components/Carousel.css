@@ -8,28 +8,28 @@
 }
 
 .image-caption {
-  margin-top: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   text-align: center;
   font-weight: 500;
-  color: #333; /* Ensure this contrasts with your background */
+  color: white;
   font-size: 16px;
-  padding: 5px 0;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  width: 100%;
-  position: relative; /* Ensure it's not being pushed off-screen */
-  z-index: 1; /* Bring it to the front */
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  margin: 0;
 }
 
 .image-container {
+  position: relative;
   width: 100%;
   aspect-ratio: 3/4;
-  margin-bottom: 10px;
 }
 
 .carousel-item {
-  width: calc(33.333% - 20px) !important;
+  width: calc(30% - 20px) !important;
   aspect-ratio: 3/4; /* Adjust this to match your image aspect ratio */
-  overflow: hidden;
   border-radius: 8px;
 }
 
