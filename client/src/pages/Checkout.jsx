@@ -371,7 +371,7 @@ const Checkout = () => {
 
       <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
         <div className="sticky top-24">
-          <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
+          <h2 className="text-2xl font-bold mb-4">Continut comanda</h2>
           <table className="w-full">
             <tbody>
               {groupedCart.map((item, index) => (
