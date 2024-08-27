@@ -17,18 +17,18 @@ const About = () => {
             Pastram Amintirile vii cu Ajutorul Tehnologiei
           </h1>
           <p className="py-8 leading-[32px] text-justify">
-            Stim cat de dureroasa este pierderea unei persoane dragi. Credem ca
+              Stim cat de dureroasa este pierderea unei persoane dragi. Credem ca
             memoria lor merita sa fie pastrata vie, iar povestea lor si impactul
             pe care l-au avut asupra celor din jur sa fie impartasite. Asta ne-a
             motivat sa cream aceasta platforma - un spatiu dedicat familiilor si
             prietenilor care doresc sa creeze online memoriale frumoase si
-            emotionante. Instrumentele noastre intuitive va ajuta sa: Creati un
-            profil plin de suflet: Spuneti povestea vietii persoanei dragi cu
-            ajutorul fotografiilor, videoclipurilor si amintirilor pretioase.
-            Ramaneti conectati cu cei dragi: Invitati familia si prietenii sa
+            emotionante. Instrumentele noastre intuitive va ajuta sa: <br/>
+            <span className="italic">Creati un profil plin de suflet</span>span> - Spuneti povestea vietii persoanei dragi cu
+            ajutorul fotografiilor, videoclipurilor si amintirilor pretioase.<br/>
+            <span className="italic">Ramaneti conectati cu cei dragi</span> - Invitati familia si prietenii sa
             contribuie cu propriile povesti si amintiri, creand o comunitate
-            online durabila unde sa impartasiti durerea si dragostea. Unim lumea
-            fizica cu cea digitala: Generati un cod QR pe care sa-l asezati pe
+            online durabila unde sa impartasiti durerea si dragostea.<br/> 
+            <span className="italic">Unim lumea fizica cu cea digitala</span> - Generati un cod QR pe care sa-l asezati pe
             piatra funerara sau pe locul de veci. Scanand codul cu telefonul
             mobil, vizitatorii vor fi directionati automat catre memorialul
             online, unde pot afla mai multe despre persoana draga si pot lasa
