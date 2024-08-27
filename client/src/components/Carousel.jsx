@@ -33,14 +33,12 @@ const Carousel = () => {
 
       <IoIosArrowForward className="arrow-icon debug-border" />
       <div className="carousel-item debug-border">
-        <div className="image-container debug-border">
         <img
           src={Image3}
           alt="Carousel Image 3"
           className="carousel-image debug-border"
         />
         <p className="image-caption debug-border">Share Memories</p>
-          </div>
       </div>
     </div>
   );
