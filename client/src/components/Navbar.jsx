@@ -90,7 +90,7 @@ const Navbar = () => {
             outline="none"
             width={"110px"}
             size="sm"
-            placeholder="English"
+            placeholder="Română"
             className="font-[500]"
           >
             <option value="Română">Română</option>
