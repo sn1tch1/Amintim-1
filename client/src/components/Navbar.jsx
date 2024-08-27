@@ -168,7 +168,10 @@ const Navbar = () => {
             handleLogout={handleLogout}
             isLoggedIn={isLoggedIn}
           />
-          <h1 className="text-xl mx-auto font-bold">Amintim✨</h1>
+          {/* <h1 className="text-xl mx-auto font-bold">Amintim✨</h1> */}
+          <div className="h-[50px] w-auto">
+  <img src={Logo} alt="" className="w-full h-full" />
+</div>
           <div className="flex items-center gap-3">
             <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
               <svg
