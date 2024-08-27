@@ -23,7 +23,7 @@ const About = () => {
             motivat sa cream aceasta platforma - un spatiu dedicat familiilor si
             prietenilor care doresc sa creeze online memoriale frumoase si
             emotionante. Instrumentele noastre intuitive va ajuta sa: <br/>
-            <span className="italic">Creati un profil plin de suflet</span>span> - Spuneti povestea vietii persoanei dragi cu
+            <span className="italic">Creati un profil plin de suflet</span> - Spuneti povestea vietii persoanei dragi cu
             ajutorul fotografiilor, videoclipurilor si amintirilor pretioase.<br/>
             <span className="italic">Ramaneti conectati cu cei dragi</span> - Invitati familia si prietenii sa
             contribuie cu propriile povesti si amintiri, creand o comunitate
@@ -40,7 +40,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 h-[500px] items-center">
             <div className="space-y-8 text-center">
               <h3 className="text-3xl font-berkshire">
-                Here we have to put something
+                Viziunea noastra
               </h3>
               <p>
                 Suntem dedicati crearii unui spatiu pentru vindecare si
