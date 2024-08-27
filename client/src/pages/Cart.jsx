@@ -68,7 +68,7 @@ const Cart = () => {
                         />
                         <div>
                           <h5 className="font-medium">{item.title}</h5>
-                          <p className="text-gray-500">DKK {item.price}</p>
+                          <p className="text-gray-500">RON {item.price}</p>
                         </div>
                       </td>
                       <td className="py-4">
@@ -86,7 +86,7 @@ const Cart = () => {
                         </button>
                       </td>
                       <td className="py-4">
-                        DKK {(item.price * item.quantity).toFixed(2)}
+                        RON {(item.price * item.quantity).toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -96,7 +96,7 @@ const Cart = () => {
             <div className="w-full md:w-1/3 p-4 border rounded-lg mt-4 md:mt-0">
               <h2 className="text-xl font-semibold mb-4">Subtotal</h2>
               <div className="flex justify-between mb-4">
-                <p className="text-gray-500">DKK {SubTotal}</p>
+                <p className="text-gray-500">RON {SubTotal}</p>
               </div>
               <Link to="/checkout">
                 <button className="w-full py-2 bg-black text-white rounded-lg hover:bg-gray-800">
