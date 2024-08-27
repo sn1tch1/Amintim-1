@@ -99,11 +99,11 @@ const SoulStarsTab = () => {
             })}
             <div className="flex flex-col items-center justify-center py-6">
               <p className="text-xl text-center font-[600]">
-                No Soul Star <br /> created
+                {/* Removed "No Soul Star created" text */}
               </p>
               <Link to="/qr/link">
                 <button className="mt-4 px-8 py-2 bg-black/90 hover:bg-black duration-200 text-white rounded-full">
-                  Create new
+                  Creaza o pagina noua
                 </button>
               </Link>
             </div>
