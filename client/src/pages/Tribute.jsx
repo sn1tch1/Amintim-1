@@ -74,11 +74,10 @@ const TributePageSetup = () => {
   return (
     <div className="p-4 mx-auto bg-white rounded-lg shadow-md py-[80px]">
       <h2 className="text-2xl font-bold text-center mb-4">
-        Tribute Page Setup
+        Configureaza pagina memoriala
       </h2>
       <p className="text-center mb-6">
-        Start by setting up information about your loved one. Choose carefully
-        as you can only select between Human or Animal once.
+        Începeți prin a configura informațiile despre persoana dragă. Alegeți cu atenție, deoarece puteți selecta doar o dată între Persoana și Animal.
       </p>
       <div className="flex justify-center mb-6 space-x-4">
         <button
@@ -89,7 +88,7 @@ const TributePageSetup = () => {
           }`}
           onClick={() => setSelectedTab("Human")}
         >
-          Human
+          Persoana
         </button>
         <button
           className={`flex-1 py-2 px-4 rounded-full ${
@@ -107,39 +106,39 @@ const TributePageSetup = () => {
           <>
             <div>
               <label className="block font-medium mb-2" htmlFor="firstName">
-                First Name
+                Prenume
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="firstName"
                 type="text"
-                placeholder="First Name"
+                placeholder="Prenume"
                 value={formData.firstName}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label className="block font-medium mb-2" htmlFor="middleName">
-                Middle Name
+                Al doilea prenume
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="middleName"
                 type="text"
-                placeholder="Middle Name"
+                placeholder="(optional)"
                 value={formData.middleName}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label className="block font-medium mb-2" htmlFor="lastName">
-                Last Name
+                Nume
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="lastName"
                 type="text"
-                placeholder="Last Name"
+                placeholder="Nume"
                 value={formData.lastName}
                 onChange={handleChange}
               />
@@ -155,33 +154,33 @@ const TributePageSetup = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="animal"
                 type="text"
-                placeholder="Cat"
+                placeholder="Câine"
                 value={formData.animal}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label className="block font-medium mb-2" htmlFor="firstName">
-                Name
+                Nume
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="firstName"
                 type="text"
-                placeholder="Name"
+                placeholder="Nume"
                 value={formData.firstName}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label className="block font-medium mb-2" htmlFor="breed">
-                Breed
+                Rasă
               </label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 id="breed"
                 type="text"
-                placeholder="Breed"
+                placeholder="Rasă"
                 value={formData.breed}
                 onChange={handleChange}
               />
@@ -190,20 +189,20 @@ const TributePageSetup = () => {
         )}
         <div>
           <label className="block font-medium mb-2" htmlFor="note">
-            Introductory Note
+            Notă introductivă
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
             id="note"
             type="text"
-            placeholder="Introductory Note"
+            placeholder="in memoria"
             value={formData.note}
             onChange={handleChange}
           />
         </div>
         <div>
           <label className="block font-medium mb-2" htmlFor="birthDate">
-            Date of Birth
+            Data Nașterii
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -215,7 +214,7 @@ const TributePageSetup = () => {
         </div>
         <div>
           <label className="block font-medium mb-2" htmlFor="deathDate">
-            Date of Passing
+            Data Decesului
           </label>
           <input
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -230,7 +229,7 @@ const TributePageSetup = () => {
           className="flex w-full p-3 text-center items-center justify-center bg-black/90 text-white rounded-full hover:bg-black duration-200"
           type="submit"
         >
-          {loading ? <Spinner /> : "Create"}
+          {loading ? <Spinner /> : "Creează"}
         </button>
       </form>
     </div>
