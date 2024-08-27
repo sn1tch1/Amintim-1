@@ -76,7 +76,7 @@ const Shop = () => {
                 Platesti o singura data
               </div>
               <div className="ml-auto flex items-center">
-                <span className=" text-xl">190 EON</span>
+                <span className=" text-xl">190 RON</span>
                 <span className="ml-3 lg:ml-0 line-through text-gray-500">
                   RON 280
                 </span>
