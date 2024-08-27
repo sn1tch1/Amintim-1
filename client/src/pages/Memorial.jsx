@@ -1008,7 +1008,7 @@ const Memorial = () => {
             onClick={handleUpdate}
             className="fixed bottom-0 w-1/2 left-1/2 rounded-t-lg -translate-x-1/2 py-2 px-9 bg-black/90 hover:bg-black duration-200 cursor-pointer text-white"
           >
-            Actualizeaza
+            Salvează modificările
           </button>
         </div>
 
