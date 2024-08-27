@@ -35,17 +35,17 @@ function BottomDrawer({
         <DrawerBody bg={"white"}>
           <ul className="flex flex-col  gap-9 font-[500] text-[20px] mb-[200px]">
             <Link onClick={onClose} to="/" className="hover:text-black/70">
-              <li>Home</li>
+              <li>Acasa</li>
             </Link>
             <Link onClick={onClose} to="/shop" className="hover:text-black/70">
-              <li>Shop</li>
+              <li>Cumpara</li>
             </Link>
             <Link
               onClick={onClose}
               to="/aboutus"
               className="hover:text-black/70"
             >
-              <li>About Us</li>
+              <li>Despre noi</li>
             </Link>
             <Link
               onClick={onClose}
