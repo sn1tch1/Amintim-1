@@ -23,7 +23,7 @@ const Checkout = () => {
     newsEmail: false,
   });
   const [deliveryInfo, setDeliveryInfo] = useState({
-    country: "Iceland",
+    country: "Romania",
     firstName: "",
     lastName: "",
     address: "",
@@ -92,14 +92,14 @@ const Checkout = () => {
     const missingFields = [];
 
     if (!email) missingFields.push("Email");
-    if (!firstName) missingFields.push("First Name");
-    if (!address) missingFields.push("Address");
-    if (!postalCode) missingFields.push("Postal Code");
-    if (!city) missingFields.push("City");
-    if (!cardNumber) missingFields.push("Card Number");
-    if (!expiryDate) missingFields.push("Expiry Date");
-    if (!securityCode) missingFields.push("Security Code");
-    if (!cardHolderName) missingFields.push("Card Holder Name");
+    if (!firstName) missingFields.push("Prenume");
+    if (!address) missingFields.push("Adresa");
+    if (!postalCode) missingFields.push("Cod Postal");
+    if (!city) missingFields.push("Oras");
+    if (!cardNumber) missingFields.push("Numar Card");
+    if (!expiryDate) missingFields.push("Data expirare");
+    if (!securityCode) missingFields.push("Cod Securitate");
+    if (!cardHolderName) missingFields.push("Nume");
 
     if (missingFields.length > 0) {
       missingFields.forEach((field) => {
@@ -195,8 +195,8 @@ const Checkout = () => {
               value={deliveryInfo.country}
               onChange={(e) => handleInputChange(e, setDeliveryInfo)}
             >
-              <option>Iceland</option>
-              <option>Poland</option>
+              <option>Romania</option>
+              <option>Ungaria</option>
               {/* Add more options as needed */}
             </select>
           </div>
@@ -387,7 +387,7 @@ const Checkout = () => {
                     />
                     <div>
                       <h5 className="font-medium">{item.title}</h5>
-                      <p className="text-gray-500">DKK {item.price}</p>
+                      <p className="text-gray-500">RON {item.price}</p>
                     </div>
                   </td>
                   <td className="py-4">{item.quantity}</td>
@@ -397,7 +397,7 @@ const Checkout = () => {
           </table>
           <div className="flex justify-between items-center mb-2">
             <p className="text-gray-600">Subtotal</p>
-            <p className="text-gray-800 font-medium">DKK {SubTotal}</p>
+            <p className="text-gray-800 font-medium">RON {SubTotal}</p>
           </div>
           <div className="flex justify-between items-center mb-2">
             <p className="text-gray-600">Livrare</p>
@@ -405,7 +405,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between font-bold items-center mb-6">
             <p className="text-gray-600">Total</p>
-            <p className="text-gray-800 font-medium">DKK {SubTotal}</p>
+            <p className="text-gray-800 font-medium">RON {SubTotal}</p>
           </div>
           <button
             className={`w-full py-3 font-bold rounded-md ${
