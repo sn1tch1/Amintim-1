@@ -51,7 +51,7 @@ const Home = () => {
           <p>Create your memory.</p>
         </div>
         <Link to="/shop" className="block">
-          <button className="w-full h-full py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2">
+          <button className="w-full h-full py-4 px-6 bg-black text-white hover:text-black hover:bg-transparent border-black border-2 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
             Salveaza amintirile frumoase
           </button>
         </Link>
