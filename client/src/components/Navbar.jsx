@@ -76,37 +76,14 @@ const Navbar = () => {
           outline="none"
           size="sm"
           width={"200px"}
-          placeholder="(United States) USD $"
+          placeholder="(Romania) RON $"
           className="font-[500]"
         >
+          <option value="RON">(Romania) RON $</option>
           <option value="USD">(United States) USD $</option>
           <option value="EUR">(Eurozone) EUR €</option>
           <option value="GBP">(United Kingdom) GBP £</option>
-          <option value="AUD">(Australia) AUD $</option>
-          <option value="CAD">(Canada) CAD $</option>
-          <option value="CHF">(Switzerland) CHF Fr</option>
-          <option value="CNY">(China) CNY ¥</option>
-          <option value="JPY">(Japan) JPY ¥</option>
-          <option value="INR">(India) INR ₹</option>
-          <option value="RUB">(Russia) RUB ₽</option>
-          <option value="BRL">(Brazil) BRL R$</option>
-          <option value="ZAR">(South Africa) ZAR R</option>
-          <option value="SGD">(Singapore) SGD $</option>
-          <option value="HKD">(Hong Kong) HKD $</option>
-          <option value="KRW">(South Korea) KRW ₩</option>
-          <option value="MXN">(Mexico) MXN $</option>
-          <option value="NOK">(Norway) NOK kr</option>
-          <option value="NZD">(New Zealand) NZD $</option>
-          <option value="SEK">(Sweden) SEK kr</option>
-          <option value="TRY">(Turkey) TRY ₺</option>
-          <option value="PLN">(Poland) PLN zł</option>
-          <option value="AED">(United Arab Emirates) AED د.إ</option>
-          <option value="SAR">(Saudi Arabia) SAR ر.س</option>
-          <option value="THB">(Thailand) THB ฿</option>
-          <option value="IDR">(Indonesia) IDR Rp</option>
-          <option value="VND">(Vietnam) VND ₫</option>
-          <option value="MYR">(Malaysia) MYR RM</option>
-          <option value="PKR">(Pakistan) PKR Rs.</option>
+          <option value="HUF">(Hungary) HUF $</option>
         </Select> */}
           <Select
             border="none"
@@ -116,15 +93,9 @@ const Navbar = () => {
             placeholder="English"
             className="font-[500]"
           >
+            <option value="Română">Română</option>
             <option value="English">English</option>
-            <option value="Italian">Italian</option>
-            <option value="French">French</option>
-            <option value="Russian">Russian</option>
-            <option value="Dutch">Dutch</option>
-            <option value="Turkish">Turkish</option>
-            <option value="Polish">Polish</option>
-            <option value="Ukranian">Ukranian</option>
-            <option value="Arabic">Arabic</option>
+            <option value="Hungarian">Hungarian</option>
           </Select>
           <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
             <svg
