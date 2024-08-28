@@ -16,7 +16,7 @@ const Carousel = () => {
             alt="Carousel Image 1"
             className="carousel-image debug-border"
           />
-          <p className="image-caption debug-border">Scan QR Code</p>
+          <p className="image-caption debug-border">Scaneaza codul QR</p>
         </div>
       </div>
       <IoIosArrowForward className="arrow-icon debug-border" />
