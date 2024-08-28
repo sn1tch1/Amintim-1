@@ -9,7 +9,7 @@
 
 .image-caption {
   position: absolute;
-  bottom: 0;
+  bottom: -25px;
   left: 0;
   right: 0;
   text-align: center;
@@ -25,6 +25,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3/4;
+  margin-bottom: 30px;
 }
 
 .carousel-item {
