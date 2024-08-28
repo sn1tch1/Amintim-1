@@ -73,7 +73,7 @@ const Shop = () => {
           <div className="flex justify-between items-end">
             <div className="flex flex-col items-center mt-4">
               <div className="bg-green-700 text-white px-2 py-1 rounded">
-                Platesti o singura data
+                Plătesti o singură dată
               </div>
               <div className="ml-auto flex items-center">
                 <span className=" text-xl">190 RON</span>
