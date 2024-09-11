@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
-import Logo from "../assets/logo2.png";
+import Logo from "../assets/logo3b.png";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
@@ -169,8 +169,8 @@ const Navbar = () => {
             isLoggedIn={isLoggedIn}
           />
           {/* <h1 className="text-xl mx-auto font-bold">Amintim✨</h1> */}
-          <div className="h-[50px] w-auto">
-  <img src={Logo} alt="" className="w-full h-full" />
+          <div className="h-[40px] w-auto">
+  <img src={Logo} alt="" className="w-full h-full object-contain" />
 </div>
           <div className="flex items-center gap-3">
             <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
