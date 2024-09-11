@@ -27,6 +27,7 @@ import Congratulations from "./pages/Congratulations";
 import TermsAndConditions from './pages/TermsAndConditions';
 import CookiePolicy from './pages/CookiePolicy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import NotFound from "./pages/NotFound";
 
 const AppContent = () => {
   const location = useLocation();
@@ -65,6 +66,7 @@ const AppContent = () => {
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/profile/view/:id" element={<View />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="/proceed"
           element={<PrivateRoute element={<Proceed />} />}
