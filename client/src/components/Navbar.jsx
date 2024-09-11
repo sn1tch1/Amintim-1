@@ -169,7 +169,7 @@ const Navbar = () => {
             isLoggedIn={isLoggedIn}
           />
           {/* <h1 className="text-xl mx-auto font-bold">Amintim✨</h1> */}
-          <div className="h-[40px] w-auto">
+          <div className="h-[50px] w-auto">
   <img src={Logo} alt="" className="w-full h-full object-contain" />
 </div>
           <div className="flex items-center gap-3">
