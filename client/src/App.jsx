@@ -24,6 +24,7 @@ import Checkout from "./pages/Checkout";
 import PrivateRoute from "./components/privateRoutes";
 import View from "./pages/View";
 import Congratulations from "./pages/Congratulations";
+import TermsAndConditions from './pages/TermsAndConditions';
 
 const AppContent = () => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const AppContent = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
         <Route path="/congratulations" element={<Congratulations />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/profile/view/:id" element={<View />} />
         <Route
           path="/proceed"
