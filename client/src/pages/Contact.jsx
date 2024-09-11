@@ -17,17 +17,17 @@ const Contact = () => {
             curand posibil.
           </p>
         </div>
-        <div className="bg-[#D1D1D1] p-5 space-y-4">
+        <div className="bg-[#F7F7F7] p-5 space-y-4">
           <div className="flex items-center gap-4 w-full">
             <input
               type="text"
               placeholder="Nume"
-              className="py-4 px-8 font-mono font-[300] bg-transparent border-[2px] border-gray-400 w-full outline-none"
+              className="py-4 px-8 font-[300] bg-white border-[2px] border-gray-300 w-full outline-none rounded-md"
             />
             <input
               type="text"
               placeholder="Email"
-              className="py-4 px-8 font-mono font-[300] bg-transparent border-[2px] border-gray-400 w-full outline-none"
+              className="py-4 px-8 font-[300] bg-white border-[2px] border-gray-300 w-full outline-none rounded-md"
             />
           </div>
           <textarea
@@ -35,9 +35,9 @@ const Contact = () => {
             // cols={12}
             rows={3}
             placeholder="Mesaj"
-            className="py-4 px-8 font-mono bg-transparent border-[2px] border-gray-400 font-[300] w-full outline-none"
+            className="py-4 px-8 bg-white border-[2px] border-gray-300 font-[300] w-full outline-none rounded-md"
           />
-          <button className="py-4 px-6 my-4 bg-black text-white hover:text-black hover:bg-transparent border-black border-2 ">
+          <button className="py-4 px-6 my-4 bg-black/90 text-white hover:bg-black duration-200 rounded-full w-full">
             Trimite
           </button>
         </div>
