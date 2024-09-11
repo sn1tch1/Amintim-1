@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import BaseURL from "../utils/BaseURL";
+import Logo from "../assets/logo3b.png";
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -39,7 +40,9 @@ const Header = () => {
   return (
     <header className="bg-white p-4 border-black border-b-2 fixed top-0 w-full">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl mx-auto font-bold">Amintim✨</h1>
+        <div className="h-[40px] w-auto mx-auto">
+  <img src={Logo} alt="Amintim" className="w-auto h-full object-contain" />
+</div>
         {/* <button ref={btnRef} onClick={openDrawer} className="text-gray-700">
           <svg
             className="w-6 h-6"
