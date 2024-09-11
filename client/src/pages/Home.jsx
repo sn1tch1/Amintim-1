@@ -4,6 +4,7 @@ import SideBar from "../components/SideDrawer";
 import BG from "../assets/home/bkg2.webp";
 import Carousel from "../components/Carousel";
 import { Link, useNavigate } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -62,6 +63,52 @@ const Home = () => {
       <SideBar />
 
       <FAQs />
+      import React, { useState, useEffect } from "react";
+import { FaArrowUp } from "react-icons/fa";
+
+// ... existing imports and component code ...
+
+const ScrollToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+  return (
+    <>
+      {isVisible && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors duration-300"
+          aria-label="Scroll to top"
+        >
+          <FaArrowUp />
+        </button>
+      )}
+    </>
+  );
+};
+
+// Add this line at the end of your Home component, just before the closing </div>
+<ScrollToTopButton />
     </div>
   );
 };
