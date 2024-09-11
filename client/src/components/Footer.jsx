@@ -25,11 +25,7 @@ const Footer = () => {
           </li>
 
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            <a
-              href="URL_FOR_TERMS_CONDITIONS"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+           <Link to="/terms-and-conditions">
               Termeni si Conditii
             </a>
           </li>
