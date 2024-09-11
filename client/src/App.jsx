@@ -25,8 +25,6 @@ import PrivateRoute from "./components/privateRoutes";
 import View from "./pages/View";
 import Congratulations from "./pages/Congratulations";
 import TermsAndConditions from './pages/TermsAndConditions';
-import CookiePolicy from './pages/CookiePolicy';
-import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const AppContent = () => {
   const location = useLocation();
@@ -62,8 +60,6 @@ const AppContent = () => {
         <Route path="/verify" element={<Captcha />} />
         <Route path="/congratulations" element={<Congratulations />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-        <Route path="/cookie-policy" element={<CookiePolicy />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/profile/view/:id" element={<View />} />
         <Route
           path="/proceed"
