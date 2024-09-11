@@ -27,7 +27,7 @@ const Footer = () => {
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
            <Link to="/terms-and-conditions">
               Termeni si Conditii
-            </a>
+            </Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
             <a
