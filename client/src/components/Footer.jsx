@@ -30,17 +30,23 @@ const Footer = () => {
             </Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-  <Link to="/cookie-policy">
-    Politica Cookie
-  </Link>
-</li>
+            <a
+              href="URL_FOR_COOKIE_POLICY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Politica Cookie
+            </a>
+          </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-  <Link to="/privacy-policy">
-    Politica de Confidentialitate
-  </Link>
-</li>
+            <a
+              href="URL_FOR_PRIVACY_POLICY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Politica de Conidentialitate
+            </a>
+          </li>
         </ul>
       </div>
 
