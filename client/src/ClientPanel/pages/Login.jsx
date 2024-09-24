@@ -35,7 +35,7 @@ const Login = () => {
           toast.success("Logged In Successfully");
           localStorage.setItem("token", response?.data?.token);
           localStorage.setItem("user", response?.data);
-          localStorage.setItem("role", "admin");
+          // localStorage.setItem("role", "admin");
           navigate("/manage-account/settings");
           login();
         } else {
