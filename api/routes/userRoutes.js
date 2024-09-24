@@ -7,6 +7,7 @@ const {
   resendVerificationCode,
   getUserDetails,
   logout,
+  getAllUsers,
 } = require("../controllers/userController.js");
 const { protect } = require("../middleware/authMiddleware.js");
 
@@ -18,5 +19,6 @@ router.post("/logout", logout);
 router.post("/verify", verifyUser);
 router.post("/resend", resendVerificationCode);
 router.put("/update", protect, updateUser);
-router.get("/me", protect, getUserDetails); 
+router.get("/me", protect, getUserDetails);
+router.get("/", getAllUsers);
 module.exports = router;

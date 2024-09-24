@@ -4,8 +4,8 @@ import Header from "../components/Header";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/AuthContext";
-import BaseURL from "../utils/BaseURL";
+import { useAuth } from "../../context/AuthContext";
+import BaseURL from "../../utils/BaseURL";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,13 +28,14 @@ const Login = () => {
           email,
         });
         if (response.status === 201) {
-          toast.success("Verificati adresa de email")
+          toast.success("Verificati adresa de email");
           let token = response?.data?.token;
           navigate("/verify", { state: { email, token } });
-          
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
           localStorage.setItem("token", response?.data?.token);
+          localStorage.setItem("user", response?.data);
+          localStorage.setItem("role", "admin");
           navigate("/manage-account/settings");
           login();
         } else {

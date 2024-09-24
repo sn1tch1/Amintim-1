@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Image from "../assets/shop/img-1.webp";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
-import BaseURL from "../utils/BaseURL";
+import BaseURL from "../../utils/BaseURL";
 import axios from "axios";
 
 const Checkout = () => {
@@ -285,7 +284,9 @@ const Checkout = () => {
         </div>
 
         <h2 className="text-2xl font-bold mb-4">Plata</h2>
-        <p className="mb-6">Toate tranzactiile sunt encriptate si securizate.</p>
+        <p className="mb-6">
+          Toate tranzactiile sunt encriptate si securizate.
+        </p>
 
         <div className="border p-4 rounded-lg mb-4 bg-gray-50">
           <div className="border-b pb-2 mb-4">

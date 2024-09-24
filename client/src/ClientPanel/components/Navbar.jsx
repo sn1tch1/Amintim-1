@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
-import Logo from "../assets/logo3b.png";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
+import Logo from "../../assets/logo3b.png";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import axios from "axios";
-import BaseURL from "../utils/BaseURL";
+import BaseURL from "../../utils/BaseURL";
 import { Select } from "@chakra-ui/react";
 
 const Navbar = () => {
@@ -170,8 +170,8 @@ const Navbar = () => {
           />
           {/* <h1 className="text-xl mx-auto font-bold">Amintim✨</h1> */}
           <div className="h-[50px] w-auto">
-  <img src={Logo} alt="" className="w-full h-full object-contain" />
-</div>
+            <img src={Logo} alt="" className="w-full h-full object-contain" />
+          </div>
           <div className="flex items-center gap-3">
             <Link to={"/manage-account/settings"} className="w-[22px] h-[22px]">
               <svg

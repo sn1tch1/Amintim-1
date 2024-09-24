@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import BaseURL from "../utils/BaseURL";
+import BaseURL from "../../utils/BaseURL";
 
 const TributePageSetup = () => {
   const [selectedTab, setSelectedTab] = useState("Human");
@@ -77,7 +77,8 @@ const TributePageSetup = () => {
         Configureaza pagina memoriala
       </h2>
       <p className="text-center mb-6">
-        Începeți prin a configura informațiile despre persoana dragă. Alegeți cu atenție, deoarece puteți selecta doar o dată între Persoana și Animal.
+        Începeți prin a configura informațiile despre persoana dragă. Alegeți cu
+        atenție, deoarece puteți selecta doar o dată între Persoana și Animal.
       </p>
       <div className="flex justify-center mb-6 space-x-4">
         <button

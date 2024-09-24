@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/logo3w.png";
+import Logo from "../../assets/logo3w.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -25,19 +25,13 @@ const Footer = () => {
           </li>
 
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-           <Link to="/terms-and-conditions">
-              Termeni si Conditii
-            </Link>
+            <Link to="/terms-and-conditions">Termeni si Conditii</Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-            <Link to="/cookie-policy">
-              Politica Cookie
-            </Link>
+            <Link to="/cookie-policy">Politica Cookie</Link>
           </li>
           <li className="cursor-pointer text-white/70 hover:text-white duration-300">
-             <Link to="/privacy-policy">
-              Politica de Confidentialitate
-            </Link>
+            <Link to="/privacy-policy">Politica de Confidentialitate</Link>
           </li>
         </ul>
       </div>

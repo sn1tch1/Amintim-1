@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-import BaseURL from "../utils/BaseURL";
+import { useAuth } from "../../context/AuthContext";
+import BaseURL from "../../utils/BaseURL";
 
 const PrivateRoute = ({ element }) => {
   const { isLoggedIn } = useAuth();

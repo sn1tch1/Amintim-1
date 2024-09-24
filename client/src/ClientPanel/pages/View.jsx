@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import avatar from "../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 import { format } from "date-fns";
-import coverAvatar from "../assets/cover.png";
+import coverAvatar from "../../assets/cover.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
@@ -10,9 +10,9 @@ import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import { FaBirthdayCake, FaHome } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Spinner } from "@chakra-ui/react";
-import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
+import BaseURL, { IMAGES_BASE_URL } from "../../utils/BaseURL";
 
 const View = () => {
   const { id } = useParams();

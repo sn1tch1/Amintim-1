@@ -7,13 +7,13 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import Image1 from "../assets/shop/img-1.webp";
-import Image2 from "../assets/shop/img-2.webp";
-import Image3 from "../assets/shop/img-3.webp";
-import Image4 from "../assets/shop/img-4.webp";
-import Image5 from "../assets/shop/img-5.webp";
+import Image1 from "../../assets/shop/img-1.webp";
+import Image2 from "../../assets/shop/img-2.webp";
+import Image3 from "../../assets/shop/img-3.webp";
+import Image4 from "../../assets/shop/img-4.webp";
+import Image5 from "../../assets/shop/img-5.webp";
 import GridFAQs from "../components/GridFAQs";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import toast from "react-hot-toast";
 
 const Shop = () => {
@@ -68,7 +68,8 @@ const Shop = () => {
         <div>
           <h3 className="text-3xl font-[700]">Pachet Pagina Memoriala</h3>
           <p>
-            Include pagina memoriala si codul QR atasat acesteia, printat pe o placuta metalica
+            Include pagina memoriala si codul QR atasat acesteia, printat pe o
+            placuta metalica
           </p>
           <div className="flex justify-between items-end">
             <div className="flex flex-col items-center mt-4">
@@ -108,9 +109,7 @@ const Shop = () => {
               <span className="ml-2">(71)</span>
             </div>
           </div>
-          <div className="text-green-700 mt-2">
-            Livrare GRATUITA
-          </div>
+          <div className="text-green-700 mt-2">Livrare GRATUITA</div>
           <div className="mt-4 space-y-5">
             <button
               className={`w-full flex justify-between items-center rounded-[20px] border-2 p-4 ${

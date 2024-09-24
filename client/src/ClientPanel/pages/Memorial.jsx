@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import avatar from "../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 import { format } from "date-fns";
-import coverAvatar from "../assets/cover.png";
+import coverAvatar from "../../assets/cover.png";
 import { Link, useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
@@ -11,7 +11,7 @@ import { toast } from "react-hot-toast";
 import { FaBirthdayCake, FaHome } from "react-icons/fa";
 import { GiGraveFlowers } from "react-icons/gi";
 import { ModalCloseButton, Spinner, useDisclosure } from "@chakra-ui/react";
-import BaseURL, { IMAGES_BASE_URL } from "../utils/BaseURL";
+import BaseURL, { IMAGES_BASE_URL } from "../../utils/BaseURL";
 import {
   Modal,
   ModalContent,
@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useClipboard } from "@chakra-ui/react";
-import BASE_URL from "../utils/BaseURL";
+import BASE_URL from "../../utils/BaseURL";
 import { MdDelete } from "react-icons/md";
 
 const Memorial = () => {
@@ -854,8 +854,8 @@ const Memorial = () => {
                     </>
                   ) : (
                     <div className="col-span-3 text-center text-gray-500">
-                      Nu exista poze disponibile. Click mai jos pentru a le adauga.
-                    
+                      Nu exista poze disponibile. Click mai jos pentru a le
+                      adauga.
                     </div>
                   )}
                 </div>

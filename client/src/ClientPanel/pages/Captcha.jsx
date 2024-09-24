@@ -3,8 +3,8 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import BaseURL from "../utils/BaseURL";
-import { useAuth } from "../context/AuthContext";
+import BaseURL from "../../utils/BaseURL";
+import { useAuth } from "../../context/AuthContext";
 
 const CaptchaInput = () => {
   const [code, setCode] = useState(Array(5).fill(""));

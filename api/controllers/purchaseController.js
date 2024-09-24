@@ -106,3 +106,19 @@ exports.purchaseSoulStar = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.getAllPurchases = async (req, res) => {
+  try {
+    // Fetch all purchases from the database
+    const purchases = await Purchase.find().populate("userId", "name email");
+
+    if (!purchases || purchases.length === 0) {
+      return res.status(404).json({ message: "No purchases found" });
+    }
+
+    res.status(200).json({ purchases });
+  } catch (error) {
+    console.error("Error fetching purchases:", error);
+    res.status(500).json({ message: "Error fetching purchases" });
+  }
+};

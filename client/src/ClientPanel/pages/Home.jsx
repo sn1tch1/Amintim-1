@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FAQs from "../components/FAQs";
 import SideBar from "../components/SideDrawer";
-import BG from "../assets/home/bkg2.webp";
+import BG from "../../assets/home/bkg2.webp";
 import Carousel from "../components/Carousel";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
@@ -26,7 +26,7 @@ const ScrollToTopButton = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
 
@@ -63,7 +63,9 @@ const Home = () => {
         style={{ backgroundImage: `url(${BG})` }}
       >
         <span className="absolute top-0 z-10 w-full h-full bg-black/20"></span>
-        <h2 className="text-3xl lg:text-5xl z-20 font-berkshire">Un singur loc pentru toate amintirile frumoase</h2>
+        <h2 className="text-3xl lg:text-5xl z-20 font-berkshire">
+          Un singur loc pentru toate amintirile frumoase
+        </h2>
         <button
           onClick={handleClick}
           className="py-4 px-6 z-20 bg-white text-black hover:text-white hover:bg-transparent border-white border-2 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"

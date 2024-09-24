@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   verificationCode: { type: String },
   hasPurchased: { type: Boolean, default: false },
+  role: {
+    type: String,
+    enum: ["admin", "user", "partner"],
+    default: "user", // Default to "user"
+  },
   deliveryInfo: {
     firstName: { type: String },
     lastName: { type: String },

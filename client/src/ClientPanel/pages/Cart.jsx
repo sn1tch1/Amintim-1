@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { toast } from "react-hot-toast";
-import BaseURL from "../utils/BaseURL";
+import BaseURL from "../../utils/BaseURL";
 
 const Cart = () => {
   const [cart, setCart] = useState(() => {
@@ -46,7 +46,9 @@ const Cart = () => {
       {groupedCart.length > 0 ? (
         <div className="container mx-auto px-4 py-[100px]">
           <h1 className="text-3xl font-semibold mb-4">Cart</h1>
-          <p className="mb-8">Comanda dumneavoastra beneficiaza de livrare GRATIS</p>
+          <p className="mb-8">
+            Comanda dumneavoastra beneficiaza de livrare GRATIS
+          </p>
           <div className="flex flex-col md:flex-row justify-between">
             <div className="w-full md:w-2/3 overflow-x-auto">
               <table className="w-full min-w-[600px]">

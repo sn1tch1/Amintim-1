@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import Image1 from "../assets/about/img-1.webp";
-import Image2 from "../assets/about/img-2.webp";
-import Image3 from "../assets/about/img-3.webp";
+import Image1 from "../../assets/about/img-1.webp";
+import Image2 from "../../assets/about/img-2.webp";
+import Image3 from "../../assets/about/img-3.webp";
 import HappyCustomersCarousel from "../components/Testimonials";
 
 const About = () => {
@@ -17,31 +17,33 @@ const About = () => {
             Pastram Amintirile vii cu Ajutorul Tehnologiei
           </h1>
           <p className="py-8 leading-[32px] text-justify">
-              Stim cat de dureroasa este pierderea unei persoane dragi. Credem ca
+            Stim cat de dureroasa este pierderea unei persoane dragi. Credem ca
             memoria lor merita sa fie pastrata vie, iar povestea lor si impactul
             pe care l-au avut asupra celor din jur sa fie impartasite. Asta ne-a
             motivat sa cream aceasta platforma - un spatiu dedicat familiilor si
             prietenilor care doresc sa creeze online memoriale frumoase si
-            emotionante. Instrumentele noastre intuitive va ajuta sa: <br/>
-            <span className="italic">Creati un profil plin de suflet</span> - Spuneti povestea vietii persoanei dragi cu
-            ajutorul fotografiilor, videoclipurilor si amintirilor pretioase.<br/>
-            <span className="italic">Ramaneti conectati cu cei dragi</span> - Invitati familia si prietenii sa
-            contribuie cu propriile povesti si amintiri, creand o comunitate
-            online durabila unde sa impartasiti durerea si dragostea.<br/> 
-            <span className="italic">Unim lumea fizica cu cea digitala</span> - Generati un cod QR pe care sa-l asezati pe
-            piatra funerara sau pe locul de veci. Scanand codul cu telefonul
-            mobil, vizitatorii vor fi directionati automat catre memorialul
-            online, unde pot afla mai multe despre persoana draga si pot lasa
-            mesaje de condoleante.
+            emotionante. Instrumentele noastre intuitive va ajuta sa: <br />
+            <span className="italic">Creati un profil plin de suflet</span> -
+            Spuneti povestea vietii persoanei dragi cu ajutorul fotografiilor,
+            videoclipurilor si amintirilor pretioase.
+            <br />
+            <span className="italic">Ramaneti conectati cu cei dragi</span> -
+            Invitati familia si prietenii sa contribuie cu propriile povesti si
+            amintiri, creand o comunitate online durabila unde sa impartasiti
+            durerea si dragostea.
+            <br />
+            <span className="italic">Unim lumea fizica cu cea digitala</span> -
+            Generati un cod QR pe care sa-l asezati pe piatra funerara sau pe
+            locul de veci. Scanand codul cu telefonul mobil, vizitatorii vor fi
+            directionati automat catre memorialul online, unde pot afla mai
+            multe despre persoana draga si pot lasa mesaje de condoleante.
           </p>
         </div>
 
         <div className="space-y-16 py-12">
           <div className="grid lg:grid-cols-2 gap-12 h-[500px] items-center">
             <div className="space-y-8 text-center">
-              <h3 className="text-3xl font-berkshire">
-                Viziunea noastra
-              </h3>
+              <h3 className="text-3xl font-berkshire">Viziunea noastra</h3>
               <p>
                 Suntem dedicati crearii unui spatiu pentru vindecare si
                 rememorare. Echipa noastra se asigura ca oferim o platforma de

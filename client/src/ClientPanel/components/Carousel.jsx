@@ -1,7 +1,7 @@
 import React from "react";
-import Image1 from "../assets/home/carousel-img-1.webp";
-import Image2 from "../assets/home/carousel-img-2.webp";
-import Image3 from "../assets/home/carousel-img-3.webp";
+import Image1 from "../../assets/home/carousel-img-1.webp";
+import Image2 from "../../assets/home/carousel-img-2.webp";
+import Image3 from "../../assets/home/carousel-img-3.webp";
 import { IoIosArrowForward } from "react-icons/io";
 import "./Carousel.css";
 
