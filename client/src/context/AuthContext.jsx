@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (token) => {
-    alert("objectLogin", token);
     try {
       const response = await axios.get(`${BaseURL}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
