@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
         localStorage.setItem("token", token); // Store the token in localStorage
         localStorage.setItem("user", JSON.stringify(response.data));
-        // window.location.reload();
+        window.location.reload();
       } else {
         console.error("Login failed");
       }
