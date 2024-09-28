@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     // setUser(userData);
     setIsLoggedIn(true);
     // isLoggedIn = true;
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", user);
     window.location.reload();
   };
 
