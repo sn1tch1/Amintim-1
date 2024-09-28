@@ -33,12 +33,10 @@ const Login = () => {
           navigate("/verify", { state: { email, token } });
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
+          console.log(response);
           localStorage.setItem("token", response?.data?.token);
-          // localStorage.setItem("user", response?.data?.user);
-
-          // localStorage.setItem("role", "admin");
           navigate("/manage-account/settings");
-          login();
+          login(response?.data?.token);
         } else {
           console.log("responseeee", response);
           toast.error("Eroare de logare. Va rugam sa incercati din nou.");

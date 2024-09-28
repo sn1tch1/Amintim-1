@@ -6,25 +6,25 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState();
-  // let isLoggedIn;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${BaseURL}/users/me`, {
+          headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
           withCredentials: true,
         });
         if (response.status === 200) {
-          // const userData = await response.json();
           setUser(response.data);
-
-          console.log(response);
-          // setIsLoggedIn(true);
+          setIsLoggedIn(true);
           localStorage.setItem("user", JSON.stringify(response.data));
         } else {
-          // Handle error if fetching user data fails
           logout();
         }
       } catch (error) {
@@ -33,23 +33,31 @@ export const AuthProvider = ({ children }) => {
       }
     };
     fetchUserData();
+  }, []);
 
-    {
-      !token ? setIsLoggedIn(false) : setIsLoggedIn(true);
+  const login = async (token) => {
+    alert("objectLogin", token);
+    try {
+      const response = await axios.get(`${BaseURL}/users/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setUser(response.data);
+        setIsLoggedIn(true);
+        localStorage.setItem("token", token); // Store the token in localStorage
+        localStorage.setItem("user", JSON.stringify(response.data));
+        // window.location.reload();
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
-  }, [isLoggedIn]);
-
-  const login = async () => {
-    // setUser(userData);
-    setIsLoggedIn(true);
-    // isLoggedIn = true;
-    localStorage.setItem("user", user);
-    window.location.reload();
   };
 
   const logout = () => {
     setIsLoggedIn(false);
-    // isLoggedIn = false;
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
