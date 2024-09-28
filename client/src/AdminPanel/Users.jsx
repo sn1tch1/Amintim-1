@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import BASE_URL from "../utils/BaseURL";
-import Avatar from "../../public/avatar.jpg";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -27,7 +26,6 @@ const Users = () => {
 
       setTotalUsers(res.data);
       setError(null);
-      console.log(res);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -39,7 +37,7 @@ const Users = () => {
     fetchData();
   }, []);
 
-  const handleChangeRole = async (userId, value) => {
+  const handleChangeRole = async (userId, newRole) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -51,15 +49,16 @@ const Users = () => {
         Authorization: `Bearer ${token}`,
       };
 
+      // Call the backend API to change the user role
       const response = await axios.put(
-        `${BASE_URL}/users/user-role/${userId}`,
-        { role: value },
+        `${BASE_URL}/users/change-role`, // Assuming this is your backend route
+        { userId, newRole }, // The body now includes both userId and newRole
         { headers }
       );
-
+      console.log(response);
       if (response.status === 200) {
-        toast.success(response.data.message || "Successfully Updated.");
-        fetchData();
+        toast.success(response.data.message || "Role updated successfully.");
+        fetchData(); // Refresh the user data after updating the role
       } else {
         toast.error(response.data.message || "Failed to update role.");
       }
@@ -71,19 +70,30 @@ const Users = () => {
   const handleDelete = async (userId) => {
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found in cookies");
+      }
 
-      await axios.delete(`${BASE_URL}/users/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Call the backend API to delete the user
+      const response = await axios.delete(`${BASE_URL}/users/user/${userId}`, {
+        headers,
       });
 
-      toast.success("User deleted successfully");
-      fetchData();
+      if (response.status === 200) {
+        toast.success("User deleted successfully");
+        fetchData(); // Refresh the user data after deletion
+      } else {
+        toast.error(response.data.message || "Failed to delete user.");
+      }
     } catch (err) {
-      toast.error("Failed to delete user");
+      toast.error("An error occurred while deleting the user.");
     }
   };
+
 
   return (
     <div className="container mx-auto py-4">
@@ -138,10 +148,12 @@ const Users = () => {
                       value={user.role}
                       onChange={(e) =>
                         handleChangeRole(user._id, e.target.value)
-                      }
+                      } // Calls the updated function
                     >
                       <option value="user">User</option>
                       <option value="admin">Admin</option>
+                      <option value="partner">Partner</option>{" "}
+                      {/* Added partner role */}
                     </select>
                   </td>
                   <td className="py-2 px-4 text-center">

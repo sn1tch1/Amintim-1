@@ -5,7 +5,8 @@ import ClientLayout from "./Layout/ClientLayout.jsx";
 
 function App() {
   const [data, setData] = useState(null);
-  const role = localStorage.getItem("role");
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const useFetch = (url) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -53,19 +54,9 @@ function App() {
   };
   useFetch();
 
-  // if (error) {
-  //   console.error("Error fetching user data:", error);
-  //   return <ClientLayout />; // If there's an error, fallback to ClientLayout
-  // }
-
-  // If userData is fetched successfully
-  const userRole = role;
+  const userRole = user?.role || "user";
   console.log(userRole);
-  return (
-    <div>
-      {userRole === "admin" ? <AdminLayout /> : <ClientLayout />}
-    </div>
-  );
+  return <div>{userRole === "admin" ? <AdminLayout /> : <ClientLayout />}</div>;
 }
 
 export default App;

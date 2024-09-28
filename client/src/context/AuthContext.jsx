@@ -19,6 +19,8 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
           // const userData = await response.json();
           setUser(response.data);
+
+          console.log(response);
           // setIsLoggedIn(true);
           localStorage.setItem("user", JSON.stringify(response.data));
         } else {
@@ -41,7 +43,8 @@ export const AuthProvider = ({ children }) => {
     // setUser(userData);
     setIsLoggedIn(true);
     // isLoggedIn = true;
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(user));
+    window.location.reload();
   };
 
   const logout = () => {

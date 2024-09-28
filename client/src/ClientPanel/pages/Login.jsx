@@ -34,7 +34,8 @@ const Login = () => {
         } else if (response.status === 200) {
           toast.success("Logged In Successfully");
           localStorage.setItem("token", response?.data?.token);
-          localStorage.setItem("user", response?.data);
+          // localStorage.setItem("user", response?.data?.user);
+
           // localStorage.setItem("role", "admin");
           navigate("/manage-account/settings");
           login();

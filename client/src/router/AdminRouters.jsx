@@ -10,11 +10,11 @@ import MemorialViewPage from "../AdminPanel/component/MemorialDetail.jsx";
 import Purchase from "../AdminPanel/Purchases.jsx";
 
 const AdminRouters = () => {
-  // const { user } = useContext(AuthContext);
   const { user } = useAuth();
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/admin/dashboard" />} />
+      <Route path="/dashboard" element={<Navigate to="/admin/dashboard" />} />
       <Route path="/admin/dashboard" element={<Dashboard />} />
       {/* <Route path="/login" element={<Login />} /> */}
       <Route path="/admin/services" element={<Services />} />
