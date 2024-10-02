@@ -444,6 +444,32 @@ exports.updateMemorialPage = async (req, res) => {
   }
 };
 
+exports.updateQRCodeStatus = async (req, res) => {
+  const { id } = req.params;
+  const { QRCodeStatus } = req.body;
+
+  try {
+    const memorialPage = await MemorialPage.findByIdAndUpdate(
+      id,
+      { QRCodeStatus },
+      { new: true }
+    );
+
+    if (!memorialPage) {
+      return res.status(404).json({ message: "Memorial page not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "QR code status updated successfully", memorialPage });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update QR code status.", error });
+  }
+};
+
+
 // Delete a memorial page
 exports.deleteMemorialPage = async (req, res) => {
   try {

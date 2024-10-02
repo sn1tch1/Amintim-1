@@ -7,6 +7,7 @@ const {
   updateMemorialPage,
   deleteMemorialPage,
   getMemorialPagesByUser,
+  updateQRCodeStatus,
 } = require("../controllers/memorialController");
 const { protect } = require("../middleware/authMiddleware.js");
 
@@ -25,6 +26,7 @@ router.get("/user/:userId", protect, getMemorialPagesByUser);
 // Update a memorial page
 router.put("/:id", updateMemorialPage);
 
+router.put("/:id/updateQRStatus", updateQRCodeStatus);
 // Delete a memorial page
 router.delete("/:id", deleteMemorialPage);
 

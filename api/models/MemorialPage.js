@@ -20,6 +20,11 @@ const memorialPageSchema = new mongoose.Schema({
   breed: { type: String },
   firstName: { type: String },
   QRCode: { type: String },
+  QRCodeStatus: {
+    type: String,
+    enum: ["Printed", "Not Printed"],
+    default: "Not Printed",
+  },
   middleName: { type: String },
   lastName: { type: String },
   profileImage: { type: String },

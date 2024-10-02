@@ -7,6 +7,7 @@ const MemorialDetails = () => {
   const { id } = useParams();
   const [memorial, setMemorial] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [qrStatus, setQrStatus] = useState("Not Printed"); // Default status
 
   useEffect(() => {
     const fetchMemorialDetails = async () => {
@@ -23,6 +24,7 @@ const MemorialDetails = () => {
         }
 
         setMemorial(data);
+        setQrStatus(data.QRCodeStatus || "Not Printed"); // Set initial QR code status
       } catch (error) {
         toast.error(error.message || "An error occurred.");
       } finally {
@@ -32,6 +34,40 @@ const MemorialDetails = () => {
 
     fetchMemorialDetails();
   }, [id]);
+
+  const handleQRStatusChange = async (newStatus) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/memorial/${id}/updateQRStatus`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ QRCodeStatus: newStatus }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update QR code status.");
+      }
+
+      setQrStatus(newStatus);
+      toast.success("QR code status updated successfully.");
+    } catch (error) {
+      toast.error(error.message || "Failed to update QR code status.");
+    }
+  };
+
+  const downloadQRCode = () => {
+    const link = document.createElement("a");
+    link.href = memorial.QRCode; // QR code URL
+    link.download = `QR_Code_${memorial.title}.png`; // Custom file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -78,6 +114,38 @@ const MemorialDetails = () => {
           <div>
             <p className="font-bold">Note:</p>
             <p>{memorial.note}</p>
+          </div>
+        </div>
+
+        {/* QR Code Section */}
+        <h2 className="mb-4 text-xl font-semibold underline">QR Code</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="cursor-pointer" onClick={downloadQRCode}>
+            <p className="font-bold">QR Code:</p>
+            {memorial.QRCode ? (
+              <img
+                src={memorial.QRCode}
+                alt="QR Code"
+                className="w-32 h-32 mb-4"
+              />
+            ) : (
+              <p>No QR code available.</p>
+            )}
+          </div>
+
+          {/* QR Code Status */}
+          <div>
+            <p className="font-bold">QR Code Status:</p>
+            <div className="flex items-center">
+              <select
+                value={qrStatus}
+                onChange={(e) => handleQRStatusChange(e.target.value)}
+                className="p-2 border rounded-md"
+              >
+                <option value="Not Printed">Not Printed</option>
+                <option value="Printed">Printed</option>
+              </select>
+            </div>
           </div>
         </div>
 
