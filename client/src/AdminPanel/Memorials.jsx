@@ -49,6 +49,40 @@ const MemorialPages = () => {
     fetchMemorialPages();
   }, []);
 
+  // Function to handle QR status change
+  const handleQRStatusChange = async (memorialPageId, newStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.put(
+        `${BASE_URL}/memorial/${memorialPageId}/updateQRStatus`,
+        { QRCodeStatus: newStatus },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success("QR status updated successfully");
+        // Update the memorialPages state with the new QR status
+        setMemorialPages((prev) =>
+          prev.map((page) =>
+            page._id === memorialPageId
+              ? { ...page, QRCodeStatus: newStatus }
+              : page
+          )
+        );
+      } else {
+        throw new Error("Failed to update QR status");
+      }
+    } catch (err) {
+      toast.error(err.message || "Failed to update QR status");
+    }
+  };
+
   const handleDelete = async (memorialPageId) => {
     try {
       const token = localStorage.getItem("token");
@@ -88,20 +122,21 @@ const MemorialPages = () => {
               <th className="py-2 px-4">Title</th>
               <th className="py-2 px-4">User</th>
               <th className="py-2 px-4">Tributes</th>
+              <th className="py-2 px-4">QR Status</th>
               <th className="py-2 px-4">Action</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={8} className="text-center py-4">
+                <td colSpan={9} className="text-center py-4">
                   Loading...
                 </td>
               </tr>
             )}
             {error && (
               <tr>
-                <td colSpan={8} className="text-center py-4 text-red-500">
+                <td colSpan={9} className="text-center py-4 text-red-500">
                   {error}
                 </td>
               </tr>
@@ -123,6 +158,21 @@ const MemorialPages = () => {
                   <td className="py-2 px-4">{page.title}</td>
                   <td className="py-2 px-4">{page.user?.firstName}</td>
                   <td className="py-2 px-4">{page.tributes?.length || 0}</td>
+
+                  {/* Dropdown for changing QR code status */}
+                  <td className="py-2 px-4">
+                    <select
+                      value={page.QRCodeStatus || "Not Printed"}
+                      onChange={(e) =>
+                        handleQRStatusChange(page._id, e.target.value)
+                      }
+                      className="p-2 border rounded-md"
+                    >
+                      <option value="Not Printed">Not Printed</option>
+                      <option value="Printed">Printed</option>
+                    </select>
+                  </td>
+
                   <td className="py-2 px-4 text-center">
                     <button
                       className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
