@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   verificationCode: { type: String },
   hasPurchased: { type: Boolean, default: false },
+  referralCode: { type: String },
+  referralCodeUsedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   role: {
     type: String,
     enum: ["admin", "user", "partner"],
@@ -30,6 +32,31 @@ const userSchema = new mongoose.Schema({
     country: { type: String },
   },
   createdAt: { type: Date, default: Date.now },
+});
+
+userSchema.pre("save", function (next) {
+  if (this.role === "partner" && !this.referralCode) {
+    this.referralCode = `PARTNER-${Math.random()
+      .toString(36)
+      .substr(2, 9)
+      .toUpperCase()}`;
+  }
+  next();
+});
+
+userSchema.pre("save", function (next) {
+  // If the role is changed to partner and no referralCode exists, generate one
+  if (
+    this.isModified("role") &&
+    this.role === "partner" &&
+    !this.referralCode
+  ) {
+    this.referralCode = `PARTNER-${Math.random()
+      .toString(36)
+      .substr(2, 9)
+      .toUpperCase()}`;
+  }
+  next();
 });
 
 userSchema.pre("save", async function (next) {

@@ -268,15 +268,39 @@ exports.getUserDetails = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     // Fetch all users from the database
-    const users = await User.find();
-
-    // If no users found, return a 404 response
+    const users = await User.find().populate(
+      "referralCodeUsedBy",
+      "firstName lastName email"
+    );
     if (!users || users.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
 
     // Send the list of users
     res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getPartnerReferrals = async (req, res) => {
+  try {
+    const partnerId = req.user.id; // Assuming you get the logged-in partner ID from the token
+    const partner = await User.findById(partnerId);
+
+    if (!partner || partner.role !== "partner") {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    const referrals = await User.find({
+      _id: { $in: partner.referralCodeUsedBy },
+    }).select("firstName lastName email city country");
+
+    
+     res.status(200).json({
+       referralCode: partner.referralCode,
+       referralCodeUsedBy: referrals, // List of users referred by this partner
+     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

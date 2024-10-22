@@ -114,7 +114,7 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/admin/memorials"
+                to="/admin/referrals"
                 className="flex items-center gap-2 p-2 hover:bg-gray-800 transition-all"
               >
                 <TbAffiliateFilled size={25} />

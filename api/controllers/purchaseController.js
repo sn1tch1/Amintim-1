@@ -10,10 +10,6 @@ app.use(express.json());
 
 exports.purchaseSoulStar = async (req, res) => {
   const userId = req.user.id;
-  console.log(userId);
-
-  console.log("purchaseSoulStar called");
-  console.log(`userId: ${userId}`);
 
   // Extract delivery information and items from the request body
   const { deliveryInfo, items } = req.body;
@@ -51,8 +47,6 @@ exports.purchaseSoulStar = async (req, res) => {
       }
     });
 
-    console.log(items);
-
     let totalKeys = totalBuy1 + totalBuy2 * 2;
 
     // Generate all keys
@@ -74,9 +68,6 @@ exports.purchaseSoulStar = async (req, res) => {
       return { ...item, keys };
     });
 
-    console.log(`Keys generated: ${JSON.stringify(itemKeys)}`);
-
-    // Create a new purchase entry
     const purchase = new Purchase({
       userId: user._id,
       items: itemKeys,
@@ -120,5 +111,55 @@ exports.getAllPurchases = async (req, res) => {
   } catch (error) {
     console.error("Error fetching purchases:", error);
     res.status(500).json({ message: "Error fetching purchases" });
+  }
+};
+
+exports.redeemReferralCode = async (req, res) => {
+  const { referralCode } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // Find the partner by referral code
+    const partner = await User.findOne({ referralCode, role: "partner" });
+    if (!partner) {
+      return res.status(400).json({ message: "Invalid referral code" });
+    }
+
+    // Check if the user has already used this referral code
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if this referral code has already been used by the user
+    if (user.referralCodeUsedBy.includes(partner._id)) {
+      return res
+        .status(400)
+        .json({ message: "You have used the referral Code, Try Another One" });
+    }
+
+    // Add the user to the partner's referralCodeUsedBy array
+    partner.referralCodeUsedBy.push(user._id);
+    await partner.save();
+
+    // Add the partner's referral code to the user's referralCodeUsedBy array
+    user.referralCodeUsedBy.push(partner._id);
+    await user.save();
+
+    // Apply 20% discount
+    const discount = 0.2; // 20% discount
+
+    // Return the discount value and partner info to the client
+    res.status(200).json({
+      message: "Referral code redeemed successfully",
+      discount: discount * 100,
+      partner: {
+        partnerId: partner._id,
+        partnerName: `${partner.firstName} ${partner.lastName}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error redeeming referral code:", error);
+    res.status(500).json({ message: "Error redeeming referral code" });
   }
 };

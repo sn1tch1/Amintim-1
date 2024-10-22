@@ -10,6 +10,7 @@ const {
   getAllUsers,
   changeUserRole,
   deleteUser,
+  getPartnerReferrals,
 } = require("../controllers/userController.js");
 const { protect } = require("../middleware/authMiddleware.js");
 
@@ -25,4 +26,5 @@ router.put("/change-role", changeUserRole);
 router.get("/me", protect, getUserDetails);
 router.delete("/user/:id", deleteUser);
 router.get("/", getAllUsers);
+router.get("/partners", protect, getPartnerReferrals);
 module.exports = router;

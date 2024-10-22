@@ -26,6 +26,7 @@ const purchaseSchema = new Schema({
     city: { type: String, required: true },
   },
   items: [itemSchema],
+  referralCodeUsed: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

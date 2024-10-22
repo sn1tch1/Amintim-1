@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import BottomDrawer from "./bottomDrawer";
 import Logo from "../../assets/logo3b.png";
@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { cartItems } = useCart();
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout } = useAuth();
 
   const btnRef = useRef();
 
@@ -53,6 +53,11 @@ const Navbar = () => {
           <Link to="/shop" className="hover:text-black/70">
             <li>Cumpără</li>
           </Link>
+          {user?.role === "partner" ? (
+            <Link to="/referrals" className="hover:text-black/70">
+              <li>Parteneri</li>
+            </Link>
+          ) : null}
           <Link to="/aboutus" className="hover:text-black/70">
             <li>Despre noi</li>
           </Link>

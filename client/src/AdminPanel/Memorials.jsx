@@ -9,6 +9,8 @@ const MemorialPages = () => {
   const [memorialPages, setMemorialPages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Modal state
+  const [selectedPageId, setSelectedPageId] = useState(null); // To track which page to delete
   const navigate = useNavigate();
 
   const fetchMemorialPages = async () => {
@@ -67,7 +69,6 @@ const MemorialPages = () => {
 
       if (res.status === 200) {
         toast.success("QR status updated successfully");
-        // Update the memorialPages state with the new QR status
         setMemorialPages((prev) =>
           prev.map((page) =>
             page._id === memorialPageId
@@ -83,11 +84,23 @@ const MemorialPages = () => {
     }
   };
 
-  const handleDelete = async (memorialPageId) => {
+  // Function to open the modal
+  const openModal = (memorialPageId) => {
+    setSelectedPageId(memorialPageId);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedPageId(null);
+  };
+
+  // Function to handle delete after confirmation
+  const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`${BASE_URL}/memorialPages/${memorialPageId}`, {
+      await axios.delete(`${BASE_URL}/memorial/${selectedPageId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -96,6 +109,7 @@ const MemorialPages = () => {
 
       toast.success("Memorial Page deleted successfully");
       fetchMemorialPages();
+      closeModal(); // Close the modal after deletion
     } catch (err) {
       toast.error("Failed to delete memorial page");
     }
@@ -182,7 +196,7 @@ const MemorialPages = () => {
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded"
-                      onClick={() => handleDelete(page._id)}
+                      onClick={() => openModal(page._id)} // Open modal before delete
                     >
                       Delete
                     </button>
@@ -192,6 +206,31 @@ const MemorialPages = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-5 rounded-lg shadow-lg">
+            <h2 className="text-xl mb-4">
+              Are you sure you want to delete this memorial page?
+            </h2>
+            <div className="flex justify-end">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                onClick={handleDelete}
+              >
+                Confirm
+              </button>
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

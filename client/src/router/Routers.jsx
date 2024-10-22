@@ -27,6 +27,7 @@ import Congratulations from "../ClientPanel/pages/Congratulations";
 import TermsAndConditions from "../ClientPanel/pages/TermsAndConditions";
 import CookiePolicy from "../ClientPanel/pages/CookiePolicy";
 import PrivacyPolicy from "../ClientPanel/pages/PrivacyPolicy";
+import Partners from "../ClientPanel/pages/Partners";
 import NotFound from "../ClientPanel/pages/NotFound";
 
 const AppContent = () => {
@@ -40,6 +41,7 @@ const AppContent = () => {
     "/contact",
     "/cart",
     "/checkout",
+    "/referrals",
     "/manage-account/settings",
     "/login",
   ];
@@ -70,6 +72,10 @@ const AppContent = () => {
         <Route
           path="/proceed"
           element={<PrivateRoute element={<Proceed />} />}
+        />
+        <Route
+          path="/referrals"
+          element={<PrivateRoute element={<Partners />} />}
         />
 
         <Route

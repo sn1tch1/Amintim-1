@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         });
         if (response.status === 200) {
           setUser(response.data);
+          console.log("objectuser", response);
           setIsLoggedIn(true);
           localStorage.setItem("user", JSON.stringify(response.data));
         } else {
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("discountAmount");
   };
 
   return (
