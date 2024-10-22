@@ -9,6 +9,7 @@ import BaseURL from "../../utils/BaseURL";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(""); // New state for password
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -20,34 +21,44 @@ const Login = () => {
 
   const handleSignIn = async () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailPattern.test(email)) {
+    if (emailPattern.test(email) && password) {
+      // Check if password is provided
       setLoading(true);
 
       try {
-        const response = await axios.post(`${BaseURL}/users/register`, {
+        const response = await axios.post(`${BaseURL}/users/signin`, {
           email,
+          password,
         });
-        if (response.status === 201) {
+
+        if (response.status === 200) {
+          toast.success("Logged In Successfully");
+          localStorage.setItem("token", response?.data?.token);
+          navigate("/");
+          login(response?.data?.token);
+        } else if (response.status === 201) {
           toast.success("Verificati adresa de email");
           let token = response?.data?.token;
           navigate("/verify", { state: { email, token } });
-        } else if (response.status === 200) {
-          toast.success("Logged In Successfully");
-          console.log(response);
-          localStorage.setItem("token", response?.data?.token);
-          navigate("/manage-account/settings");
-          login(response?.data?.token);
+        } else if (response.status === 204) {
+          toast.success("Verificați mai întâi e-mailul.");
+          let token = response?.data?.token;
+          navigate("/verify", { state: { email, token } });
         } else {
           console.log("responseeee", response);
           toast.error("Eroare de logare. Va rugam sa incercati din nou.");
         }
       } catch (error) {
+        console.log("ppppp", error);
         toast.error("Eroare de logare. Va rugam sa incercati din nou.");
       } finally {
         setLoading(false);
       }
     } else {
-      toast.error("Va rugam sa introduceti o adresa de email valida");
+      console.log("ppppp");
+      toast.error(
+        "Va rugam sa introduceti o adresa de email valida si o parola."
+      );
     }
   };
 
@@ -64,6 +75,13 @@ const Login = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="w-full p-3 border bg-gray-100 border-gray-300 rounded mb-4"
+        />
+        <input
+          type="password"
+          placeholder="Password" // Add password input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full p-3 border bg-gray-100 border-gray-300 rounded mb-4"
         />
         <button

@@ -1,77 +1,146 @@
 const User = require("../models/User");
 const sendEmail = require("../utils/sendVerification");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 exports.registerUser = async (req, res) => {
-  const { email } = req.body;
-  console.log("hiiii");
+  const { email, password } = req.body;
+
   try {
-    let user = await User.findOne({ email });
     let token;
 
-    if (user) {
-      token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
-      if (user.isVerified) {
-        console.log(token);
-        res
-          .cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS only in production
-            sameSite: "strict",
-          })
-          .status(200)
-          .json({ message: "Logged in successfully", token, user });
-      } else {
-        const verificationCode = Math.floor(
-          10000 + Math.random() * 90000
-        ).toString();
+    // Create a new user if not found
+    const verificationCode = Math.floor(
+      10000 + Math.random() * 90000
+    ).toString();
 
-        user.verificationCode = verificationCode;
-        user.isVerified = false;
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-        await user.save();
-        await sendEmail(
-          user.email,
-          "Please verify your email",
-          `${verificationCode}`
-        );
+    const newUser = new User({
+      email,
+      password,
+      verificationCode,
+      isVerified: false,
+    });
 
-        res.status(201).json({ token, message: "Verification email sent" });
-      }
-    } else {
+    console.log(newUser);
+
+    await newUser.save();
+    console.log("newUser");
+    await sendEmail(
+      newUser.email,
+      "Please verify your email",
+      `${verificationCode}`
+    );
+
+    token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res.status(201).json({ token, message: "Verification email sent" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Check if the password is correct
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log(isMatch);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Check if user is verified
+    if (!user.isVerified) {
+      return res
+        .status(400)
+        .json({ message: "Please verify your email first" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({ message: "Logged in successfully", token, user });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.registerOrLoginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    // Check if the user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
       // Create a new user if not found
       const verificationCode = Math.floor(
         10000 + Math.random() * 90000
       ).toString();
 
-      console.log(verificationCode);
-
-      const newUser = new User({
+      user = new User({
         email,
+        password,
         verificationCode,
         isVerified: false,
       });
 
-      console.log(newUser);
-
-      await newUser.save();
-      console.log("newUser");
+      await user.save();
       await sendEmail(
-        newUser.email,
+        user.email,
         "Please verify your email",
         `${verificationCode}`
       );
-
-      token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+      return res.status(201).json({
+        message: "User registered successfully. Verification email sent.",
       });
-
-      res.status(201).json({ token, message: "Verification email sent" });
+    } else {
+      if (!user.isVerified) {
+        return res
+          .status(204)
+          .json({ message: "Verificați mai întâi e-mailul" });
+      }
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({ message: "Logged in successfully", token, user });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -89,36 +158,6 @@ exports.uploadProfileImage = async (userId, filename) => {
     await user.save();
   } catch (error) {
     throw new Error("Error updating profile image");
-  }
-};
-
-exports.loginUser = async (req, res) => {
-  const { email } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = await User.create({ email });
-    }
-
-    const verificationCode = Math.floor(
-      10000 + Math.random() * 90000
-    ).toString();
-    user.verificationCode = verificationCode;
-    await user.save();
-
-    await sendEmail(
-      user.email,
-      "Verify your email",
-      `Your verification code is ${verificationCode}`
-    );
-
-    res.status(200).json({
-      message: "Verification code sent to your email",
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Internal server" });
   }
 };
 
@@ -296,11 +335,10 @@ exports.getPartnerReferrals = async (req, res) => {
       _id: { $in: partner.referralCodeUsedBy },
     }).select("firstName lastName email city country");
 
-    
-     res.status(200).json({
-       referralCode: partner.referralCode,
-       referralCodeUsedBy: referrals, // List of users referred by this partner
-     });
+    res.status(200).json({
+      referralCode: partner.referralCode,
+      referralCodeUsedBy: referrals, // List of users referred by this partner
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
