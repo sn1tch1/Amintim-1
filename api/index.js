@@ -47,16 +47,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
-// Set up multer-storage-cloudinary
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: "Amintim",
-//     format: async (req, file) => "jpg", // supports promises as well
-//     public_id: (req, file) => file.originalname,
-//   },
-// });
-
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {

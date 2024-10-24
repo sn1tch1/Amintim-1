@@ -111,7 +111,7 @@ const Checkout = () => {
       setLoading(true);
 
       try {
-        if (isReferralApplied && referralCode) {
+        if (isReferralApplied) {
           const referralSuccess = await handleRedeemReferralCode(); // Check if referral code redemption is successful
           if (!referralSuccess) {
             // If referral code redemption fails, stop further execution
@@ -146,6 +146,8 @@ const Checkout = () => {
         const data = await response.json();
         toast.success("Soulstar Purchased");
         localStorage.removeItem("cartItems");
+        localStorage.removeItem("discountAmount");
+        localStorage.removeItem("isReferralApplied");
         clearCart();
         navigate("/congratulations");
         console.log("Purchase successful:", data);
@@ -158,18 +160,28 @@ const Checkout = () => {
   };
 
   const handleRedeemReferralCode = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     try {
-      const response = await axios.post(`${BaseURL}/purchase/referral-code`, {
-        referralCode,
-      });
+      const response = await axios.post(
+        `${BaseURL}/purchase/referral-code`,
+        {
+          referralCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      console.log("ھاپپعد", response);
       if (response.status === 200) {
-        console.log(response);
         return true;
       } else {
         return false;
       }
     } catch (error) {
+      console.log("yeh yeh", error);
       if (error.response) {
         toast.error(
           error.response.data.message || "Error redeeming referral code"
