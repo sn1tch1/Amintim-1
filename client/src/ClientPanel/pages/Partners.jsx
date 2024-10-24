@@ -50,7 +50,7 @@ const ReferralsPage = () => {
       </h1>
 
       {/* Referral Code Section */}
-      <div className="flex justify-center items-center mb-10">
+      <div className="flex justify-center items-center gap-5 mb-12 ">
         <div
           className="bg-gradient-to-r text-center relative
        from-purple-600 to-indigo-600 text-white py-4 px-6 rounded-lg shadow-lg"
@@ -70,13 +70,25 @@ const ReferralsPage = () => {
           <p className="text-2xl mt-2 font-bold tracking-wide">
             {referralCode || "N/A"}
           </p>
-          {/* Copy to Clipboard Button */}
+        </div>
+        <div className="flex justify-center items-center ">
+          <div
+            className="bg-gradient-to-r text-center
+         from-green-500 to-teal-500 text-white py-4 px-6 rounded-lg shadow-lg"
+          >
+            <h2 className="text-xl font-semibold">Total Referrals</h2>
+            <p className="text-2xl mt-2 font-bold tracking-wide">
+              {referrals.length}
+            </p>
+          </div>
         </div>
       </div>
 
       <h5 className="text-lg text-center mb-8 text-gray-600">
         List of Users who signed up using your Referral Code.
       </h5>
+
+      {/* Total Referrals Section */}
 
       {loading && <div className="text-center">Loading...</div>}
       {error && <div className="text-center text-red-500">{error}</div>}
