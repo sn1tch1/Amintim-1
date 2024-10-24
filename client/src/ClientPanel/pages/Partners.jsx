@@ -66,7 +66,7 @@ const ReferralsPage = () => {
               <LuClipboard size={20} />
             </button>
           )}
-          <h2 className="text-xl font-semibold">Your Referral Code</h2>
+          <h2 className="text-xl font-semibold mx-5">Your Referral Code</h2>
           <p className="text-2xl mt-2 font-bold tracking-wide">
             {referralCode || "N/A"}
           </p>
@@ -86,11 +86,8 @@ const ReferralsPage = () => {
           <table className="min-w-full bg-white shadow-lg rounded-lg">
             <thead>
               <tr className="bg-gray-800 text-white">
-                <th className="py-2 px-4 text-center">#</th>
-                <th className="py-2 px-4">Referred User Name</th>
-                <th className="py-2 px-4">Email</th>
-                <th className="py-2 px-4">City</th>
-                <th className="py-2 px-4">Country</th>
+                <th className="py-2 px-4 ">#</th>
+                <th className="py-2 px-4 text-start">Referred User Name</th>
               </tr>
             </thead>
             <tbody>
@@ -100,11 +97,8 @@ const ReferralsPage = () => {
                     {index + 1}
                   </th>
                   <td className="py-2 px-4">
-                    {`${user?.firstName} ${user?.lastName || "No Name"}`}
+                    {`${user?.firstName || "-"} ${user?.lastName || "-"}`}
                   </td>
-                  <td className="py-2 px-4">{user.email}</td>
-                  <td className="py-2 px-4">{user.city || "N/A"}</td>
-                  <td className="py-2 px-4">{user.country || "N/A"}</td>
                 </tr>
               ))}
             </tbody>

@@ -19,6 +19,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [referralCode, setReferralCode] = useState("");
   const [subTotal, setSubTotal] = useState(0);
+  const [netTotal, setNetTotal] = useState(subTotal);
   const [discountAmount, setDiscountAmount] = useState(0); // Step 1: Add this line
   const [isReferralApplied, setIsReferralApplied] = useState(false);
   const [contactInfo, setContactInfo] = useState({
@@ -67,23 +68,6 @@ const Checkout = () => {
     }));
   };
 
-  const isFormValid = () => {
-    const { email } = contactInfo;
-    const { firstName, lastName, address, postalCode, city } = deliveryInfo;
-    const { cardNumber, expiryDate, securityCode, cardHolderName } =
-      paymentInfo;
-    return (
-      email &&
-      address &&
-      postalCode &&
-      city &&
-      cardNumber &&
-      expiryDate &&
-      securityCode &&
-      cardHolderName
-    );
-  };
-
   useEffect(() => {
     setSubTotal(calculateSubtotal()); // Set subtotal when component mounts
   }, [cart]);
@@ -99,9 +83,6 @@ const Checkout = () => {
       setDiscountAmount(true);
     }
   }, []);
-
-  // const SubTotal = calculateSubtotal().toFixed(2);
-  // setSubTotal(SubTotal);
 
   const handlePurchase = async () => {
     const { email } = contactInfo;
@@ -131,6 +112,10 @@ const Checkout = () => {
       setLoading(true);
 
       try {
+        if (isReferralApplied && referralCode) {
+          await handleRedeemReferralCode(); // Redeem referral code and apply discount
+        }
+
         const response = await fetch(`${BaseURL}/purchase/purchase`, {
           method: "POST",
           headers: {
@@ -175,9 +160,29 @@ const Checkout = () => {
       });
 
       if (response.status === 200) {
-        const discount = response.data.discount; // Assuming the discount value is in percentage
-        const newSubTotal = subTotal * (1 - discount / 100); // Calculate the new subtotal
-        setSubTotal(newSubTotal);
+        return true; // Referral code redeemed successfully
+      }
+    } catch (error) {
+      if (error.response) {
+        toast.error(
+          error.response.data.message || "Error redeeming referral code"
+        );
+      } else {
+        toast.error("Error redeeming referral code");
+      }
+      return false; // Referral code redemption failed
+    }
+  };
+
+  const handleCodeValidation = async () => {
+    try {
+      const response = await axios.post(`${BaseURL}/purchase/check-code`, {
+        referralCode,
+      });
+
+      if (response.status === 200) {
+        // const discount = response.data.discount; // Assuming the discount value is in percentage
+        const newSubTotal = subTotal - (subTotal / 100) * 20; // Calculate the new subtotal
         setDiscountAmount(subTotal - newSubTotal); // Step 3: Set the discount amount
         let saveDiscount = subTotal - newSubTotal;
         setIsReferralApplied(true);
@@ -420,57 +425,6 @@ const Checkout = () => {
         </div>
       </div>
 
-      {/* <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
-        <div className="sticky top-24">
-          <h2 className="text-2xl font-bold mb-4">Continut comanda</h2>
-          <table className="w-full">
-            <tbody>
-              {groupedCart.map((item, index) => (
-                <tr
-                  key={index}
-                  className="border-b flex items-center justify-between"
-                >
-                  <td className="flex items-center py-4">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-16 h-16 mr-4"
-                    />
-                    <div>
-                      <h5 className="font-medium">{item.title}</h5>
-                      <p className="text-gray-500">RON {item.price}</p>
-                    </div>
-                  </td>
-                  <td className="py-4">{item.quantity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-gray-600">Subtotal</p>
-            <p className="text-gray-800 font-medium">RON {SubTotal}</p>
-          </div>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-gray-600">Livrare</p>
-            <p className="text-gray-800 font-medium">00.00</p>
-          </div>
-          <div className="flex justify-between font-bold items-center mb-6">
-            <p className="text-gray-600">Total</p>
-            <p className="text-gray-800 font-medium">RON {SubTotal}</p>
-          </div>
-          <button
-            className={`w-full py-3 font-bold rounded-md ${
-              loading === false
-                ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
-                : "cursor-not-allowed bg-[#fadc8d]"
-            }`}
-            disabled={loading}
-            onClick={handlePurchase}
-          >
-            {loading ? <Spinner /> : "Finalizeaza"}
-          </button>
-        </div>
-      </div> */}
       <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
         <div className="sticky top-24">
           <h2 className="text-2xl font-bold mb-4">Continut comanda</h2>
@@ -507,7 +461,9 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between font-bold items-center mt-3 pt-3 border-t border-black mb-6">
             <p className="text-gray-600">Total</p>
-            <p className="text-gray-800 font-bold">RON {subTotal}</p>
+            <p className="text-gray-800 font-bold">
+              RON {subTotal - discountAmount}
+            </p>
           </div>
 
           {/* Referral Code Input Section */}
@@ -530,7 +486,7 @@ const Checkout = () => {
                     ? "bg-[#c2c2c2] cursor-not-allowed"
                     : "bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer"
                 }  text-white rounded-md  focus:outline-none`}
-                onClick={handleRedeemReferralCode}
+                onClick={handleCodeValidation}
                 disabled={isReferralApplied}
               >
                 Aplică

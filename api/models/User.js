@@ -52,7 +52,7 @@ userSchema.pre("save", function (next) {
     this.role === "partner" &&
     !this.referralCode
   ) {
-    this.referralCode = `PARTNER-${Math.random()
+    this.referralCode = `${Math.random()
       .toString(36)
       .substr(2, 9)
       .toUpperCase()}`;

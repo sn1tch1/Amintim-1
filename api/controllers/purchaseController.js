@@ -163,3 +163,27 @@ exports.redeemReferralCode = async (req, res) => {
     res.status(500).json({ message: "Error redeeming referral code" });
   }
 };
+
+exports.validateReferralCode = async (req, res) => {
+  const { referralCode } = req.body;
+
+  try {
+    // Find the partner by referral code
+    const partner = await User.findOne({ referralCode, role: "partner" });
+    if (!partner) {
+      return res.status(400).json({ message: "Invalid referral code" });
+    }
+
+    // Return partner info if referral code is valid
+    res.status(200).json({
+      message: "Referral code is valid",
+      partner: {
+        partnerId: partner._id,
+        partnerName: `${partner.firstName} ${partner.lastName}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error validating referral code:", error);
+    res.status(500).json({ message: "Error validating referral code" });
+  }
+};

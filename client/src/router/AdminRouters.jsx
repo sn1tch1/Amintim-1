@@ -8,7 +8,7 @@ import Users from "../AdminPanel/Users.jsx";
 import MemorialPages from "../AdminPanel/Memorials.jsx";
 import MemorialViewPage from "../AdminPanel/component/MemorialDetail.jsx";
 import Purchase from "../AdminPanel/Purchases.jsx";
-import Referrals from "../AdminPanel/Referrals.jsx";
+import Referrals from "../AdminPanel/Partners.jsx";
 
 const AdminRouters = () => {
   const { user } = useAuth();
@@ -17,7 +17,6 @@ const AdminRouters = () => {
       <Route path="/" element={<Navigate to="/admin/dashboard" />} />
       <Route path="/dashboard" element={<Navigate to="/admin/dashboard" />} />
       <Route path="/admin/dashboard" element={<Dashboard />} />
-      {/* <Route path="/login" element={<Login />} /> */}
       <Route path="/admin/services" element={<Services />} />
       <Route path="/admin/purchases" element={<Purchase />} />
       <Route path="/admin/users" element={<Users />} />
