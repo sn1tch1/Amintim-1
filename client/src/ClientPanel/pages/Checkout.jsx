@@ -112,7 +112,12 @@ const Checkout = () => {
 
       try {
         if (isReferralApplied && referralCode) {
-          await handleRedeemReferralCode(); // Redeem referral code and apply discount
+          const referralSuccess = await handleRedeemReferralCode(); // Check if referral code redemption is successful
+          if (!referralSuccess) {
+            // If referral code redemption fails, stop further execution
+            setLoading(false);
+            return;
+          }
         }
 
         const response = await fetch(`${BaseURL}/purchase/purchase`, {
@@ -159,7 +164,10 @@ const Checkout = () => {
       });
 
       if (response.status === 200) {
-        return true; // Referral code redeemed successfully
+        console.log(response);
+        return true;
+      } else {
+        return false;
       }
     } catch (error) {
       if (error.response) {
@@ -172,6 +180,27 @@ const Checkout = () => {
       return false; // Referral code redemption failed
     }
   };
+
+  // const handleRedeemReferralCode = async () => {
+  //   try {
+  //     const response = await axios.post(`${BaseURL}/purchase/referral-code`, {
+  //       referralCode,
+  //     });
+
+  //     if (response.status === 200) {
+  //       return true; // Referral code redeemed successfully
+  //     }
+  //   } catch (error) {
+  //     if (error.response) {
+  //       toast.error(
+  //         error.response.data.message || "Error redeeming referral code"
+  //       );
+  //     } else {
+  //       toast.error("Error redeeming referral code");
+  //     }
+  //     return false; // Referral code redemption failed
+  //   }
+  // };
 
   const handleCodeValidation = async () => {
     try {
