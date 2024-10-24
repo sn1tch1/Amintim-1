@@ -77,7 +77,6 @@ const Checkout = () => {
     const referralApplied = localStorage.getItem("isReferralApplied");
     if (savedDiscount) {
       setDiscountAmount(savedDiscount);
-      setSubTotal((prev) => prev - savedDiscount);
     }
     if (referralApplied === true) {
       setDiscountAmount(true);
