@@ -45,7 +45,7 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("object");
   try {
     const user = await User.findOne({ email });
 
@@ -87,6 +87,7 @@ exports.loginUser = async (req, res) => {
 
 exports.registerOrLoginUser = async (req, res) => {
   const { email, password } = req.body;
+
   try {
     // Check if the user already exists
     let user = await User.findOne({ email });
@@ -103,6 +104,8 @@ exports.registerOrLoginUser = async (req, res) => {
         verificationCode,
         isVerified: false,
       });
+
+      console.log(user);
 
       await user.save();
       await sendEmail(
@@ -122,6 +125,7 @@ exports.registerOrLoginUser = async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -389,5 +393,32 @@ exports.deleteUser = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error deleting user", error: error.message });
+  }
+};
+
+exports.updatePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user.id;
+  console.log(userId);
+
+  const user = await User.findById(userId);
+  console.log(user);
+  try {
+    if (!user) return res.status(404).json({ message: "User not found" });
+    // Check if current password matches
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch)
+      return res.status(400).json({ message: "Current password is incorrect" });
+
+    // Update with new password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Failed to update password", error: error.message });
   }
 };

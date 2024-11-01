@@ -12,6 +12,7 @@ const {
   deleteUser,
   getPartnerReferrals,
   registerOrLoginUser,
+  updatePassword,
 } = require("../controllers/userController.js");
 const { protect } = require("../middleware/authMiddleware.js");
 
@@ -26,6 +27,7 @@ router.post("/resend", resendVerificationCode);
 router.put("/update", protect, updateUser);
 router.put("/change-role", changeUserRole);
 router.get("/me", protect, getUserDetails);
+router.put("/update-password", protect, updatePassword);
 router.delete("/user/:id", deleteUser);
 router.get("/", getAllUsers);
 router.get("/partners", protect, getPartnerReferrals);

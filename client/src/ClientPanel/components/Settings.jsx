@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import BaseURL, { IMAGES_BASE_URL } from "../../utils/BaseURL";
+import BaseURL from "../../utils/BaseURL";
 axios.defaults.withCredentials = true;
 
 const SettingsTab = () => {
   const [avatar, setAvatar] = useState();
   const [updatedProfileImage, setUpdatedProfileImage] = useState(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,152 +24,83 @@ const SettingsTab = () => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${BaseURL}/users/me`, {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`, // Include token in request headers
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const { firstName, lastName, city, country, zipcode, profileImage } =
           response.data;
         setFormData({ firstName, lastName, city, country, zipcode });
-        console.log("ihihihi", response);
-        if (profileImage) {
-          setAvatar(profileImage);
-        }
+        if (profileImage) setAvatar(profileImage);
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
     };
-
     fetchUserDetails();
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await axios.post(`${BaseURL}/users/upload`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
-
-      if (response.status === 200) {
-        const { url } = response.data;
-        setAvatar(url);
-        // console.log(url);
-        toast.success("Avatar updated successfully");
-      } else {
-        toast.error("Error updating avatar. Please try again.");
-      }
-    } catch (error) {
-      // console.log("not runnnong", error);
-      toast.error("Error updating avatar. Please try again.");
-    }
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData({ ...passwordData, [name]: value });
   };
-
-  // const handleAvatarChange = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
-
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-
-  //   try {
-  //     const response = await axios.post(`${BaseURL}/users/upload`, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //       withCredentials: true,
-  //     });
-
-  //     if (response.status === 200) {
-  //       const { filename } = response.data;
-  //       setAvatar(filename);
-  //       toast.success("Avatar updated successfully");
-  //     } else {
-  //       toast.error("Error updating avatar. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error updating avatar. Please try again.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
-
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.put(
         `${BaseURL}/users/update`,
-        {
-          ...formData,
-          profileImage: avatar,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`, // Include token in request headers
-          },
-        }
+        { ...formData, profileImage: avatar },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      if (response.status === 200) {
-        toast.success("User details updated successfully");
-      } else {
-        toast.error("Error updating user details. Please try again.");
-      }
+      response.status === 200
+        ? toast.success("User details updated successfully")
+        : toast.error("Error updating user details. Please try again.");
     } catch (error) {
       toast.error("Error updating user details. Please try again.");
     }
   };
 
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `${BaseURL}/users/update-password`,
+        {
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.status === 200) {
+        toast.success("Password updated successfully");
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+        });
+        setShowPasswordModal(false);
+      } else {
+        toast.error("Error updating password. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error updating password. Please try again.");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
-      {/* <div className="flex justify-center mb-8">
-        <div className="relative">
-          <input
-            type="file"
-            accept="image/*"
-            id="avatar-upload"
-            onChange={handleAvatarChange}
-            className="hidden"
-          />
-          <label htmlFor="avatar-upload">
-            <div className="w-24 h-24 overflow-hidden bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
-              {avatar ? (
-                <img
-                  src={avatar}
-                  alt="Avatar"
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                <img
-                  src={`/src/assets/avatar.png`}
-                  alt="Avatar"
-                  className="w-full h-full object-cover rounded-full"
-                />
-              )}
-            </div>
-          </label>
-        </div>
-      </div> */}
       <form className="space-y-4 w-full py-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-gray-700">Prenume</label>
@@ -224,6 +162,71 @@ const SettingsTab = () => {
           Save
         </button>
       </form>
+
+      {/* Button to open password modal */}
+      <button
+        onClick={() => setShowPasswordModal(true)}
+        className="mt-4 text-blue-500 underline mb-9"
+      >
+        Change Password
+      </button>
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-xl font-semibold mb-4">Update Password</h2>
+            <form onSubmit={handlePasswordSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700">Current Password</label>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  value={passwordData.currentPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">New Password</label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmNewPassword"
+                  value={passwordData.confirmNewPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full p-3 border bg-gray-100 border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <button className="w-full bg-black text-white p-3 rounded-full hover:bg-gray-800">
+                Update Password
+              </button>
+            </form>
+            
+            <button
+              onClick={() => setShowPasswordModal(false)}
+              className="mx-auto w-full mt-4 text-red-500 underline"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
