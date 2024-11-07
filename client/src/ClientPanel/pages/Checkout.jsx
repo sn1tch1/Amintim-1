@@ -35,12 +35,12 @@ const Checkout = () => {
     postalCode: "",
     city: "",
   });
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    securityCode: "",
-    cardHolderName: "",
-  });
+  // const [paymentInfo, setPaymentInfo] = useState({
+  //   cardNumber: "",
+  //   expiryDate: "",
+  //   securityCode: "",
+  //   cardHolderName: "",
+  // });
 
   const groupCartItems = (cartItems) => {
     const groupedItems = cartItems.reduce((acc, item) => {
@@ -86,8 +86,8 @@ const Checkout = () => {
   const handlePurchase = async () => {
     const { email } = contactInfo;
     const { firstName, lastName, address, postalCode, city } = deliveryInfo;
-    const { cardNumber, expiryDate, securityCode, cardHolderName } =
-      paymentInfo;
+    // const { cardNumber, expiryDate, securityCode, cardHolderName } =
+    //   paymentInfo;
 
     const missingFields = [];
 
@@ -96,10 +96,10 @@ const Checkout = () => {
     if (!address) missingFields.push("Adresa");
     if (!postalCode) missingFields.push("Cod Postal");
     if (!city) missingFields.push("Oras");
-    if (!cardNumber) missingFields.push("Numar Card");
-    if (!expiryDate) missingFields.push("Data expirare");
-    if (!securityCode) missingFields.push("Cod Securitate");
-    if (!cardHolderName) missingFields.push("Nume");
+    // if (!cardNumber) missingFields.push("Numar Card");
+    // if (!expiryDate) missingFields.push("Data expirare");
+    // if (!securityCode) missingFields.push("Cod Securitate");
+    // if (!cardHolderName) missingFields.push("Nume");
 
     if (missingFields.length > 0) {
       missingFields.forEach((field) => {
@@ -403,7 +403,7 @@ const Checkout = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mb-4">Plata</h2>
+        {/* <h2 className="text-2xl font-bold mb-4">Plata</h2>
         <p className="mb-6">
           Toate tranzactiile sunt encriptate si securizate.
         </p>
@@ -487,7 +487,8 @@ const Checkout = () => {
             />
             Securely save my information for 1-click checkout
           </label>
-        </div>
+        </div> */}
+
       </div>
 
       <div className="w-full lg:w-2/5 px-4 py-6 lg:px-12 lg:py-12 bg-gray-100">
