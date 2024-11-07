@@ -5,8 +5,41 @@ const express = require("express");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail"); // Ensure this function is available
 const app = express();
+const { getEuPlatescRequest } = require('../lib/euplatesc/index');
 
 app.use(express.json());
+
+const euPlatescConfig =     {
+  "name": "Amintim",
+  "domain": "amintim.ro",
+  "env": "dev",
+  "merchantId": "44841002581",
+  "secretKey": "6015A16E4DA76862A47F27B1C8CEB849058D0DA7"
+}  
+
+exports.euplatescCheckout = async (req, res) => {
+  console.log("Start euplatescCheckout");
+
+  try {
+      if (req.body) {
+          const order = req.body;
+          param.env = order.env;
+
+          const dataReq = await getEuPlatescRequest(euPlatescConfig, order);
+
+          res.status(200).send({
+              success: dataReq != null,
+              message: "Function euplatescCheckout was completed successfully!",
+              data: dataReq,
+          }); 
+      }
+  } catch (err) {
+      console.log("euplatescCheckout failed :( Please check the log with error: ", err);
+      res.status(400).send({ message: err.message });
+
+      throw err;
+  }    
+};
 
 exports.purchaseSoulStar = async (req, res) => {
   const userId = req.user.id;
