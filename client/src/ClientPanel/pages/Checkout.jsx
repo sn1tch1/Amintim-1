@@ -120,6 +120,31 @@ const Checkout = () => {
           }
         }
 
+        const dataPayment = {
+          price: subTotal,
+          currency: "RON",
+          invoiceId: Date.now().toString(),
+          description: "Amintim.ro",
+          success_url: window.location.origin + "/congratulations",
+          cancel_url: window.location.origin + "/congratulations",
+          clientFirstName: firstName,
+          clientLastName: lastName,
+          clientAddress: address,
+          clientCity: city,
+          clientPhone: "",
+          env: "staging",
+        }
+
+        const responseCheckout = await fetch(`${BaseURL}/purchase/euplatesc`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in request headers
+          },
+          credentials: "include", // Include credentials with the request
+          body: JSON.stringify(dataPayment),
+        });
+
         const response = await fetch(`${BaseURL}/purchase/purchase`, {
           method: "POST",
           headers: {
