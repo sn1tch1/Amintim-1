@@ -102,10 +102,10 @@ class Gateway {
       }
 
       const keys = Object.keys(params);
-      console.log("params: ", params);
-      console.log("keys: ", keys);
+      // console.log("params: ", params);
+      // console.log("keys: ", keys);
       const extra = keys.filter(p => p.startsWith("Extra"));
-      console.log("extra: ", extra);
+      // console.log("extra: ", extra);
       if (extra.length > 0) {
         extra.forEach(e => {
           requestData[e] = params[e];

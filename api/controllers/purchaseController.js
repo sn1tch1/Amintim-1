@@ -13,8 +13,8 @@ const euPlatescConfig =     {
   "name": "Amintim",
   "domain": "amintim.ro",
   "env": "dev",
-  "merchantId": "44841002581",
-  "secretKey": "6015A16E4DA76862A47F27B1C8CEB849058D0DA7"
+  "merchantId": "44841004414",
+  "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
 }  
 
 exports.euplatescCheckout = async (req, res) => {
@@ -23,7 +23,7 @@ exports.euplatescCheckout = async (req, res) => {
   try {
       if (req.body) {
           const order = req.body;
-          param.env = order.env;
+          euPlatescConfig.env = order.env;
 
           const dataReq = await getEuPlatescRequest(euPlatescConfig, order);
 

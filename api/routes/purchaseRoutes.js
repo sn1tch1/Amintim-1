@@ -11,7 +11,7 @@ const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/purchase", protect, purchaseSoulStar);
-router.post("/euplatesc", protect, euplatescCheckout);
+router.post("/euplatesc", euplatescCheckout);
 router.get("/", getAllPurchases);
 router.post("/referral-code", protect, redeemReferralCode);
 router.post("/check-code", validateReferralCode);

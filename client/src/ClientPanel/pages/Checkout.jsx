@@ -123,7 +123,7 @@ const Checkout = () => {
         const dataPayment = {
           price: subTotal,
           currency: "RON",
-          invoiceId: Date.now().toString(),
+          invoiceId: "123456788",
           description: "Amintim.ro",
           success_url: window.location.origin + "/congratulations",
           cancel_url: window.location.origin + "/congratulations",
@@ -135,7 +135,7 @@ const Checkout = () => {
           env: "staging",
         }
 
-        const responseCheckout = await fetch(`${BaseURL}/purchase/euplatesc`, {
+        await fetch(`${BaseURL}/purchase/euplatesc`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -143,7 +143,31 @@ const Checkout = () => {
           },
           credentials: "include", // Include credentials with the request
           body: JSON.stringify(dataPayment),
-        });
+        }).then((response) => response.json())
+          .then(async (response) => {
+            if (response && response.success && response.data) {
+              console.log("response: ", response);
+              const data = response.data.data;
+              const keys = Object.keys(data);
+
+              console.log("data: ", data);
+              console.log("keys: ", keys);
+
+              keys.forEach(key => {
+                const sandboxsecureFormVal = document.getElementById('sandboxsecureForm_' + key);
+                sandboxsecureFormVal.value = data[key];
+                // console.log("sandboxsecureFormVal.value: ", sandboxsecureFormVal.value);
+              })
+
+              const sandboxsecureForm = document.getElementById('sandboxsecureForm');
+              sandboxsecureForm.submit();
+            }
+          })
+          .catch((error) => {
+            console.log("Error on createCheckoutSession: ", error);
+          });
+
+        return;
 
         const response = await fetch(`${BaseURL}/purchase/purchase`, {
           method: "POST",
@@ -547,11 +571,10 @@ const Checkout = () => {
                 onChange={(e) => setReferralCode(e.target.value)}
               />
               <button
-                className={`ml-2 py-2 px-4 ${
-                  isReferralApplied
+                className={`ml-2 py-2 px-4 ${isReferralApplied
                     ? "bg-[#c2c2c2] cursor-not-allowed"
                     : "bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer"
-                }  text-white rounded-md  focus:outline-none`}
+                  }  text-white rounded-md  focus:outline-none`}
                 onClick={handleCodeValidation}
                 disabled={isReferralApplied}
               >
@@ -561,11 +584,10 @@ const Checkout = () => {
           </div>
 
           <button
-            className={`w-full py-3 font-bold rounded-md ${
-              loading === false
+            className={`w-full py-3 font-bold rounded-md ${loading === false
                 ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
                 : "cursor-not-allowed bg-[#fadc8d]"
-            }`}
+              }`}
             disabled={loading}
             onClick={handlePurchase}
           >

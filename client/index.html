@@ -12,5 +12,52 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <form style="display: none" action="https://secure.euplatesc.ro/tdsprocess/tranzactd.php" method="POST" id="sandboxsecureForm">
+      <input type="hidden" id="sandboxsecureForm_fp_hash" name="fp_hash" value />
+      <input type="hidden" id="sandboxsecureForm_nonce" name="nonce" value />
+
+      <input type="hidden" id="sandboxsecureForm_amount" name="amount" value />
+      <input type="hidden" id="sandboxsecureForm_curr" name="curr" value />
+      <input type="hidden" id="sandboxsecureForm_invoice_id" name="invoice_id" value />
+      <input type="hidden" id="sandboxsecureForm_order_desc" name="order_desc" value />
+      <input type="hidden" id="sandboxsecureForm_merch_id" name="merch_id" value />
+      <input type="hidden" id="sandboxsecureForm_timestamp" name="timestamp" value />
+      <input type="hidden" id="sandboxsecureForm_fname" name="fname" value />
+      <input type="hidden" id="sandboxsecureForm_lname" name="lname" value />
+      <input type="hidden" id="sandboxsecureForm_add" name="add" value />
+      <input type="hidden" id="sandboxsecureForm_email" name="email" value />
+      <input type="hidden" id="sandboxsecureForm_city" name="city" value />
+      <input type="hidden" id="sandboxsecureForm_country" name="country" value />
+      <input type="hidden" id="sandboxsecureForm_phone" name="phone" value />
+
+      <input type="hidden" id="sandboxsecureForm_ExtraData[successurl]" name="ExtraData[successurl]" value />
+      <input type="hidden" id="sandboxsecureForm_ExtraData[failedurl]" name="ExtraData[failedurl]" value />
+      <input type="hidden" id="sandboxsecureForm_ExtraData[silenturl]" name="ExtraData[silenturl]" value />
+    </form>
+
+    <form style="display: none" action="https://secure.euplatesc.ro/tdsprocess/tranzactd.php" method="POST" id="secureForm">
+      <input type="hidden" id="secureForm_fp_hash" name="fp_hash" value />
+      <input type="hidden" id="secureForm_nonce" name="nonce" value />
+
+      <input type="hidden" id="secureForm_amount" name="amount" value />
+      <input type="hidden" id="secureForm_curr" name="curr" value />
+      <input type="hidden" id="secureForm_invoice_id" name="invoice_id" value />
+      <input type="hidden" id="secureForm_order_desc" name="order_desc" value />
+      <input type="hidden" id="secureForm_merch_id" name="merch_id" value />
+      <input type="hidden" id="secureForm_timestamp" name="timestamp" value />
+      <input type="hidden" id="secureForm_fname" name="fname" value />
+      <input type="hidden" id="secureForm_lname" name="lname" value />
+      <input type="hidden" id="secureForm_add" name="add" value />
+      <input type="hidden" id="secureForm_email" name="email" value />
+      <input type="hidden" id="secureForm_city" name="city" value />
+      <input type="hidden" id="secureForm_country" name="country" value />
+      <input type="hidden" id="secureForm_phone" name="phone" value />
+
+      <input type="hidden" id="secureForm_ExtraData[successurl]" name="ExtraData[successurl]" value />
+      <input type="hidden" id="secureForm_ExtraData[failedurl]" name="ExtraData[failedurl]" value />
+      <input type="hidden" id="secureForm_ExtraData[silenturl]" name="ExtraData[silenturl]" value />
+    </form>
+
   </body>
 </html>
