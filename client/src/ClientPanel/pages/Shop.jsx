@@ -33,8 +33,7 @@ const Shop = () => {
       id: selectedOption,
       image: selectedImage,
       title: "Pachet Pagina Memoriala",
-      // price: selectedOption === "buy1" ? 190 : 280,
-      price: selectedOption === "buy1" ? 19 : 28,
+      price: selectedOption === "buy1" ? 190 : 280,
     };
     addToCart(item);
     toast.success("Added to Cart");
