@@ -5,8 +5,41 @@ const express = require("express");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail"); // Ensure this function is available
 const app = express();
+const { getEuPlatescRequest } = require('../lib/euplatesc/index');
 
 app.use(express.json());
+
+const euPlatescConfig =     {
+  "name": "Amintim",
+  "domain": "amintim.ro",
+  "env": "staging",
+  "merchantId": "44841004414",
+  "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
+}  
+
+exports.euplatescCheckout = async (req, res) => {
+  console.log("Start euplatescCheckout");
+
+  try {
+      if (req.body) {
+          const order = req.body;
+          euPlatescConfig.env = order.env;
+
+          const dataReq = await getEuPlatescRequest(euPlatescConfig, order);
+
+          res.status(200).send({
+              success: dataReq != null,
+              message: "Function euplatescCheckout was completed successfully!",
+              data: dataReq,
+          }); 
+      }
+  } catch (err) {
+      console.log("euplatescCheckout failed :( Please check the log with error: ", err);
+      res.status(400).send({ message: err.message });
+
+      throw err;
+  }    
+};
 
 exports.purchaseSoulStar = async (req, res) => {
   const userId = req.user.id;
@@ -97,6 +130,36 @@ exports.purchaseSoulStar = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.getPurchase = async (req, res) => {
+  try {
+    const { key } = req.params;
+
+    const purchase = await Purchase.findOne({ "items.keys.key": key });
+    if (!purchase) {
+      return res.status(404).json({ message: "Purchase not found" });
+      // res.status(200).json(null);
+    }
+    res.status(200).json({ purchase });
+  } catch (error) {
+    console.error("Error fetching purchase:", error);
+    res.status(500).json({ message: "Error fetching purchase" });
+  }
+}
+
+exports.deletePurchase = async (req, res) => {
+  try {
+    const { key } = req.params;
+    const purchase = await Purchase.findOneAndDelete({ "items.keys.key": key });
+    if (!purchase) {
+      return res.status(404).json({ message: "Purchase not found" });
+    }
+    res.status(200).json({ message: "Purchase deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting purchase:", error);
+    res.status(500).json({ message: "Error deleting purchase" });
+  }
+}
 
 exports.getAllPurchases = async (req, res) => {
   try {
