@@ -72,7 +72,7 @@ class Gateway {
    */
   prepareAuthorizationRequestData(params) {
     return new Promise((resolve, reject) => {
-
+    
       if(!params.amount) {
         return reject(new Error('Amount is required'));
       }

@@ -12,7 +12,7 @@ app.use(express.json());
 const euPlatescConfig =     {
   "name": "Amintim",
   "domain": "amintim.ro",
-  "env": "dev",
+  "env": "staging",
   "merchantId": "44841004414",
   "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
 }  
@@ -124,12 +124,27 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(500).json({ message: "Error sending email" });
     }
 
+    console.log("itemKeys:", itemKeys);
     res.status(200).json({ keys: itemKeys });
   } catch (error) {
     console.error("Error generating or saving keys:", error);
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.deletePurchase = async (req, res) => {
+  try {
+    const { key } = req.params;
+    const purchase = await Purchase.findOneAndDelete({ "items.keys.key": key });
+    if (!purchase) {
+      return res.status(404).json({ message: "Purchase not found" });
+    }
+    res.status(200).json({ message: "Purchase deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting purchase:", error);
+    res.status(500).json({ message: "Error deleting purchase" });
+  }
+}
 
 exports.getAllPurchases = async (req, res) => {
   try {

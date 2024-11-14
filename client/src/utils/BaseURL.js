@@ -4,4 +4,7 @@ const BASE_URL = "http://localhost:5001/api";
 // const BASE_URL = "https://amintim-api.vercel.app/api";
 export const IMAGES_BASE_URL = "http://localhost:5001";
 // export const IMAGES_BASE_URL = "https://amintim-api.vercel.app";
+
+export const PAYMENT_ENV = "sandbox"; //prod
+
 export default BASE_URL;

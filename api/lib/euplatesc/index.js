@@ -4,7 +4,7 @@ async function getEuPlatescRequest(param, order) {
     const euplatescGateway = new Gateway({
         secretKey: param.secretKey, // from admin panel,
         merchantId: param.merchantId, // from admin panel
-        sandbox: param.env == 'staging',
+        sandbox: (param.env && param.env == 'staging') || param.env === undefined,
     });
 
     const data = await euplatescGateway.prepareAuthorizationRequestData({

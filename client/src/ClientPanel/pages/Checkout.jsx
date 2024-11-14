@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
 import { Spinner } from "@chakra-ui/react";
-import BaseURL from "../../utils/BaseURL";
+import BaseURL, { PAYMENT_ENV } from "../../utils/BaseURL";
 import axios from "axios";
 
 const Checkout = () => {
@@ -120,55 +120,6 @@ const Checkout = () => {
           }
         }
 
-        const dataPayment = {
-          price: subTotal,
-          currency: "RON",
-          invoiceId: "123456788",
-          description: "Amintim.ro",
-          success_url: window.location.origin + "/congratulations",
-          cancel_url: window.location.origin + "/congratulations",
-          clientFirstName: firstName,
-          clientLastName: lastName,
-          clientAddress: address,
-          clientCity: city,
-          clientPhone: "",
-          env: "staging",
-        }
-
-        await fetch(`${BaseURL}/purchase/euplatesc`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include token in request headers
-          },
-          credentials: "include", // Include credentials with the request
-          body: JSON.stringify(dataPayment),
-        }).then((response) => response.json())
-          .then(async (response) => {
-            if (response && response.success && response.data) {
-              console.log("response: ", response);
-              const data = response.data.data;
-              const keys = Object.keys(data);
-
-              console.log("data: ", data);
-              console.log("keys: ", keys);
-
-              keys.forEach(key => {
-                const sandboxsecureFormVal = document.getElementById('sandboxsecureForm_' + key);
-                sandboxsecureFormVal.value = data[key];
-                // console.log("sandboxsecureFormVal.value: ", sandboxsecureFormVal.value);
-              })
-
-              const sandboxsecureForm = document.getElementById('sandboxsecureForm');
-              sandboxsecureForm.submit();
-            }
-          })
-          .catch((error) => {
-            console.log("Error on createCheckoutSession: ", error);
-          });
-
-        return;
-
         const response = await fetch(`${BaseURL}/purchase/purchase`, {
           method: "POST",
           headers: {
@@ -187,19 +138,53 @@ const Checkout = () => {
           }),
         });
 
-        if (!response.ok) {
+        if (response.ok === false) {
           toast.error("Error Occured");
           throw new Error("Network response was not ok");
         }
 
         const data = await response.json();
-        toast.success("Soulstar Purchased");
-        localStorage.removeItem("cartItems");
-        localStorage.removeItem("discountAmount");
-        localStorage.removeItem("isReferralApplied");
-        clearCart();
-        navigate("/congratulations");
-        console.log("Purchase successful:", data);
+
+        if (!data || !data.keys) {
+          toast.error("Error Occured");          
+          return;
+        }
+
+        console.log("data: ", data);
+        console.log("data.keys: ", data.keys);
+        console.log("subTotal: ", subTotal);
+
+        const dataPayment = {
+          id: (Date.now() + Math.random()).toString(36),
+          price: subTotal,
+          currency: "RON",
+          description: "Amintim.ro",
+          success_url: window.location.origin + "/congratulations",
+          cancel_url: window.location.origin + "/congratulations",
+          clientFirstName: firstName,
+          clientLastName: lastName,
+          clientAddress: address,
+          clientCity: city,
+          clientPhone: "",
+          env: "staging",
+        }        
+        
+        if (data && data.keys) {
+          if (data.keys && data.keys[0] && data.keys[0].keys && data.keys[0].keys[0] && data.keys[0].keys[0].key){
+            dataPayment.id = data.keys[0].keys[0].key;
+          }
+        }
+
+        console.log("dataPayment: ", dataPayment);
+        console.log("PAYMENT_ENV: ", PAYMENT_ENV);
+        if (PAYMENT_ENV === "prod") {
+          dataPayment.env = "prod";
+          // await handleEuplatesc(dataPayment); 
+        } else {
+          dataPayment.env = "staging";
+          await handleEuplatescSandbox(dataPayment);
+        }
+
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);
       } finally {
@@ -207,6 +192,104 @@ const Checkout = () => {
       }
     }
   };
+
+  const handleEuplatesc = async (data) => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    try {
+      const response = await axios.post(`${BaseURL}/purchase/euplatesc`, dataPayment, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response && response.status === 200 && response.data && response.data.data && response.data.data.data) {
+        const data = response.data.data.data;
+        const keys = Object.keys(data);
+
+        // console.log("data: ", data);
+        // console.log("keys: ", keys);
+
+        keys.forEach(key => {
+          const sandboxsecureFormVal = document.getElementById('secureForm_' + key);
+          sandboxsecureFormVal.value = data[key];
+          // console.log("sandboxsecureFormVal.value: ", sandboxsecureFormVal.value);
+        })
+
+        const sandboxsecureForm = document.getElementById('secureForm');
+        sandboxsecureForm.submit();
+
+        handleCache();
+
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("yeh yeh", error);
+      if (error.response) {
+        toast.error(
+          error.response.data.message || "Error on createCheckoutSession"
+        );
+      } else {
+        toast.error("Error on createCheckoutSession");
+      }
+      return false; // Checkout session creation failed
+    }
+  };
+
+  const handleEuplatescSandbox = async (dataPayment) => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    try {
+      const response = await axios.post(`${BaseURL}/purchase/euplatesc`, dataPayment, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      if (response && response.status === 200 && response.data && response.data.data && response.data.data.data) {
+        const data = response.data.data.data;
+        const keys = Object.keys(data);
+
+        keys.forEach(key => {
+          const sandboxsecureFormVal = document.getElementById('sandboxsecureForm_' + key);
+          sandboxsecureFormVal.value = data[key];
+          // console.log("sandboxsecureFormVal.value: ", sandboxsecureFormVal.value);
+        })
+
+        const sandboxsecureForm = document.getElementById('sandboxsecureForm');
+        // console.log("sandboxsecureForm: ", sandboxsecureForm);
+        await sandboxsecureForm.submit();
+
+        handleCache();
+
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("yeh yeh", error);
+      if (error.response) {
+        toast.error(
+          error.response.data.message || "Error on createCheckoutSession"
+        );
+      } else {
+        toast.error("Error on createCheckoutSession");
+      }
+      return false; // Checkout session creation failed
+    }
+  };
+
+
+  const handleCache = () => {
+    toast.success("Soulstar Purchased");
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("discountAmount");
+    localStorage.removeItem("isReferralApplied");
+    clearCart();
+
+    // navigate("/congratulations");
+    console.log("Purchase successful:", data);    
+  }
 
   const handleRedeemReferralCode = async () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
@@ -572,8 +655,8 @@ const Checkout = () => {
               />
               <button
                 className={`ml-2 py-2 px-4 ${isReferralApplied
-                    ? "bg-[#c2c2c2] cursor-not-allowed"
-                    : "bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer"
+                  ? "bg-[#c2c2c2] cursor-not-allowed"
+                  : "bg-[#F9CA4F] hover:bg-[#f8c238] cursor-pointer"
                   }  text-white rounded-md  focus:outline-none`}
                 onClick={handleCodeValidation}
                 disabled={isReferralApplied}
@@ -585,8 +668,8 @@ const Checkout = () => {
 
           <button
             className={`w-full py-3 font-bold rounded-md ${loading === false
-                ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
-                : "cursor-not-allowed bg-[#fadc8d]"
+              ? "bg-[#F9CA4F] hover:bg-[#f8c238]"
+              : "cursor-not-allowed bg-[#fadc8d]"
               }`}
             disabled={loading}
             onClick={handlePurchase}
