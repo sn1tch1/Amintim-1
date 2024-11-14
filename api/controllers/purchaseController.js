@@ -124,13 +124,28 @@ exports.purchaseSoulStar = async (req, res) => {
       return res.status(500).json({ message: "Error sending email" });
     }
 
-    console.log("itemKeys:", itemKeys);
     res.status(200).json({ keys: itemKeys });
   } catch (error) {
     console.error("Error generating or saving keys:", error);
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.getPurchase = async (req, res) => {
+  try {
+    const { key } = req.params;
+
+    const purchase = await Purchase.findOne({ "items.keys.key": key });
+    if (!purchase) {
+      return res.status(404).json({ message: "Purchase not found" });
+      // res.status(200).json(null);
+    }
+    res.status(200).json({ purchase });
+  } catch (error) {
+    console.error("Error fetching purchase:", error);
+    res.status(500).json({ message: "Error fetching purchase" });
+  }
+}
 
 exports.deletePurchase = async (req, res) => {
   try {

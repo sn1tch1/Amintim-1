@@ -24,6 +24,7 @@ import Checkout from "../ClientPanel/pages/Checkout";
 import PrivateRoute from "../ClientPanel/components/privateRoutes";
 import View from "../ClientPanel/pages/View";
 import Congratulations from "../ClientPanel/pages/Congratulations";
+import Failure from "../ClientPanel/pages/Failure";
 import TermsAndConditions from "../ClientPanel/pages/TermsAndConditions";
 import CookiePolicy from "../ClientPanel/pages/CookiePolicy";
 import PrivacyPolicy from "../ClientPanel/pages/PrivacyPolicy";
@@ -64,6 +65,7 @@ const AppContent = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/verify" element={<Captcha />} />
         <Route path="/congratulations" element={<Congratulations />} />
+        <Route path="/failure" element={<Failure />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />

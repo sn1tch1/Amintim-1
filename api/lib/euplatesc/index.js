@@ -14,7 +14,7 @@ async function getEuPlatescRequest(param, order) {
         orderDescription: order.description,
         'ExtraData[successurl]': order.success_url,
         'ExtraData[failedurl]': order.cancel_url,
-        'ExtraData[silenturl]': order.cancel_url,        
+        'ExtraData[silenturl]': order.home_url,        
         billingDetails: {
           firstName: order.clientFirstName ? order.clientFirstName : "",
           lastName: order.clientLastName ? order.clientLastName : "",

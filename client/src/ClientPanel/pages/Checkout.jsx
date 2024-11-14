@@ -160,7 +160,8 @@ const Checkout = () => {
           currency: "RON",
           description: "Amintim.ro",
           success_url: window.location.origin + "/congratulations",
-          cancel_url: window.location.origin + "/congratulations",
+          cancel_url: window.location.origin + "/checkout",
+          home_url: window.location.origin,
           clientFirstName: firstName,
           clientLastName: lastName,
           clientAddress: address,
@@ -172,6 +173,7 @@ const Checkout = () => {
         if (data && data.keys) {
           if (data.keys && data.keys[0] && data.keys[0].keys && data.keys[0].keys[0] && data.keys[0].keys[0].key){
             dataPayment.id = data.keys[0].keys[0].key;
+            dataPayment.success_url += "?key=" + dataPayment.id;
           }
         }
 
@@ -179,7 +181,7 @@ const Checkout = () => {
         console.log("PAYMENT_ENV: ", PAYMENT_ENV);
         if (PAYMENT_ENV === "prod") {
           dataPayment.env = "prod";
-          // await handleEuplatesc(dataPayment); 
+          await handleEuplatesc(dataPayment); 
         } else {
           dataPayment.env = "staging";
           await handleEuplatescSandbox(dataPayment);
