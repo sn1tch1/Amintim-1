@@ -110,7 +110,7 @@ class Gateway {
         extra.forEach(e => {
           requestData[e] = params[e];
         });
-        console.log("requestData: ", requestData);
+        // console.log("requestData: ", requestData);
       }
 
       return resolve(requestData);
