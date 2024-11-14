@@ -20,32 +20,51 @@ const TermsAndConditions = () => {
 
         <h2 className="text-2xl font-semibold mt-4">2. Utilizarea Serviciului</h2>
         <p>
-          Serviciul nostru permite crearea și gestionarea de pagini memoriale digitale. Vă asumați responsabilitatea pentru toate activitățile asociate contului dumneavoastră.
+          Serviciul nostru permite crearea și gestionarea de pagini memoriale digitale personalizate. Vă asumați responsabilitatea pentru toate activitățile asociate contului dumneavoastră.
         </p>
 
         <h2 className="text-2xl font-semibold mt-4">3. Conținut</h2>
         <p>
-          Sunteți responsabil pentru conținutul pe care îl postați. Nu este permis conținutul ilegal, ofensator sau care încalcă drepturile altora.
+          Generat de Utilizator: Sunteți singurul responsabil pentru conținutul pe care îl postați. Nu este permis conținutul ilegal, ofensator, care încalcă drepturile altora sau care promovează discriminarea.
+Drepturi de Autor: Prin publicarea conținutului, acordați Amintim o licență limitată pentru a-l utiliza în cadrul serviciului.
         </p>
 
-        <h2 className="text-2xl font-semibold mt-4">4. Proprietate Intelectuală</h2>
+        <h2 className="text-2xl font-semibold mt-4">4. Plăți și Rambursări</h2>
         <p>
-          Conținutul și designul site-ului sunt proprietatea Amintim. Nu aveți permisiunea să copiați sau să distribuiți acest conținut fără acordul nostru.
+          Costuri: Prețul standard pentru crearea și gestionarea unei pagini memoriale digitale este de 280 RON. Ofertele promoționale pot modifica prețul. Vă rugăm să verificați site-ul pentru eventuale promoții active.
+Modalități de Plată: Plata se realizează prin intermediul procesatorului de plăți Euplatesc.ro. Conform site-ului Euplatesc.ro ([link to euplatesc.ro payment methods]), aceștia acceptă carduri Visa și Mastercard. Vă rugăm să verificați opțiunile disponibile pe Euplatesc.ro pentru confirmare.
+Rambursări: Dacă nu sunteți mulțumit de serviciul nostru, aveți dreptul la o rambursare completă a costului în termen de 30 de zile de la achiziție. Pentru a solicita o rambursare, vă rugăm să ne contactați la info@amintim.ro
         </p>
 
-        <h2 className="text-2xl font-semibold mt-4">5. Limitarea Răspunderii</h2>
+        <h2 className="text-2xl font-semibold mt-4">5. Protecția Datelor</h2>
         <p>
-          Amintim nu este responsabil pentru niciun fel de daune directe, indirecte, incidentale sau consecvente care rezultă din utilizarea serviciului nostru.
+          Politica de Confidențialitate: Vă rugăm să consultați politica noastră de confidențialitate pentru a afla mai multe despre modul în care colectăm, prelucrăm și stocăm datele dumneavoastră personale.
+Securitate: Implementăm măsuri de securitate adecvate pentru a proteja datele dumneavoastră personale.
         </p>
 
-        <h2 className="text-2xl font-semibold mt-4">6. Modificări ale Termenilor</h2>
+        <h2 className="text-2xl font-semibold mt-4">6. Limitarea Răspunderii</h2>
+        <p>
+          Amintim nu este responsabil pentru niciun fel de daune directe, indirecte, incidentale sau consecutive care rezultă din utilizarea serviciului nostru, cu excepția cazurilor de neglijență gravă sau intenție.
+        </p>
+        <h2 className="text-2xl font-semibold mt-4">7. Ștergerea Contului</h2>
+        <p>
+          Puteți solicita ștergerea contului dumneavoastră și a paginii memoriale asociate printr-un email la adresa info@amintim.ro
+          </p>
+          <h2 className="text-2xl font-semibold mt-4">8. Modificări ale Termenilor</h2>
         <p>
           Ne rezervăm dreptul de a modifica acești termeni în orice moment. Modificările vor intra în vigoare imediat ce sunt postate pe site.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-4">7. Contact</h2>
+          </p>
+           <h2 className="text-2xl font-semibold mt-4">9. Forță Majoră</h2>
         <p>
-          Dacă aveți întrebări despre acești termeni, vă rugăm să ne contactați la [adresa de email].
+          Amintim nu va fi răspunzător pentru neexecutarea sau executarea defectuoasă a obligațiilor sale contractuale dacă aceasta este cauzată de evenimente de forță majoră.
+        </p>
+          <h2 className="text-2xl font-semibold mt-4">10. Legislație Aplicabilă</h2>
+        <p>
+          Acești termeni și condiții sunt guvernați de legea română.
+        </p>
+        <h2 className="text-2xl font-semibold mt-4">11. Contact</h2>
+        <p>
+          Dacă aveți întrebări despre acești termeni, vă rugăm să ne contactați la info@amintim.ro.
         </p>
       </div>
     </div>
