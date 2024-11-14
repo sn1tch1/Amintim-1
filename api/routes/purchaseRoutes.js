@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/purchase", protect, purchaseSoulStar);
 router.get("/get-purchase/:key", getPurchase);
-router.delete("/delete-purchase", deletePurchase);
+router.delete("/delete-purchase/:key", deletePurchase);
 router.post("/euplatesc", euplatescCheckout);
 router.get("/", getAllPurchases);
 router.post("/referral-code", protect, redeemReferralCode);

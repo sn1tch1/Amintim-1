@@ -22,6 +22,8 @@ const Congratulations = () => {
           console.log(res);
           if (!res) {
             navigate("/failure");
+          } else {
+            handleCache();
           }
         } else {
           navigate("/failure");
@@ -59,6 +61,17 @@ const Congratulations = () => {
 
     checkURLSearchParams();
   }, []);
+
+  const handleCache = () => {
+    toast.success("Soulstar Purchased");
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("discountAmount");
+    localStorage.removeItem("isReferralApplied");
+    clearCart();
+
+    // navigate("/congratulations");
+    console.log("Purchase successful:", data);    
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">

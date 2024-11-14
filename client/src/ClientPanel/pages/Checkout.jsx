@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
@@ -69,7 +69,12 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    setSubTotal(calculateSubtotal()); // Set subtotal when component mounts
+    const valTotal = calculateSubtotal();
+    setSubTotal(valTotal); // Set subtotal when component mounts
+
+    if (valTotal === 0) {
+      navigate("/cart");
+    }   
   }, [cart]);
 
   useEffect(() => {
@@ -150,10 +155,6 @@ const Checkout = () => {
           return;
         }
 
-        console.log("data: ", data);
-        console.log("data.keys: ", data.keys);
-        console.log("subTotal: ", subTotal);
-
         const dataPayment = {
           id: (Date.now() + Math.random()).toString(36),
           price: subTotal,
@@ -174,6 +175,7 @@ const Checkout = () => {
           if (data.keys && data.keys[0] && data.keys[0].keys && data.keys[0].keys[0] && data.keys[0].keys[0].key){
             dataPayment.id = data.keys[0].keys[0].key;
             dataPayment.success_url += "?key=" + dataPayment.id;
+            // dataPayment.cancel_url += "?key=" + dataPayment.id;
           }
         }
 
@@ -220,8 +222,6 @@ const Checkout = () => {
         const sandboxsecureForm = document.getElementById('secureForm');
         sandboxsecureForm.submit();
 
-        handleCache();
-
         return true;
       } else {
         return false;
@@ -262,8 +262,6 @@ const Checkout = () => {
         // console.log("sandboxsecureForm: ", sandboxsecureForm);
         await sandboxsecureForm.submit();
 
-        handleCache();
-
         return true;
       } else {
         return false;
@@ -280,18 +278,6 @@ const Checkout = () => {
       return false; // Checkout session creation failed
     }
   };
-
-
-  const handleCache = () => {
-    toast.success("Soulstar Purchased");
-    localStorage.removeItem("cartItems");
-    localStorage.removeItem("discountAmount");
-    localStorage.removeItem("isReferralApplied");
-    clearCart();
-
-    // navigate("/congratulations");
-    console.log("Purchase successful:", data);    
-  }
 
   const handleRedeemReferralCode = async () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
