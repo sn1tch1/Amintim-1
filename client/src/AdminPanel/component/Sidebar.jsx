@@ -54,12 +54,12 @@ const Sidebar = () => {
       ></div>
       <div
         className={`flex flex-col fixed top-0 left-0 bg-gray-900 text-white h-screen transition-all duration-300 ${
-          isCollapsed ? "w-16 p-1" : "w-64 p-3"
+          isCollapsed ? "w-12 md:w-16 md:p-1" : "w-64 p-3"
         }`}
         style={{ zIndex: 10 }}
       >
         <button
-          className={`text-white flex duration-300 items-center my-2 ${
+          className={`text-white hidden md:flex duration-300 items-center my-2 ${
             isCollapsed ? "justify-center" : "justify-start"
           }`}
           onClick={handleToggleCollapse}

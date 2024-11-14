@@ -176,9 +176,9 @@ const Dashboard = () => {
       </div>
 
       {/* Top section for Users and Purchases charts */}
-      <div className="flex  justify-between gap-8">
+      <div className="flex flex-col md:flex-row justify-between gap-8">
         {/* Users Chart */}
-        <div className="chart-box  p-6 w-1/3 ">
+        <div className="chart-box  p-6 md:w-1/3 ">
           <h3 className="text-xl font-semibold text-center mb-4">Users</h3>
           {loadingUsers && <span>Loading...</span>}
           {errorUsers && <span>{errorUsers}</span>}
@@ -198,7 +198,7 @@ const Dashboard = () => {
         </div>
 
         {/* Purchases Chart */}
-        <div className="chart-box flex flex-col justify-between p-6 w-2/3">
+        <div className="chart-box flex flex-col justify-between p-6 md:w-2/3">
           <h3 className="text-xl font-semibold text-center mb-4">Purchases</h3>
           {loadingPurchases && <span>Loading...</span>}
           {errorPurchases && <span>{errorPurchases}</span>}
