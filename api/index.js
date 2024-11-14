@@ -24,6 +24,7 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 const allowedOrigins = [
   "http://localhost:5173",
   "https://amintim.vercel.app",
+  "https://amintim-1.vercel.app",
   "https://amintim.ro",
 ];
 

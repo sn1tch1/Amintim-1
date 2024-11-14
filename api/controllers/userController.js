@@ -136,11 +136,11 @@ exports.registerOrLoginUser = async (req, res) => {
     });
 
     res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      })
+      // .cookie("token", token, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === "production",
+      //   sameSite: "strict",
+      // })
       .status(200)
       .json({ message: "Logged in successfully", token, user });
   } catch (error) {
