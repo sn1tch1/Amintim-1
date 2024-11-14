@@ -26,6 +26,7 @@ const allowedOrigins = [
   "https://amintim.vercel.app",
   "https://amintim-1.vercel.app",
   "https://amintim.ro",
+  "https://www.amintim.ro",
 ];
 
 const corsOptions = {
