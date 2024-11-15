@@ -197,7 +197,7 @@ const Checkout = () => {
     }
   };
 
-  const handleEuplatesc = async (data) => {
+  const handleEuplatesc = async (dataPayment) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
     try {
       const response = await axios.post(`${BaseURL}/purchase/euplatesc`, dataPayment, {
