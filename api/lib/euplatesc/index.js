@@ -14,18 +14,19 @@ async function getEuPlatescRequest(param, order) {
         orderDescription: order.description,
         'ExtraData[successurl]': order.success_url,
         'ExtraData[failedurl]': order.cancel_url,
-        'ExtraData[silenturl]': order.home_url,        
+        'ExtraData[silenturl]': order.home_url,
+        'ExtraData[ep_method]': order.callback_method ? order.callback_method : 'post',
         billingDetails: {
-          firstName: order.clientFirstName ? order.clientFirstName : "",
-          lastName: order.clientLastName ? order.clientLastName : "",
-          address: order.clientAddress ? order.clientAddress : "",
-          email: order.clientEmail ? order.clientEmail : "",
-          city: order.clientCity ? order.clientCity : "",
-          country: 'Romania',
-          phone: order.clientPhone ? order.clientPhone : "",
+            firstName: order.clientFirstName ? order.clientFirstName : "",
+            lastName: order.clientLastName ? order.clientLastName : "",
+            address: order.clientAddress ? order.clientAddress : "",
+            email: order.clientEmail ? order.clientEmail : "",
+            city: order.clientCity ? order.clientCity : "",
+            country: 'Romania',
+            phone: order.clientPhone ? order.clientPhone : "",
         }
-    });   
-   
+    });
+
     return {
         redirectUrl: euplatescGateway.getRequestsEndpoint(),
         data: data
