@@ -9,36 +9,47 @@ const { getEuPlatescRequest } = require('../lib/euplatesc/index');
 
 app.use(express.json());
 
-const euPlatescConfig =     {
+const euPlatescConfig = {
   "name": "Amintim",
   "domain": "amintim.ro",
   "env": "staging",
   "merchantId": "44841004414",
   "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
-}  
+}
+
+const euPlatescConfigProd = {
+  "name": "Amintim",
+  "domain": "amintim.ro",
+  "env": "staging",
+  "merchantId": "44841004414",
+  "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
+}
 
 exports.euplatescCheckout = async (req, res) => {
   console.log("Start euplatescCheckout");
 
   try {
-      if (req.body) {
-          const order = req.body;
-          euPlatescConfig.env = order.env;
-
-          const dataReq = await getEuPlatescRequest(euPlatescConfig, order);
-
-          res.status(200).send({
-              success: dataReq != null,
-              message: "Function euplatescCheckout was completed successfully!",
-              data: dataReq,
-          }); 
+    if (req.body) {
+      const order = req.body;
+      if (order && order.env && order.env === "prod") {
+        euPlatescConfig = euPlatescConfigProd;
       }
-  } catch (err) {
-      console.log("euplatescCheckout failed :( Please check the log with error: ", err);
-      res.status(400).send({ message: err.message });
+      euPlatescConfig.env = order.env;
 
-      throw err;
-  }    
+      const dataReq = await getEuPlatescRequest(euPlatescConfig, order);
+
+      res.status(200).send({
+        success: dataReq != null,
+        message: "Function euplatescCheckout was completed successfully!",
+        data: dataReq,
+      });
+    }
+  } catch (err) {
+    console.log("euplatescCheckout failed :( Please check the log with error: ", err);
+    res.status(400).send({ message: err.message });
+
+    throw err;
+  }
 };
 
 exports.purchaseSoulStar = async (req, res) => {
