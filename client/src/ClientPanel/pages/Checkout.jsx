@@ -174,7 +174,7 @@ const Checkout = () => {
         if (data && data.keys) {
           if (data.keys && data.keys[0] && data.keys[0].keys && data.keys[0].keys[0] && data.keys[0].keys[0].key){
             dataPayment.id = data.keys[0].keys[0].key;
-            dataPayment.success_url += "?key=" + dataPayment.id;
+            // dataPayment.success_url += "?key=" + dataPayment.id;
             // dataPayment.cancel_url += "?key=" + dataPayment.id;
           }
         }
