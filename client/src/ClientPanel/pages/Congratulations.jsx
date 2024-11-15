@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import BaseURL from "../../utils/BaseURL";
 
-const Congratulations = () => {
+const Congratulations = () => {  
   const navigate = useNavigate();
   const { search } = useLocation();
 
@@ -13,7 +14,19 @@ const Congratulations = () => {
 
   useEffect(() => {
     // Scroll to the top of the page
-    const checkURLSearchParams = async () => {
+
+    const checkURLSearchParams = async () => {      
+      const value = localStorage.getItem("congratulations_check");
+      // console.log("value: ", value);
+
+      if (value === undefined) {
+        window.location.reload();
+        handleCache();
+        localStorage.setItem("congratulations_check", true);
+      }      
+    }
+
+    const checkURLSearchParams_old = async () => {
       const searchParams = new URLSearchParams(search);
       if (searchParams) {
         const key = searchParams.get("key");
@@ -24,6 +37,11 @@ const Congratulations = () => {
             navigate("/failure");
           } else {
             handleCache();
+            const value = localStorage.getItem("congratulations_"+key);
+            if (value === undefined) {
+              window.location.reload();
+              localStorage.setItem("congratulations_"+key, true);
+            }
           }
         } else {
           navigate("/failure");
@@ -35,7 +53,7 @@ const Congratulations = () => {
 
     const handleGetPurchaseByKey = async (key) => {
       try {        
-        console.log("key: ", key);
+        // console.log("key: ", key);
         const response = await fetch(`${BaseURL}/purchase/get-purchase/${key}`, {
           method: "GET",
           headers: {
@@ -91,7 +109,7 @@ const Congratulations = () => {
             <strong>Key for Your Purchase:</strong> Your unique key will be sent
             to your email.
           </p>
-          <p className="mb-4">
+          <div className="mb-4">
             <strong>Instructions:</strong>
             <ol className="list-decimal list-inside mb-4">
               <li>
@@ -123,7 +141,7 @@ const Congratulations = () => {
               support-email@example.com
             </a>
             .
-          </p>
+          </div>
         </div>
         <button
           onClick={handleProceed}
