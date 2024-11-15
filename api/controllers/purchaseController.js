@@ -31,7 +31,7 @@ exports.euplatescCheckout = async (req, res) => {
   try {
     if (req.body) {
       const order = req.body;
-      if (order.env && order.env === "prod") {
+      if (order && order.env && order.env === "prod") {
         euPlatescConfig = euPlatescConfigProd;
       }
       euPlatescConfig.env = order.env;
