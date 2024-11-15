@@ -179,8 +179,8 @@ const Checkout = () => {
           }
         }
 
-        console.log("dataPayment: ", dataPayment);
-        console.log("PAYMENT_ENV: ", PAYMENT_ENV);
+        // console.log("dataPayment: ", dataPayment);
+        // console.log("PAYMENT_ENV: ", PAYMENT_ENV);
         if (PAYMENT_ENV === "prod") {
           dataPayment.env = "prod";
           await handleEuplatesc(dataPayment); 
