@@ -29,7 +29,7 @@ const Failure = () => {
 
     const handleGetPurchaseByKey = async (key) => {
       try {        
-        console.log("key: ", key);
+        // console.log("key: ", key);
         const response = await fetch(`${BaseURL}/purchase/get-purchase/${key}`, {
           method: "GET",
           headers: {
@@ -45,7 +45,7 @@ const Failure = () => {
 
         if (data) {
           // Process the data
-          console.log(data);
+          // console.log(data);
           return data;
         }
       } catch (error) {
