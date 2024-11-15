@@ -159,10 +159,17 @@ const Checkout = () => {
           id: (Date.now() + Math.random()).toString(36),
           price: subTotal,
           currency: "RON",
-          description: "Amintim.ro",
+          description: "Salveaza amintirile frumoase - amintim.ro",
           success_url: window.location.origin + "/congratulations",
           cancel_url: window.location.origin + "/checkout",
           home_url: window.location.origin,
+          callback_method: "get",
+          // success_url: "http://localhost:5001/api" + "/congratulations",
+          // cancel_url: window.location.origin + "/checkout",
+          // home_url: window.location.origin,          
+          // success_url: "https://www.amintim.ro" + "/congratulations",
+          // cancel_url: "https://www.amintim.ro" + "/checkout",          
+          // home_url: "https://www.amintim.ro",
           clientFirstName: firstName,
           clientLastName: lastName,
           clientAddress: address,
@@ -179,8 +186,8 @@ const Checkout = () => {
           }
         }
 
-        // console.log("dataPayment: ", dataPayment);
-        // console.log("PAYMENT_ENV: ", PAYMENT_ENV);
+        console.log("dataPayment: ", dataPayment);
+        console.log("PAYMENT_ENV: ", PAYMENT_ENV);
         if (PAYMENT_ENV === "prod") {
           dataPayment.env = "prod";
           await handleEuplatesc(dataPayment); 
@@ -233,7 +240,7 @@ const Checkout = () => {
           error.response.data.message || "Error on createCheckoutSession"
         );
       } else {
-        toast.error("Error on createCheckoutSession");
+        toast.error("Eroare catre Euplatesc");
       }
       return false; // Checkout session creation failed
     }
@@ -273,7 +280,7 @@ const Checkout = () => {
           error.response.data.message || "Error on createCheckoutSession"
         );
       } else {
-        toast.error("Error on createCheckoutSession");
+        toast.error("Eroare catre Euplatesc");
       }
       return false; // Checkout session creation failed
     }
