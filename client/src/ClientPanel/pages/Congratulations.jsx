@@ -77,7 +77,7 @@ const Congratulations = () => {
       }
     };
 
-    checkURLSearchParams();
+    // checkURLSearchParams();
   }, []);
 
   const handleCache = () => {
