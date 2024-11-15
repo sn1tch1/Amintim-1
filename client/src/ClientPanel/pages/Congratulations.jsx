@@ -51,7 +51,7 @@ const Congratulations = () => {
 
         if (data) {
           // Process the data
-          console.log(data);
+          // console.log(data);
           return data;
         }
       } catch (error) {
@@ -70,7 +70,7 @@ const Congratulations = () => {
     clearCart();
 
     // navigate("/congratulations");
-    console.log("Purchase successful:", data);    
+    // console.log("Purchase successful:", data);    
   }
 
   return (
