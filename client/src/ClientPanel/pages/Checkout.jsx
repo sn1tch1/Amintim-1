@@ -161,7 +161,7 @@ const Checkout = () => {
           currency: "RON",
           description: "Amintim.ro",
           success_url: window.location.origin + "/congratulations",
-          cancel_url: window.location.origin + "/checkout",
+          cancel_url: window.location.origin + "/congratulations",
           home_url: window.location.origin,
           clientFirstName: firstName,
           clientLastName: lastName,
@@ -175,7 +175,7 @@ const Checkout = () => {
           if (data.keys && data.keys[0] && data.keys[0].keys && data.keys[0].keys[0] && data.keys[0].keys[0].key){
             dataPayment.id = data.keys[0].keys[0].key;
             dataPayment.success_url += "?key=" + dataPayment.id;
-            // dataPayment.cancel_url += "?key=" + dataPayment.id;
+            dataPayment.cancel_url += "?key=" + dataPayment.id;
           }
         }
 
