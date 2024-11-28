@@ -2,12 +2,12 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER, // your Outlook email address
-    pass: process.env.EMAIL_PASS, // your Outlook email password
+    user: "contact@amintim.ro",
+    pass: process.env.EMAIL_APP_PASSWORD,
   },
 });
 
