@@ -13,6 +13,7 @@ const {
   getPartnerReferrals,
   registerOrLoginUser,
   updatePassword,
+  payPartner,
 } = require("../controllers/userController.js");
 const { protect } = require("../middleware/authMiddleware.js");
 
@@ -31,4 +32,5 @@ router.put("/update-password", protect, updatePassword);
 router.delete("/user/:id", deleteUser);
 router.get("/", getAllUsers);
 router.get("/partners", protect, getPartnerReferrals);
+router.post("/pay-partner", protect, payPartner);
 module.exports = router;

@@ -339,9 +339,44 @@ exports.getPartnerReferrals = async (req, res) => {
       _id: { $in: partner.referralCodeUsedBy },
     }).select("firstName lastName email city country");
 
+    const amountToBePaid = partner.referralCodeUsedBy.length * 5;
+
     res.status(200).json({
       referralCode: partner.referralCode,
-      referralCodeUsedBy: referrals, // List of users referred by this partner
+      referralCodeUsedBy: referrals,
+      amountToBePaid,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.payPartner = async (req, res) => {
+  try {
+    const { partnerId, amountToPay } = req.body; // Get the amount to be paid from the request
+
+    // Validate the partner and check if they're a partner
+    const partner = await User.findById(partnerId);
+
+    if (!partner || partner.role !== "partner") {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Add the amount to the partner's total paid amount
+    partner.totalPaid += amountToPay;
+
+    // Reset the amount to be paid to 0 after payment
+    partner.amountToBePaid = 0;
+
+    // Update the last paid timestamp
+    partner.lastPaid = new Date();
+
+    await partner.save(); // Save the changes
+
+    res.status(200).json({
+      message: `Successfully paid ${amountToPay} to ${partner.email}`,
+      totalPaid: partner.totalPaid,
+      amountToBePaid: partner.amountToBePaid,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

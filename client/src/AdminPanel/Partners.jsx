@@ -35,6 +35,36 @@ const Referrals = () => {
     }
   };
 
+  // Handle paying the partner and updating the records
+  const handlePayPartner = async (partnerId, amountToBePaid) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Token not found!");
+      return;
+    }
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/users/pay-partner`,
+        { partnerId, amountToPay: amountToBePaid },
+        { headers }
+      );
+      console.log(res);
+
+      // After successful payment, update the local state
+      toast.success("Payment successful!");
+      fetchData(); // Refetch data to update the partner's payment records
+    } catch (err) {
+      toast.error("Payment failed!");
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -53,20 +83,23 @@ const Referrals = () => {
               <th className="py-2 px-4">Name</th>
               <th className="py-2 px-4">Referral Code</th>
               <th className="py-2 px-4">Referrals Used</th>
+              <th className="py-2 px-4">Amount To Be Paid</th>
+              <th className="py-2 px-4">Total Paid</th>
               <th className="py-2 px-4">Referred Users</th>
+              <th className="py-2 px-4">Action</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={9} className="text-center py-4">
-                  Loading.......
+                <td colSpan={8} className="text-center py-4">
+                  Loading.......{" "}
                 </td>
               </tr>
             )}
             {error && (
               <tr>
-                <td colSpan={9} className="text-center py-4 text-red-500">
+                <td colSpan={8} className="text-center py-4 text-red-500">
                   {error}
                 </td>
               </tr>
@@ -79,11 +112,12 @@ const Referrals = () => {
                     {index + 1}
                   </th>
                   <td className="py-2 px-4">{partner?.email}</td>
-
                   <td className="py-2 px-4">{partner.referralCode || "N/A"}</td>
                   <td className="py-2 px-4">
                     {partner.referralCodeUsedBy.length || 0}
                   </td>
+                  <td className="py-2 px-4">${partner.amountToBePaid || 0}</td>
+                  <td className="py-2 px-4">${partner.totalPaid || 0}</td>
                   <td className="py-2 px-4">
                     <ul className="list-disc pl-5">
                       {partner.referralCodeUsedBy.length > 0 ? (
@@ -94,6 +128,17 @@ const Referrals = () => {
                         <li>No referrals</li>
                       )}
                     </ul>
+                  </td>
+                  <td className="py-2 px-4 text-center">
+                    {/* Button to pay the partner */}
+                    <button
+                      onClick={() =>
+                        handlePayPartner(partner._id, partner.amountToBePaid)
+                      }
+                      className="bg-blue-500 text-white py-1 px-4 rounded"
+                    >
+                      Pay
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -34,6 +34,7 @@ const Memorial = () => {
   const [mediaImages, setMediaImages] = useState([]);
   const [videoUrls, setVideoUrls] = useState([]);
   const [audioUrls, setAudioUrls] = useState([]);
+  const [youtubeLinks, setYoutubeLinks] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memorialData, setMemorialData] = useState(null);
   const [newTribute, setNewTribute] = useState("");
@@ -150,8 +151,7 @@ const Memorial = () => {
         setQRCode(response.data.QRCode);
         setVideoUrls(response.data.videoGallery);
         setAudioUrls(response.data.audioGallery);
-
-        console.log(response);
+        setYoutubeLinks(response.data.youtubeLinks);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
       }
@@ -278,7 +278,7 @@ const Memorial = () => {
           });
 
           const data = await response.json();
-          urls.push(data.secure_url);
+          urls.push(data.url);
         } catch (error) {
           console.error("Error uploading video:", error);
           toast.error("Error uploading video.");
@@ -311,7 +311,7 @@ const Memorial = () => {
           });
 
           const data = await response.json();
-          urls.push(data.secure_url);
+          urls.push(data.url);
         } catch (error) {
           console.error("Error uploading audio:", error);
           toast.error("Error uploading audio.");
@@ -321,6 +321,24 @@ const Memorial = () => {
 
     // Update state with URLs of uploaded files
     setAudioUrls((prevUrls) => [...prevUrls, ...urls]);
+  };
+
+  const handleYoutubeLinkSubmit = (e) => {
+    e.preventDefault();
+    const youtubeUrl = e.target.elements.youtubeUrl.value.trim();
+    if (youtubeUrl && !youtubeLinks.includes(youtubeUrl)) {
+      setYoutubeLinks((prevLinks) => [...prevLinks, youtubeUrl]);
+      e.target.reset();
+    } else {
+      toast.error(
+        "This video is already added, Please add a unique YouTube link."
+      );
+    }
+  };
+
+  const handleDeleteYoutube = (index) => {
+    const updatedLinks = youtubeLinks.filter((_, i) => i !== index);
+    setYoutubeLinks(updatedLinks);
   };
 
   //   setAudioUrls((prevUrls) => [...prevUrls, ...urls]);
@@ -363,6 +381,7 @@ const Memorial = () => {
         {
           profileImage,
           coverImage,
+          youtubeLinks,
           gallery: mediaImages,
           videoGallery: videoUrls,
           audioGallery: audioUrls,
@@ -851,6 +870,34 @@ const Memorial = () => {
                           </button>
                         </div>
                       ))}
+
+                      {/* Render YouTube Links */}
+                      {youtubeLinks?.map((link, index) => (
+                        <div className="relative" key={index}>
+                          <div className="w-full  h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer">
+                            <iframe
+                              width="100%"
+                              height="100%"
+                              // src={`https://www.youtube.com/embed/${
+                              //   link.split("v=")[1]
+                              // }`}
+                              src={`https://www.youtube.com/embed/${
+                                link.split("v=")[1]?.split("&")[0]
+                              }`}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            ></iframe>
+                          </div>
+                          <button className="absolute top-4 right-4 bg-white/60 group backdrop-blur-md p-3 rounded-full shadow-md  ">
+                            <MdDelete
+                              size={40}
+                              onClick={() => handleDeleteVideo(index)}
+                              className="text-red-600 hover:text-red-800 hover:scale-105 hover:rotate-[10deg] duration-300"
+                            />
+                          </button>
+                        </div>
+                      ))}
                     </>
                   ) : (
                     <div className="col-span-3 text-center text-gray-500">
@@ -859,52 +906,74 @@ const Memorial = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex gap-4 items-center justify-center">
-                  <div className="flex justify-center items-center text-center mt-4">
-                    <label
-                      htmlFor="mediaImageInput"
-                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
-                    >
-                      Incarca Poze
-                    </label>
-                    <input
-                      type="file"
-                      id="mediaImageInput"
-                      className="hidden"
-                      onChange={handleMediaImageChange}
-                      multiple
-                    />
-                  </div>
-                  <div className="flex justify-center items-center text-center mt-4">
-                    <label
-                      htmlFor="videoInput"
-                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
-                    >
-                      Incarca Video
-                    </label>
-                    <input
-                      type="file"
-                      id="videoInput"
-                      className="hidden"
-                      accept="video/*"
-                      onChange={handleVideoUpload}
-                    />
-                  </div>
+                <div className="flex w-full  flex-col gap-4 items-center justify-center">
+                  <div className="flex gap-4 items-center justify-center">
+                    <div className="flex justify-center items-center text-center mt-4">
+                      <label
+                        htmlFor="mediaImageInput"
+                        className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                      >
+                        Incarca Poze
+                      </label>
+                      <input
+                        type="file"
+                        id="mediaImageInput"
+                        className="hidden"
+                        onChange={handleMediaImageChange}
+                        multiple
+                      />
+                    </div>
+                    <div className="flex justify-center items-center text-center mt-4">
+                      <label
+                        htmlFor="videoInput"
+                        className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                      >
+                        Incarca Video
+                      </label>
+                      <input
+                        type="file"
+                        id="videoInput"
+                        className="hidden"
+                        accept="video/*"
+                        onChange={handleVideoUpload}
+                      />
+                    </div>
 
-                  <div className="flex justify-center items-center text-center mt-4">
-                    <label
-                      htmlFor="audioInput"
-                      className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                    <div className="flex justify-center items-center text-center mt-4">
+                      <label
+                        htmlFor="audioInput"
+                        className="bg-gray-300 text-gray-700 px-4 py-1 md:py-2 text-sm md:text-md rounded cursor-pointer"
+                      >
+                        Incarca Audio
+                      </label>
+                      <input
+                        type="file"
+                        id="audioInput"
+                        className="hidden"
+                        accept="audio/*"
+                        onChange={handleAudioUpload}
+                      />
+                    </div>
+                  </div>
+                  {/* Add YouTube Link */}
+                  <div className="flex items-center justify-center">
+                    <form
+                      onSubmit={handleYoutubeLinkSubmit}
+                      className="mt-4 mx-auto w-full"
                     >
-                      Incarca Audio
-                    </label>
-                    <input
-                      type="file"
-                      id="audioInput"
-                      className="hidden"
-                      accept="audio/*"
-                      onChange={handleAudioUpload}
-                    />
+                      <input
+                        type="text"
+                        name="youtubeUrl"
+                        placeholder="Paste YouTube video URL"
+                        className="p-2 min-w-64 border rounded"
+                      />
+                      <button
+                        type="submit"
+                        className="ml-2 p-2 bg-blue-500 text-white rounded"
+                      >
+                        Add YouTube Video
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>

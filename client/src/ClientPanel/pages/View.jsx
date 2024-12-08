@@ -24,6 +24,7 @@ const View = () => {
   const [coverImage, setCoverImage] = useState(coverAvatar);
   const [activeTab, setActiveTab] = useState("about");
   const [mediaImages, setMediaImages] = useState([]);
+  const [youtubeLinks, setYoutubeLinks] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memorialData, setMemorialData] = useState(null);
   const [newTribute, setNewTribute] = useState("");
@@ -41,7 +42,8 @@ const View = () => {
   const [newMiddleName, setNewMiddleName] = useState("");
   const [tributes, setTributes] = useState([]);
   const [newLastName, setNewLastName] = useState("");
-
+  const [videoUrls, setVideoUrls] = useState([]);
+  const [audioUrls, setAudioUrls] = useState([]);
   const [newBirthDate, setNewBirthDate] = useState("");
   const [newDeathDate, setNewDeathDate] = useState("");
 
@@ -86,6 +88,9 @@ const View = () => {
         setProfileImage(response.data.profileImage || avatar);
         setCoverImage(response.data.coverImage || coverAvatar);
         setMediaImages(response.data.gallery);
+        setVideoUrls(response.data.videoGallery);
+        setAudioUrls(response.data.audioGallery);
+        setYoutubeLinks(response.data.youtubeLinks);
       } catch (error) {
         console.error("Error fetching memorial data:", error);
       }
@@ -285,7 +290,7 @@ const View = () => {
             )}
           </div>
 
-          {activeTab === "media" && (
+          {/* {activeTab === "media" && (
             <div>
               <div className="grid grid-cols-3 gap-2">
                 {mediaImages?.length > 0 ? (
@@ -301,6 +306,87 @@ const View = () => {
                 ) : (
                   <div className="col-span-3 text-center text-gray-500">
                     No media available.
+                  </div>
+                )}
+              </div>
+            </div>
+          )} */}
+
+          {activeTab === "media" && (
+            <div>
+              <div className="grid grid-cols-3 gap-2">
+                {mediaImages?.length > 0 ||
+                videoUrls?.length > 0 ||
+                audioUrls?.length > 0 ? (
+                  <>
+                    {/* Render Images */}
+                    {mediaImages?.map((image, index) => (
+                      <div className="relative">
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Media ${index}`}
+                          className="w-full  h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                          onClick={() => handleImageClick(index)}
+                        />
+                      </div>
+                    ))}
+
+                    {/* Render Videos */}
+                    {videoUrls?.map((url, index) => (
+                      <div className="relative">
+                        <video
+                          key={index}
+                          controls
+                          onClick={() => handleImageClick(index)}
+                          className="w-full h-[120px] sm:h-[200px] md:h-[300px] lg:h-[400px] object-cover cursor-pointer"
+                        >
+                          <source src={url} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    ))}
+
+                    {/* Render Audios */}
+                    {audioUrls?.map((url, index) => (
+                      <div className="relative h-full w-full my-auto flex items-center justify-center">
+                        <audio
+                          key={index}
+                          controls
+                          className="w-full max-w-xs" // Adjust max-width if needed
+                          onClick={() => handleImageClick(index)}
+                        >
+                          <source src={url} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    ))}
+
+                    {/* Render YouTube Links */}
+                    {youtubeLinks?.map((link, index) => (
+                      <div className="relative" key={index}>
+                        <div className="w-full  h-[120px] sm:h-[200px]  md:h-[300px] lg:h-[400px] object-cover cursor-pointer">
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            // src={`https://www.youtube.com/embed/${
+                            //   link.split("v=")[1]
+                            // }`}
+                            src={`https://www.youtube.com/embed/${
+                              link.split("v=")[1]?.split("&")[0]
+                            }`}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div className="col-span-3 text-center text-gray-500">
+                    Nu exista poze disponibile. Click mai jos pentru a le
+                    adauga.
                   </div>
                 )}
               </div>

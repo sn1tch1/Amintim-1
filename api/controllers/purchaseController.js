@@ -5,25 +5,25 @@ const express = require("express");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail"); // Ensure this function is available
 const app = express();
-const { getEuPlatescRequest } = require('../lib/euplatesc/index');
+const { getEuPlatescRequest } = require("../lib/euplatesc/index");
 
 app.use(express.json());
 
 const euPlatescConfig = {
-  "name": "Amintim",
-  "domain": "amintim.ro",
-  "env": "staging",
-  "merchantId": "44841004414",
-  "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
-}
+  name: "Amintim",
+  domain: "amintim.ro",
+  env: "staging",
+  merchantId: "44841004414",
+  secretKey: "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720",
+};
 
 const euPlatescConfigProd = {
-  "name": "Amintim",
-  "domain": "amintim.ro",
-  "env": "staging",
-  "merchantId": "44841004414",
-  "secretKey": "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720"
-}
+  name: "Amintim",
+  domain: "amintim.ro",
+  env: "staging",
+  merchantId: "44841004414",
+  secretKey: "CA87AF1A3A1FFBEFFDAC5B5C64AD74C5C38A0720",
+};
 
 exports.euplatescCheckout = async (req, res) => {
   console.log("Start euplatescCheckout");
@@ -45,7 +45,10 @@ exports.euplatescCheckout = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log("euplatescCheckout failed :( Please check the log with error: ", err);
+    console.log(
+      "euplatescCheckout failed :( Please check the log with error: ",
+      err
+    );
     res.status(400).send({ message: err.message });
 
     throw err;
@@ -156,7 +159,7 @@ exports.getPurchase = async (req, res) => {
     console.error("Error fetching purchase:", error);
     res.status(500).json({ message: "Error fetching purchase" });
   }
-}
+};
 
 exports.deletePurchase = async (req, res) => {
   try {
@@ -170,7 +173,7 @@ exports.deletePurchase = async (req, res) => {
     console.error("Error deleting purchase:", error);
     res.status(500).json({ message: "Error deleting purchase" });
   }
-}
+};
 
 exports.getAllPurchases = async (req, res) => {
   try {
@@ -188,6 +191,56 @@ exports.getAllPurchases = async (req, res) => {
   }
 };
 
+// exports.redeemReferralCode = async (req, res) => {
+//   const { referralCode } = req.body;
+//   const userId = req.user.id;
+
+//   try {
+//     // Find the partner by referral code
+//     const partner = await User.findOne({ referralCode, role: "partner" });
+//     if (!partner) {
+//       return res.status(400).json({ message: "Invalid referral code" });
+//     }
+
+//     // Check if the user has already used this referral code
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // Check if this referral code has already been used by the user
+//     if (user.referralCodeUsedBy.includes(partner._id)) {
+//       return res
+//         .status(400)
+//         .json({ message: "You have used the referral Code, Try Another One" });
+//     }
+
+//     // Add the user to the partner's referralCodeUsedBy array
+//     partner.referralCodeUsedBy.push(user._id);
+//     await partner.save();
+
+//     // Add the partner's referral code to the user's referralCodeUsedBy array
+//     user.referralCodeUsedBy.push(partner._id);
+//     await user.save();
+
+//     // Apply 20% discount
+//     const discount = 0.2; // 20% discount
+
+//     // Return the discount value and partner info to the client
+//     res.status(200).json({
+//       message: "Referral code redeemed successfully",
+//       discount: discount * 100,
+//       partner: {
+//         partnerId: partner._id,
+//         partnerName: `${partner.firstName} ${partner.lastName}`,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error redeeming referral code:", error);
+//     res.status(500).json({ message: "Error redeeming referral code" });
+//   }
+// };
+
 exports.redeemReferralCode = async (req, res) => {
   const { referralCode } = req.body;
   const userId = req.user.id;
@@ -199,7 +252,7 @@ exports.redeemReferralCode = async (req, res) => {
       return res.status(400).json({ message: "Invalid referral code" });
     }
 
-    // Check if the user has already used this referral code
+    // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -209,27 +262,35 @@ exports.redeemReferralCode = async (req, res) => {
     if (user.referralCodeUsedBy.includes(partner._id)) {
       return res
         .status(400)
-        .json({ message: "You have used the referral Code, Try Another One" });
+        .json({ message: "You have already used this referral code" });
     }
 
     // Add the user to the partner's referralCodeUsedBy array
     partner.referralCodeUsedBy.push(user._id);
+
+    // Add a reward to the partner
+    const referralReward = 5; // Amount rewarded per referral
+    partner.amountToBePaid = (partner.amountToBePaid || 0) + referralReward;
+
+    // Save partner details
     await partner.save();
 
     // Add the partner's referral code to the user's referralCodeUsedBy array
     user.referralCodeUsedBy.push(partner._id);
     await user.save();
 
-    // Apply 20% discount
+    // Apply 20% discount for the user
     const discount = 0.2; // 20% discount
 
     // Return the discount value and partner info to the client
     res.status(200).json({
       message: "Referral code redeemed successfully",
-      discount: discount * 100,
+      discount: discount * 100, // Percentage
+      referralReward,
       partner: {
         partnerId: partner._id,
         partnerName: `${partner.firstName} ${partner.lastName}`,
+        amountToBePaid: partner.amountToBePaid, // Updated balance
       },
     });
   } catch (error) {

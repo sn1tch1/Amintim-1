@@ -9,6 +9,7 @@ import MemorialPages from "../AdminPanel/Memorials.jsx";
 import MemorialViewPage from "../AdminPanel/component/MemorialDetail.jsx";
 import Purchase from "../AdminPanel/Purchases.jsx";
 import Referrals from "../AdminPanel/Partners.jsx";
+import AdminPrices from "../AdminPanel/Prices.jsx";
 
 const AdminRouters = () => {
   const { user } = useAuth();
@@ -22,6 +23,7 @@ const AdminRouters = () => {
       <Route path="/admin/users" element={<Users />} />
       <Route path="/admin/memorials" element={<MemorialPages />} />
       <Route path="/admin/referrals" element={<Referrals />} />
+      <Route path="/admin/price" element={<AdminPrices />} />
       <Route path="/admin/memorial/:id" element={<MemorialViewPage />} />
 
       {/* User Logged In? */}

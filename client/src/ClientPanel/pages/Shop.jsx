@@ -15,10 +15,12 @@ import Image5 from "../../assets/shop/img-5.webp";
 import GridFAQs from "../components/GridFAQs";
 import { useCart } from "../../context/CartContext";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Shop = () => {
   const { addToCart } = useCart();
   // Array of images
+  const [prices, setPrices] = useState(null);
   const images = [Image1, Image2, Image3, Image4, Image5];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedOption, setSelectedOption] = useState("buy1");
@@ -26,6 +28,17 @@ const Shop = () => {
   useEffect(() => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/price");
+        console.log(response.data.data);
+        setPrices(response.data.data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleAddToCart = () => {
@@ -78,9 +91,11 @@ const Shop = () => {
                 Plătesti o singură dată
               </div>
               <div className="ml-auto flex items-center">
-                <span className=" text-xl">190 RON</span>
+                <span className=" text-xl">
+                  {prices?.price1?.discountedPrice} RON
+                </span>
                 <span className="ml-3 lg:ml-0 line-through text-gray-500">
-                  RON 280
+                  RON {prices?.price1?.actualPrice}
                 </span>
               </div>
             </div>
@@ -129,8 +144,12 @@ const Shop = () => {
                 Cumpara 1
               </div>
               <div>
-                <div className="text-black text-lg">RON 190</div>
-                <div className="line-through text-gray-500">RON 280</div>
+                <div className="text-black text-lg">
+                  RON {prices?.price1?.discountedPrice}
+                </div>
+                <div className="line-through text-gray-500">
+                  RON {prices?.price1?.actualPrice}
+                </div>
               </div>
             </button>
             <button
@@ -153,8 +172,12 @@ const Shop = () => {
                 </div>
               </div>
               <div>
-                <div className="text-black text-lg">RON 320</div>
-                <div className="line-through text-gray-500">RON 380</div>
+                <div className="text-black text-lg">
+                  RON {prices?.price2?.discountedPrice}
+                </div>
+                <div className="line-through text-gray-500">
+                  RON {prices?.price2?.actualPrice}
+                </div>
               </div>
               <div className="absolute -top-2 right-4 bg-orange-500 text-white text-xs px-2 py-1 rounded ml-2">
                 Most Popular

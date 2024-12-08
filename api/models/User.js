@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
   hasPurchased: { type: Boolean, default: false },
   referralCode: { type: String },
   referralCodeUsedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  totalPaid: { type: Number, default: 0 },
+  amountToBePaid: { type: Number, default: 0 },
+  lastPaid: { type: Date, default: null },
   role: {
     type: String,
     enum: ["admin", "user", "partner"],

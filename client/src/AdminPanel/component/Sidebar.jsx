@@ -96,6 +96,15 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
+                to="/admin/price"
+                className="flex items-center gap-2 p-2 hover:bg-gray-800 transition-all"
+              >
+                <BiSolidPurchaseTag size={25} />
+                {!isCollapsed && <span>Prices</span>}
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/admin/users"
                 className="flex items-center gap-2 p-2 hover:bg-gray-800 transition-all"
               >

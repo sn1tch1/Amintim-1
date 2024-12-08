@@ -6,25 +6,60 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 const QRCode = require("qrcode");
 const path = require("path");
+const { Storage } = require("@google-cloud/storage");
 
 // Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET_KEY,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_SECRET_KEY,
+// });
 
 // Configure Multer storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "Amintim",
-    format: async (req, file) => "jpg", // supports promises as well
-    public_id: (req, file) => file.originalname,
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "Amintim",
+//     format: async (req, file) => "jpg", // supports promises as well
+//     public_id: (req, file) => file.originalname,
+//   },
+// });
+
+const storage = new Storage({
+  keyFilename: path.join(process.cwd(), "amintim-d40bfe205790.json"), // Path to service account key in the root directory
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+});
+
+const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME;
+const bucket = storage.bucket(bucketName);
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB
   },
 });
 
-const upload = multer({ storage: storage });
+const uploadToGoogleCloud = async (file, folder = "Amintim") => {
+  const blob = bucket.file(`${folder}/${file.originalname}`);
+  const blobStream = blob.createWriteStream({
+    resumable: true,
+  });
+
+  return new Promise((resolve, reject) => {
+    blobStream
+      .on("finish", () => {
+        const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
+        resolve(publicUrl);
+      })
+      .on("error", (err) => {
+        reject(err);
+      })
+      .end(file.buffer);
+  });
+};
+
+// const upload = multer({ storage: storage });
 
 exports.createMemorialPage = async (req, res) => {
   const userId = req.user.id;
@@ -49,7 +84,6 @@ exports.createMemorialPage = async (req, res) => {
     // Find all purchases for the user
     const purchases = await Purchase.find({ userId });
 
-    // Check if any purchases exist for the user
     if (!purchases || purchases.length === 0) {
       return res.status(400).json({ message: "Please Buy a SoulStar First" });
     }
@@ -57,31 +91,22 @@ exports.createMemorialPage = async (req, res) => {
     let keyFound = false;
     let foundPurchase = null;
 
-    // Iterate through purchases to find the first unused key
-    // Iterate through purchases to find the first unused key
     outerLoop: for (const purchase of purchases) {
-      console.log(`Checking purchase ${purchase._id}`);
       for (const item of purchase.items) {
-        console.log(`  Checking item ${item.id}`);
         for (const k of item.keys) {
-          console.log(`    Key: ${k.key}, Is Used: ${k.isUsed}`);
           if (!k.isUsed) {
-            console.log(`    Found unused key: ${k.key}`);
             k.isUsed = true;
             foundPurchase = purchase;
             keyFound = true;
-            break outerLoop; // Exit the loop as soon as an unused key is found
+            break outerLoop;
           }
         }
       }
     }
 
     if (!keyFound) {
-      console.log("No unused keys found.");
       return res.status(400).json({ message: "Please Buy a SoulStar First" });
     }
-
-    console.log("Unused key found, proceeding with memorial page creation");
 
     // Create a new memorial page
     const newMemorialPage = new MemorialPage({
@@ -108,27 +133,17 @@ exports.createMemorialPage = async (req, res) => {
     const qrCodeData = `https://amintim.ro/profile/view/${newMemorialPage._id}`;
     const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
 
-    // Upload the QR code buffer to Cloudinary
-    const cloudinaryResponse = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "Amintim",
-          public_id: `${newMemorialPage._id}`,
-          format: "png",
-        },
-        (error, result) => {
-          if (error) {
-            reject(new Error("Failed to upload QR code to Cloudinary"));
-          } else {
-            resolve(result);
-          }
-        }
-      );
-      uploadStream.end(qrCodeBuffer);
-    });
+    // Upload QR code to Google Cloud Storage
+    const qrCodeUrl = await uploadToGoogleCloud(
+      {
+        originalname: `${newMemorialPage._id}.png`,
+        buffer: qrCodeBuffer,
+      },
+      "Amintim/QR_Codes"
+    );
 
     // Update the memorial page with the QR code URL
-    newMemorialPage.QRCode = cloudinaryResponse.secure_url;
+    newMemorialPage.QRCode = qrCodeUrl;
     await newMemorialPage.save();
 
     // Save the updated purchase with the key marked as used
@@ -144,7 +159,148 @@ exports.createMemorialPage = async (req, res) => {
   }
 };
 
+// exports.createMemorialPage = async (req, res) => {
+//   const userId = req.user.id;
+//   const {
+//     title,
+//     firstName,
+//     animal,
+//     breed,
+//     middleName,
+//     profileImage,
+//     coverImage,
+//     lastName,
+//     note,
+//     about,
+//     gallery,
+//     birthDate,
+//     deathDate,
+//     isHuman,
+//   } = req.body;
+
+//   try {
+//     // Find all purchases for the user
+//     const purchases = await Purchase.find({ userId });
+
+//     // Check if any purchases exist for the user
+//     if (!purchases || purchases.length === 0) {
+//       return res.status(400).json({ message: "Please Buy a SoulStar First" });
+//     }
+
+//     let keyFound = false;
+//     let foundPurchase = null;
+
+//     // Iterate through purchases to find the first unused key
+//     // Iterate through purchases to find the first unused key
+//     outerLoop: for (const purchase of purchases) {
+//       console.log(`Checking purchase ${purchase._id}`);
+//       for (const item of purchase.items) {
+//         console.log(`  Checking item ${item.id}`);
+//         for (const k of item.keys) {
+//           console.log(`    Key: ${k.key}, Is Used: ${k.isUsed}`);
+//           if (!k.isUsed) {
+//             console.log(`    Found unused key: ${k.key}`);
+//             k.isUsed = true;
+//             foundPurchase = purchase;
+//             keyFound = true;
+//             break outerLoop; // Exit the loop as soon as an unused key is found
+//           }
+//         }
+//       }
+//     }
+
+//     if (!keyFound) {
+//       console.log("No unused keys found.");
+//       return res.status(400).json({ message: "Please Buy a SoulStar First" });
+//     }
+
+//     console.log("Unused key found, proceeding with memorial page creation");
+
+//     // Create a new memorial page
+//     const newMemorialPage = new MemorialPage({
+//       user: userId,
+//       title,
+//       firstName,
+//       animal,
+//       breed,
+//       middleName,
+//       profileImage,
+//       coverImage,
+//       lastName,
+//       note,
+//       about,
+//       gallery,
+//       birthDate,
+//       deathDate,
+//       isHuman,
+//     });
+
+//     await newMemorialPage.save();
+
+//     // Generate QR code for the memorial page
+//     const qrCodeData = `https://amintim.ro/profile/view/${newMemorialPage._id}`;
+//     const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
+
+//     // Upload the QR code buffer to Cloudinary
+//     const cloudinaryResponse = await new Promise((resolve, reject) => {
+//       const uploadStream = cloudinary.uploader.upload_stream(
+//         {
+//           folder: "Amintim",
+//           public_id: `${newMemorialPage._id}`,
+//           format: "png",
+//         },
+//         (error, result) => {
+//           if (error) {
+//             reject(new Error("Failed to upload QR code to Cloudinary"));
+//           } else {
+//             resolve(result);
+//           }
+//         }
+//       );
+//       uploadStream.end(qrCodeBuffer);
+//     });
+
+//     // Update the memorial page with the QR code URL
+//     newMemorialPage.QRCode = cloudinaryResponse.secure_url;
+//     await newMemorialPage.save();
+
+//     // Save the updated purchase with the key marked as used
+//     await foundPurchase.save();
+
+//     res.status(201).json({
+//       message: "Memorial Page created successfully",
+//       memorialPage: newMemorialPage,
+//     });
+//   } catch (error) {
+//     console.error("Error creating memorial page:", error);
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// };
+
 // File upload handler
+// exports.uploadFile = (req, res) => {
+//   upload.single("file")(req, res, async (err) => {
+//     if (err instanceof multer.MulterError) {
+//       return res.status(500).json({ message: err.message });
+//     } else if (err) {
+//       return res.status(500).json({ message: err.message });
+//     }
+
+//     if (!req.file) {
+//       return res.status(400).send("No file uploaded.");
+//     }
+
+//     try {
+//       console.log("Uploading file:", req.file.filename);
+//       await uploadProfileImage(req.user.id, req.file.filename); // Ensure this function is defined elsewhere in your code
+//       res.status(200).json({ filename: req.file.filename });
+//     } catch (error) {
+//       console.error("Error uploading file:", error);
+//       res.status(500).send("Error uploading file.");
+//     }
+//   });
+// };
+
 exports.uploadFile = (req, res) => {
   upload.single("file")(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
@@ -158,9 +314,8 @@ exports.uploadFile = (req, res) => {
     }
 
     try {
-      console.log("Uploading file:", req.file.filename);
-      await uploadProfileImage(req.user.id, req.file.filename); // Ensure this function is defined elsewhere in your code
-      res.status(200).json({ filename: req.file.filename });
+      const fileUrl = await uploadToGoogleCloud(req.file, "Amintim/Uploads");
+      res.status(200).json({ fileUrl });
     } catch (error) {
       console.error("Error uploading file:", error);
       res.status(500).send("Error uploading file.");
@@ -468,7 +623,6 @@ exports.updateQRCodeStatus = async (req, res) => {
       .json({ message: "Failed to update QR code status.", error });
   }
 };
-
 
 // Delete a memorial page
 exports.deleteMemorialPage = async (req, res) => {
