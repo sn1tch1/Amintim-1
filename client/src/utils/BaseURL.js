@@ -1,5 +1,5 @@
-// const BASE_URL = "http://localhost:5000/api";
-const BASE_URL = "https://amintim-1-k4xy.vercel.app/api";
+const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "https://amintim-1-k4xy.vercel.app/api";
 export const IMAGES_BASE_URL = "http://localhost:5000";
 // export const IMAGES_BASE_URL = "https://amintim-api.vercel.app";
 

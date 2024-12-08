@@ -24,9 +24,12 @@ const { Storage } = require("@google-cloud/storage");
 //     public_id: (req, file) => file.originalname,
 //   },
 // });
+const base64Key = process.env.GOOGLE_CLOUD_KEY;
+const keyJson = JSON.parse(Buffer.from(base64Key, "base64").toString("utf8"));
 
 const storage = new Storage({
-  keyFilename: path.join(process.cwd(), "amintim-d40bfe205790.json"), // Path to service account key in the root directory
+  credentials: keyJson,
+  // keyFilename: path.join(process.cwd(), "amintim-d40bfe205790.json"), // Path to service account key in the root directory
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
 });
 

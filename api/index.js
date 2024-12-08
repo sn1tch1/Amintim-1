@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const cors = require("cors");   
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes.js");
 const purchaseRoutes = require("./routes/purchaseRoutes.js");
 const memorialRoutes = require("./routes/memorialRoutes.js");
@@ -41,9 +41,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+const base64Key = process.env.GOOGLE_CLOUD_KEY;
+const keyJson = JSON.parse(Buffer.from(base64Key, "base64").toString("utf8"));
+
 // Google Cloud Storage Configuration
 const storage = new Storage({
-  keyFilename: path.join(__dirname, "amintim-d40bfe205790.json"), // Path to service account key
+  credentials: keyJson,
+  // keyFilename: path.join(__dirname, "amintim-d40bfe205790.json"), // Path to service account key
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
 });
 
